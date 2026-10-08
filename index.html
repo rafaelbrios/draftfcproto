@@ -41,7 +41,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
 </style>
 </head>
 <body>
-<header><h1>⚽ Draft FC — protótipo (v8)</h1>
+<header><h1>⚽ Draft FC — protótipo (v9)</h1>
 <button class="tab on" data-t="home">Partida</button><button class="tab" data-t="lab">Laboratório</button><button class="tab" data-t="help">Como funciona</button></header>
 <main id="app"></main>
 <div id="ovl"></div>
@@ -116,12 +116,20 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     p.mo0 = 40 + Math.random()*20; p.mo = p.mo0; p.e = 100; p.yc = 0; p.red = false; p.inj = false; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0};
     return p;
   }
-  function pen(pos, slot) {
-    if (pos === slot) return 1;
-    if (pos === 0 || slot === 0) return 0.35;
-    const d = Math.hypot(POS[pos][0]-POS[slot][0], POS[pos][1]-POS[slot][1]);
-    return Math.max(0.72, 1 - 0.045*d);
+  // penalidade de posição em pontos de overall (tabela por afinidade)
+  const SEC = {CB:0,WB:0,DM:1,CM:1,WM:1,AM:1,W:2,ST:2};
+  function slotPts(pos, slot) {
+    if (pos === slot) return 0;
+    const gs = group(slot), gp = group(pos);
+    if (gs === 'GK') return 35;
+    if (gp === 'GK') return 20;
+    if (Math.hypot(POS[pos][0]-POS[slot][0], POS[pos][1]-POS[slot][1]) <= 1.5) return 3;
+    const d = Math.abs(SEC[gp] - SEC[gs]);
+    return d === 0 ? 8 : d === 1 ? 14 : 20;
   }
+  const effOvr = (p, slot) => p.o - slotPts(p.pos, slot);
+  function pen(pos, slot) { return 1 - slotPts(pos, slot)/85; }
+  const WARR = {CB:1,WB:1,DM:1.15,CM:1.15,WM:1.15,AM:1.15,W:1.3,ST:1.3,GK:0};
   const cap = t => 11 - t.squad.filter(p => p.red).length;
   function fat(e) { return 0.65 + 0.35*e/100; }
 
@@ -178,18 +186,54 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     }
     t.form = bestF;
     const sl = FORM[bestF];
-    t.xi = new Array(11); t.slots = sl.slice();
+    t.xi = new Array(11); t.slots = sl.slice(); t.man = false;
     bestRes.forEach((s, i) => { if (s >= 0) t.xi[s] = avail[i]; });
+    t.squad.forEach(p => { p.sl = undefined; }); t.xi.forEach((p, i) => { if (p) p.sl = sl[i]; });
     t.bench = t.squad.filter(p => !t.xi.includes(p));
   }
   // reatribui os jogadores em campo às posições da formação (n pode ser <11)
   function reslot(t, form) {
-    if (form) t.form = form;
+    if (form) { t.form = form; t.man = false; }
     const sl = FORM[t.form], on = t.xi.filter(Boolean);
-    const res = solve(on, sl, false, valPos);
+    const used = new Set(), keep = new Map(), rest = [];
+    on.forEach(p => { if (t.man && p.sl !== undefined && sl.includes(p.sl) && !used.has(p.sl)) { used.add(p.sl); keep.set(p, p.sl); } else rest.push(p); });
+    const free = sl.filter(s => !used.has(s)), res = solve(rest, free, false, valPos);
+    rest.forEach((p, i) => keep.set(p, free[res[i]]));
     const xi = [], slots = [];
-    on.forEach((p, i) => { xi.push(p); slots.push(sl[res[i]]); });
+    on.forEach(p => { p.sl = keep.get(p); xi.push(p); slots.push(p.sl); });
+    t.squad.forEach(p => { if (!xi.includes(p)) p.sl = undefined; });
     t.xi = xi; t.slots = slots;
+  }
+  // troca de posições entre dois titulares (índices em t.xi); passa a escalação para o modo manual
+  function swapSlots(t, i, j) {
+    if (i === j || !t.xi[i] || !t.xi[j]) return false;
+    const a = t.xi[i], b = t.xi[j]; [t.slots[i], t.slots[j]] = [t.slots[j], t.slots[i]];
+    a.sl = t.slots[i]; b.sl = t.slots[j]; t.man = true; return true;
+  }
+  const snapTeam = t => ({xi: t.xi.slice(), bench: t.bench.slice(), form: t.form, man: !!t.man, sl: t.xi.map(p => p.sl)});
+  function restoreTeam(t, sn, full) {
+    if (full) { t.xi = sn.xi.slice(); t.bench = sn.bench.slice(); t.form = sn.form; }
+    t.man = true;
+    t.xi.forEach(p => { const k = sn.xi.indexOf(p); p.sl = k >= 0 ? sn.sl[k] : undefined; });
+    reslot(t); t.man = sn.man || true;
+  }
+  const lineVal = (t) => t.xi.reduce((a, p, i) => a + WARR[group(t.slots[i])] * effOvr(p, t.slots[i]), 0);
+  // melhor arranjo (só na escalação inicial): goleiro fixo, escolhe os 10 de linha entre titulares e reservas
+  function bestArrangement(t) {
+    const gi = t.xi.findIndex((p, i) => group(t.slots[i]) === 'GK'); if (gi < 0 || t.xi.length < 11) return false;
+    const gk = t.xi[gi], sl = FORM[t.form].filter(s => s !== 0);
+    const pool = t.squad.filter(p => p !== gk && !p.red && !p.inj);
+    const cur = lineVal(t) - WARR.GK*0;
+    const res = solve(pool, sl, true, (p, s) => WARR[group(s)] * effOvr(p, s));
+    if (!res) return false;
+    let nv = 0; res.forEach((s, i) => { if (s >= 0) nv += WARR[group(sl[s])] * effOvr(pool[i], sl[s]); });
+    let cv = 0; t.xi.forEach((p, i) => { if (i !== gi) cv += WARR[group(t.slots[i])] * effOvr(p, t.slots[i]); });
+    if (nv - cv < 1) return false;
+    const xi = [gk], slots = [0]; gk.sl = 0;
+    res.forEach((s, i) => { if (s >= 0) { xi.push(pool[i]); slots.push(sl[s]); pool[i].sl = sl[s]; } });
+    t.xi = xi; t.slots = slots; t.man = true; t.bench = t.squad.filter(p => !xi.includes(p));
+    t.squad.forEach(p => { if (!xi.includes(p)) p.sl = undefined; });
+    return true;
   }
   function setLineup(t, form, xiPlayers) { // escalação manual
     t.xi = xiPlayers.slice(); t.form = form; reslot(t);
@@ -231,7 +275,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     return items[items.length-1];
   }
 
-  const C = {C0: 0.185, G0: 0.13, expC: 1.5, expG: 2.2, FAT: 0.96, SNOW: 0.75, SNOWD: 0.50};
+  const C = {C0: 0.185, G0: 0.137, expC: 1.5, expG: 2.2, FAT: 0.96, SNOW: 0.75, SNOWD: 0.50};
 
   class Match {
     constructor(A, B, seed, opts) {
@@ -287,7 +331,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
         const t = T[i];
         t.xi.forEach((p, k) => {
           const g = group(t.slots[k]);
-          let d = C.FAT * (1.9 - 0.0140*p.sta) * rhyEn[t.rhy] * mEn[t.ment] * ROLE_EN[g];
+          let d = C.FAT * (1.9 - 0.0140*p.sta) * rhyEn[t.rhy] * mEn[t.ment] * ROLE_EN[g] * (1 + slotPts(p.pos, t.slots[k])/100);
           if (t.counter && COUNTER_GROUPS[g]) d *= 1 + 0.15*COUNTER_GROUPS[g];
           d *= (1 - 0.10*clamp((effMo(p, t)-50)/30, -1, 1)) * campEn(p, t);
           p.e = Math.max(5, p.e - d); p.st.min++;
@@ -598,7 +642,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     return m;
   }
 
-  const API = {AI, POS, POSL, FORM, MENT, RHY, CAMP, BOTLV, STYLES, STOPS, group, mkPlayer, mkTeam, autoPick, setLineup, reslot, doSub, power, Match, autopilot, cap, botMaybeRequest, botSetup, mkBot, resetTeam, randomSquads, simulate, pen, fat, rng, C, band, effMo, avgE};
+  const API = {AI, POS, POSL, FORM, MENT, RHY, CAMP, BOTLV, STYLES, STOPS, group, slotPts, effOvr, swapSlots, snapTeam, restoreTeam, bestArrangement, mkPlayer, mkTeam, autoPick, setLineup, reslot, doSub, power, Match, autopilot, cap, botMaybeRequest, botSetup, mkBot, resetTeam, randomSquads, simulate, pen, fat, rng, C, band, effMo, avgE};
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Engine = API;
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -750,7 +794,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     const items = o.rows.map(r => { const c = catOf(r[3]); return {r, id: r[0], n: r[1], o: r[2], pos: r[3], cat: c, price: price(r[2], c), tie: rng(), dup: / \(.*\)$/.test(r[1]), vc: 1, key: r[1].replace(/ \([^()]*\)$/, '').toLowerCase(), nat: -1, lg: [], leg: false, rm: false}; });
     if (o.meta) items.forEach(it => { const m = o.meta(it.r); if (m) { it.nat = m[0]; it.lg = m[2]; it.leg = m[1].some(c => (c >> 3) === 16); } if (o.rule) it.rm = o.rule.kind === 'conf' ? it.nat >= 0 && o.conf[it.nat] === o.rule.key : o.rule.kind === 'pais' ? it.nat === o.rule.key : it.lg.includes(o.rule.key); if (o.mult) it.price = Math.max(1, Math.round(it.price * o.mult(it, m))); });
     const vc = {}; items.forEach(it => vc[it.key] = (vc[it.key] || 0) + 1); items.forEach(it => it.vc = vc[it.key]);
-    const d = {n, budget: o.budget || 300, rand: !!o.rand, mode: o.mode || 'free', rng, tc: tagCtx(o.tags, o.mask || 15), types: o.types || Array(n).fill(-1),
+    const d = {hide: !!o.hide, n, budget: o.budget || 300, rand: !!o.rand, mode: o.mode || 'free', rng, tc: tagCtx(o.tags, o.mask || 15), types: o.types || Array(n).fill(-1),
       avail: items.sort((a, b) => b.o - a.o || a.tie - b.tie), byCat: {}, legLimit: o.legLimit === undefined ? -1 : o.legLimit, rule: o.rule || null, cm: o.country || null, clog: [], legCnt: Array(n).fill(0), ruleCnt: Array(n).fill(0), phase: o.country ? 'country' : 'draft', cnat: Array(n).fill(-1), cord: [], cpos: 0, sq: Array.from({length: n}, () => []), keys: Array.from({length: n}, () => new Set()), spent: Array(n).fill(0),
       cnt: Array.from({length: n}, () => ({GK:0, DEF:0, MID:0, ATT:0})), k: 0, log: [], flt: null, listLeft: [], lastFlt: 0, fltLog: [], names: o.names || [], active: [...Array(n).keys()], order: [], pos: 0, rnd: 0};
     reindex(d);
@@ -830,7 +874,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     if (done(d)) { d.flt = null; d.listLeft = []; return; }
     const need = Math.max(4, 2 * d.active.length), ok = [];
     for (const f of CATALOG) {
-      if (f.gold || f.id === d.lastFlt) continue;
+      if (f.gold || f.id === d.lastFlt || (d.hide && f.type === 'D')) continue;
       let c = 0; for (const it of d.avail) if (f.test(it, d.tc) && ++c >= need) break;
       if (c >= need) ok.push(f);
     }
@@ -920,6 +964,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
   const STARTERS = {GK:1, DEF:4, MID:4, ATT:2};
   function botChoice(d, ti) {
     const lvl = d.types[ti], ks = KS[lvl + 1];
+    const nz = new Map(), O = it => { if (!d.hide) return it.o; if (!nz.has(it.id)) nz.set(it.id, it.o + (d.rng()*2 - 1)*5); return nz.get(it.id); };   // overall oculto: o bot vê com ruído de ±5
     const pool = d.mode === 'filter' ? d.listLeft : d.cm ? d.avail.filter(x => allowed(d, ti, x)).slice(0, 200) : d.avail.slice(0, 200);
     const valid = pool.filter(it => canPick(d, ti, it));
     if (!valid.length) return autoChoice(d, ti);
@@ -931,7 +976,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     else CATS.forEach(c => defi[c] = TARGET[c] - have[c]);
     let wants = valid.filter(it => defi[it.cat] > 0); if (!wants.length) wants = valid;
     if (phase === 1) {   // reservas: o mais barato com bom overall
-      const cand = wants.slice().sort((a, b) => (b.o - 0.9 * b.price) - (a.o - 0.9 * a.price)).slice(0, Math.min(ks, 3));
+      const cand = wants.slice().sort((a, b) => (O(b) - 0.9 * b.price) - (O(a) - 0.9 * a.price)).slice(0, Math.min(ks, 3));
       return cand[Math.floor(d.rng() * cand.length)];
     }
     const w = c => Math.max(0, defi[c]) / Math.max(1, TARGET[c]);
@@ -939,7 +984,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     let tot = 0; cats.forEach(c => tot += w(c) + 0.05); let r = d.rng() * tot, pc = cats[0];
     for (const c of cats) { r -= w(c) + 0.05; if (r <= 0) { pc = c; break; } }
     const lam = lvl === 2 ? 0.30 : lvl === 1 ? 0.15 : 0.0;   // custo-benefício: bots melhores poupam verba
-    const cand = wants.filter(it => it.cat === pc).sort((a, b) => (b.o - lam * b.price) - (a.o - lam * a.price)).slice(0, ks);
+    const cand = wants.filter(it => it.cat === pc).sort((a, b) => (O(b) - lam * b.price) - (O(a) - lam * a.price)).slice(0, ks);
     return cand[Math.floor(d.rng() * cand.length)];
   }
   // ---------- modo Um país por técnico
@@ -1045,12 +1090,14 @@ function render() {
   if (S.stage === 'match') return renderMatch(a);
   if (S.stage === 'end') return renderEnd(a);
 }
-function helpHtml() { return `<div class="card"><h2>O que este protótipo faz (versão 8)</h2>
+function helpHtml() { return `<div class="card"><h2>O que este protótipo faz (versão 9)</h2>
 <p>Simula uma partida entre dois treinadores no mesmo computador, com jogadores reais (80+ de overall). Cada lado pode ser humano ou bot.</p>
 <ul><li><b>Bases de dados:</b> ative uma ou mais (Clubes 1999–2010, Seleções 2010–18, Era 1990–2000, FIFA 15 · 2014/15) e escolha o corte de overall (80+, 75+ ou 70+). O pool é a união das bases; quando o mesmo jogador tem overall diferente entre bases, aparece como duas versões rotuladas, por exemplo "Baggio (Era 90)".</li><li><b>Draft interativo:</b> de 2 a 8 técnicos (humanos ou bots), em ordem snake, 23 jogadores por elenco (mínimo 3 goleiros, 6 defensores, 6 meio-campistas e 4 atacantes) e orçamento configurável (padrão 300, de 200 a 1000) ou ilimitado. Cada jogador tem um preço (tabela provisória por overall e posição) e só pode ser escolhido se sobrar verba para completar o elenco. Quando a verba esgota, o elenco é completado na hora com os piores jogadores de cada setor que falta (mínimos primeiro) e o técnico sai da ordem; esse preenchimento pode passar o orçamento em poucos pontos. Cronômetro configurável por escolha (30 a 180 s ou sem limite): ao zerar, o jogo escolhe o melhor jogador que cabe. Cada técnico abre a própria tela (os demais desviam o olhar) e vê só o seu elenco e o seu orçamento. A escolha é definitiva, em dois cliques.</li>
 <li><b>Dois modos:</b> <i>busca livre</i> (qualquer jogador do pool) e <i>Filtro Aleatório</i> (a cada rodada do snake sorteia-se um filtro entre cerca de 200: atributos, posições, faixas de overall e preço, seleções, edições de Copa e Eurocopa, clubes e ligas). Todos escolhem dentro do mesmo filtro, entre 16 jogadores (os melhores que o atendem ou 16 sorteados entre todos que o atendem, à escolha do organizador), e a lista encolhe a cada escolha. O filtro só é sorteado se tiver pelo menos o dobro de técnicos em jogadores disponíveis (considerando só os técnicos que ainda escolhem) e nunca se repete em rodadas seguidas. Se nenhum servir, vale o "pote de ouro" (os maiores overalls). Se nenhum da lista couber no seu orçamento, o jogo escolhe por você.</li>
 <li><b>Recortes do pool:</b> combine época (faixas de 5 anos), tipo de origem, região/nacionalidade, liga do clube e faixa de overall (dentro de um grupo vale OU, entre grupos vale E). Há presets prontos (ex.: Brasileirão, corte 70), você pode salvar os seus, exportar/importar a configuração, e os ajustes avançados trazem multiplicadores de preço, limite de lendas, lista de banidos e mínimo por região/liga. A última configuração fica lembrada. Nas bases antigas, jogadores só de clube não têm nacionalidade e ficam fora dos recortes de região.</li>
 <li><b>Um país por técnico:</b> cada técnico escolhe um país (ordem do snake ou sorteada; só países com pool suficiente) e monta o elenco só com jogadores dele, sem orçamento. Opção de permitir o mesmo país para dois técnicos. Curingas (0–2, definidos antes do draft): as últimas escolhas podem ser de qualquer país, em ordem invertida, entre jogadores ainda não escolhidos. "Melhores do país" completa o elenco automaticamente.</li>
+<li><b>Troca de posições:</b> na escalação e em qualquer pausa (inclusive de emergência), clique em "⇄ Posição" num titular e depois em "Trocar com este" em outro; os dois trocam de lugar, sem custo. Fora da posição natural o overall efetivo cai (vizinha −3, mesmo setor −8, outro setor −14, oposta −20; jogador de linha no gol −35) e o gasto de energia sobe na mesma proporção. "Restaurar posições" desfaz; "Melhor arranjo" (só antes da partida) escolhe os 10 de linha que maximizam o overall efetivo ponderado, com goleiro fixo. Bots reorganizam sozinhos após expulsão ou lesão.</li>
+<li><b>Draft às cegas:</b> caixa na configuração. Esconde overall, atributos-chave, preço e o saldo do orçamento; os jogadores aparecem em ordem aleatória (40 por vez) e tudo é revelado ao fim do draft. Filtros por overall e preço saem do sorteio, o botão Melhores do país fica desativado e os bots enxergam o overall com erro de ±5. No draft automático não tem efeito.</li>
 <li><b>Depois do draft:</b> você vê todos os elencos, escolhe quais dois times jogam e segue para escalação e partida. O botão "Draft automático" faz tudo com bots, sem telas.</li>
 <li><b>Pausas:</b> obrigatórias no intervalo, antes da prorrogação e no intervalo da prorrogação. As de 15, 30, 60 e 75 minutos só acontecem se alguém pedir (botão na partida); o pedido vale para a próxima parada.</li>
 <li><b>Mata-mata:</b> empate no tempo normal vai para 2 tempos de 15 minutos (1 troca e 1 janela extra) e depois pênaltis, com ordem dos batedores escolhida pelo técnico.</li>
@@ -1063,7 +1110,7 @@ function helpHtml() { return `<div class="card"><h2>O que este protótipo faz (v
 const D = Draft;
 const PNAMES = ['Time Azul','Time Vermelho','Time Verde','Time Amarelo','Time Roxo','Time Laranja','Time Preto','Time Branco'];
 const PCOLS = ['#2f7df6','#e5484d','#2eb872','#f0b429','#9b59d6','#f07b29','#555b66','#d9dee4'];
-Object.assign(S, {n:2, P:PNAMES.map((nm, i) => ({name:nm, color:PCOLS[i], type:i < 2 ? -1 : 0})), dmode:'filter', budget:300, unl:false, frand:false, dsec:60, dr:null, squads:null, dsum:null, pair:[0, 1], dsel:null, open:false, fast:false, revDone:-1, dleft:0, q:{txt:'', cat:'', min:80, maxp:0}, cbud:false, cur:0, same:false, corder:'snake', cfgBox:null, cfgMsg:null});
+Object.assign(S, {hide:false, hrk:'', hrn:new Map(), n:2, P:PNAMES.map((nm, i) => ({name:nm, color:PCOLS[i], type:i < 2 ? -1 : 0})), dmode:'filter', budget:300, unl:false, frand:false, dsec:60, dr:null, squads:null, dsum:null, pair:[0, 1], dsel:null, open:false, fast:false, revDone:-1, dleft:0, q:{txt:'', cat:'', min:80, maxp:0}, cbud:false, cur:0, same:false, corder:'snake', cfgBox:null, cfgMsg:null});
 const ATN = ['Cruzamento','Finalização','Cabeceio','Passe curto','Voleio','Drible','Curva','Falta','Passe longo','Controle','Aceleração','Sprint','Agilidade','Reações','Equilíbrio','Força do chute','Pulo','Resistência','Força','Chute longe','Agressividade','Interceptação','Posicionamento','Visão','Pênalti','Marcação','Desarme','Carrinho','Mergulho','Mãos','Chute GK','Posic. GK','Reflexos'];
 const keyAttrs = it => { const lo = it.cat === 'GK' ? 28 : 0, hi = it.cat === 'GK' ? 33 : 28, a = []; for (let i = lo; i < hi; i++) a.push([i, it.r[6 + i]]); return a.sort((x, y) => y[1] - x[1]).slice(0, 3).map(x => ATN[x[0]] + ' ' + x[1]).join(' · '); };
 const origin = it => { const t = S.dr.tc.info(it.id), nat = t.find(x => x[0] === 'N'), club = t.find(x => x[0] === 'C'), ws = t.find(x => x[0] === 'X'); return [nat && nat[1], club && club[1], !nat && !club && ws && ws[1]].filter(Boolean).join(' · '); };
@@ -1075,14 +1122,14 @@ const clearD = () => { clearInterval(S.dtid); clearTimeout(S.dbot); clearInterva
 function resetDraftState() { clearD(); S.squads = null; S.dsum = null; S.teams = null; S.dr = null; }
 const budgetOf = () => S.dmode === 'country' ? (S.cbud ? S.budget : Infinity) : (S.unl ? Infinity : S.budget);
 const UNL = () => !isFinite(budgetOf());
-function newDrafter() {
+function newDrafter(hide) {
   const mask = S.bases.reduce((x, on, i) => x + (on ? BASES[i].bit : 0), 0), rc = S.rc, cm = S.dmode === 'country';
   const mult = (it, m) => { let k = 1; if (it.leg) k *= rc.mult.leg; const cs = m[1].filter(c => (c >> 3) !== 16); k *= rc.mult.era[cs.length ? Math.max(...cs.map(c => c & 7)) : 5]; return k; };
-  S.dr = D.create({rows:getPool(), n:S.n, mode:cm ? 'free' : S.dmode, seed:Math.random()*1e9|0, mask, tags:TAGS, types:S.P.slice(0, S.n).map(p => p.type), budget:budgetOf(), rand:S.frand,
+  S.dr = D.create({rows:getPool(), n:S.n, mode:cm ? 'free' : S.dmode, hide: hide === undefined ? S.hide : hide, seed:Math.random()*1e9|0, mask, tags:TAGS, types:S.P.slice(0, S.n).map(p => p.type), budget:budgetOf(), rand:S.frand,
     meta:MTR, conf:META.conf, legLimit:rc.leg, rule:(rc.rule.on && !cm) ? {kind:rc.rule.kind, key:rc.rule.key, n:rc.rule.n} : null, mult, country:cm ? {cur:S.cur, same:S.same, order:S.corder} : null});
 }
 function autoDraft() {
-  resetDraftState(); newDrafter(); const d = S.dr, real = d.types.slice(); d.types = d.types.map(t => t < 0 ? 1 : t);
+  resetDraftState(); newDrafter(false); const d = S.dr, real = d.types.slice(); d.types = d.types.map(t => t < 0 ? 1 : t);
   while (!D.done(d)) { const ti = D.who(d); if (!D.stepBot(d)) { const it = D.autoChoice(d, ti); if (!it) break; D.apply(d, ti, it, {auto:true}); } }
   d.types = real; finishDraft();
 }
@@ -1158,7 +1205,7 @@ function showReveal() {
 function statusLine(d, ti) {
   const c = d.cnt[ti], unl = !isFinite(d.budget), left = d.budget - d.spent[ti], mf = D.minFill(d, ti, null);
   const cx = d.cm ? `<span class="tag">País: <b>${esc(META.nats[d.cnat[ti]])}</b></span><span class="tag">Curingas: ${d.sq[ti].filter(x => x.nat !== d.cnat[ti]).length}/${d.cm.cur}</span>` : '', lg = d.legLimit >= 0 ? `<span class="tag">Lendas: ${d.legCnt[ti]}/${d.legLimit}</span>` : '', ru = d.rule && !d.cm ? `<span class="tag">Mínimo ${d.ruleCnt[ti]}/${d.rule.n}</span>` : '';
-  return cx + lg + ru + `<span class="tag">${unl ? 'Orçamento ilimitado' : 'Orçamento: <b>' + left + '</b> de ' + d.budget}</span><span class="tag">Vagas: ${d.sq[ti].length}/${D.SIZE}</span>${D.CATS.map(k => `<span class="tag" style="${c[k] >= D.MIN[k] ? '' : 'color:var(--wa)'}">${SECN[k]} ${c[k]}/${D.MIN[k]}</span>`).join('')}${unl ? '' : '<span class="tag">Reserva mínima p/ completar: ' + (isFinite(mf) ? mf : '—') + '</span>'}`;
+  return cx + lg + ru + `<span class="tag">${unl ? 'Orçamento ilimitado' : d.hide ? 'Orçamento: oculto até o fim do draft' : 'Orçamento: <b>' + left + '</b> de ' + d.budget}</span><span class="tag">Vagas: ${d.sq[ti].length}/${D.SIZE}</span>${D.CATS.map(k => `<span class="tag" style="${c[k] >= D.MIN[k] ? '' : 'color:var(--wa)'}">${SECN[k]} ${c[k]}/${D.MIN[k]}</span>`).join('')}${unl || d.hide ? '' : '<span class="tag">Reserva mínima p/ completar: ' + (isFinite(mf) ? mf : '—') + '</span>'}`;
 }
 function renderDraft(a) {
   if (S.dr.phase === 'country') return renderCountry(a);
@@ -1166,7 +1213,7 @@ function renderDraft(a) {
   const tm = i => `<span class="dot" style="background:${S.P[i].color}"></span> ${esc(S.P[i].name)}${d.types[i] >= 0 ? ' 🤖' : ''}`;
   const strip = order.map((i, j) => `<span class="tag" style="${i === ti ? 'border-color:var(--ac);color:var(--tx);font-weight:700' : j < pr ? 'opacity:.55' : ''}">${j + 1}º ${tm(i)}${j < pr ? ' ✓' : ''}</span>`).join(' ') + (d.active.length < n ? ` <span class="mut sm">· ${n - d.active.length} elenco(s) já completo(s)</span>` : '');
   const fcard = d.mode === 'filter' && d.flt ? `<div class="card" style="border-color:var(--ac)"><div class="mut sm">Filtro da rodada ${r + 1} (vale até o último técnico escolher)</div><div class="big">${esc(d.flt.f.name)}</div><div class="mut sm">${D.TYPES[d.flt.f.type]} · ${d.flt.count} jogadores atendem no início · restam ${d.listLeft.length} na lista</div></div>` : '';
-  const last = d.log.slice(-10).reverse().map(e => `<div class="sm"><span class="mut">${e.k + 1}.</span> <span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(S.P[e.ti].name)} → <b>${esc(e.it.n)}</b> <span class="mut">${E.POSL[e.it.pos]} · ${e.it.o}</span>${e.fill ? ' <span class="tag">verba esgotada: completado automaticamente</span>' : ''}${e.timeout ? ' <span class="tag">tempo esgotado</span>' : ''}${e.noopt ? ' <span class="tag">nenhum da lista cabia: escolha automática</span>' : ''}</div>`).join('') || '<div class="mut sm">Nenhuma escolha ainda.</div>';
+  const last = d.log.slice(-10).reverse().map(e => `<div class="sm"><span class="mut">${e.k + 1}.</span> <span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(S.P[e.ti].name)} → <b>${esc(e.it.n)}</b> <span class="mut">${E.POSL[e.it.pos]}${d.hide ? '' : ' · ' + e.it.o}</span>${e.fill ? ' <span class="tag">verba esgotada: completado automaticamente</span>' : ''}${e.timeout ? ' <span class="tag">tempo esgotado</span>' : ''}${e.noopt ? ' <span class="tag">nenhum da lista cabia: escolha automática</span>' : ''}</div>`).join('') || '<div class="mut sm">Nenhuma escolha ainda.</div>';
   const isBot = d.types[ti] >= 0;
   a.innerHTML = `<div class="card"><div class="row"><b>Draft · ${MODEN[d.mode]}</b><span class="tag">Rodada ${r + 1}/${D.SIZE}</span><span class="tag">Escolha ${d.k + 1}/${D.total(d)}</span><span class="tag">${isFinite(d.budget) ? 'Orçamento ' + d.budget : 'Orçamento ilimitado'}</span><span class="tag">${S.dsec ? S.dsec + ' s por escolha' : 'sem cronômetro'}</span><span style="margin-left:auto" class="row"><label class="sm"><input type="checkbox" id="fast" ${S.fast ? 'checked' : ''}> Acelerar bots</label><button class="b s mini" id="cx">Cancelar draft</button></span></div>
   <div class="bar" style="margin-top:8px"><i style="width:${d.k / D.total(d) * 100}%;background:var(--ac)"></i></div></div>
@@ -1185,23 +1232,27 @@ function renderDraft(a) {
 }
 function humanPanel(d, ti) {
   const T = $('#turn'), filt = d.mode === 'filter', unl = !isFinite(d.budget);
-  let items;
-  if (filt) items = d.listLeft;
+  let items; const hid = d.hide;
+  const hk = d.k + ':' + ti; if (S.hrk !== hk) { S.hrk = hk; S.hrn = new Map(); }
+  const hr = it => { if (!S.hrn.has(it.id)) S.hrn.set(it.id, Math.random()); return S.hrn.get(it.id); };   // ordem aleatória, fixa durante a vez
+  if (filt) items = hid ? d.listLeft.slice().sort((x, y) => hr(x) - hr(y)) : d.listLeft;
   else {
-    const q = norm(S.q.txt); items = d.avail.filter(it => D.allowed(d, ti, it) && it.o >= S.q.min && (!S.q.cat || it.cat === S.q.cat) && (!S.q.maxp || it.price <= S.q.maxp) && (!q || norm(it.n).includes(q))).slice(0, 40);
+    const q = norm(S.q.txt); items = d.avail.filter(it => D.allowed(d, ti, it) && (hid || it.o >= S.q.min) && (!S.q.cat || it.cat === S.q.cat) && (hid || !S.q.maxp || it.price <= S.q.maxp) && (!q || norm(it.n).includes(q)));
+    if (hid) items.sort((x, y) => hr(x) - hr(y));
+    items = items.slice(0, 40);
   }
   const rowsHtml = items.map(it => {
     const ok = D.canPick(d, ti, it), sel = S.dsel === it.id, why = !ok ? (d.keys[ti].has(it.key) ? 'seu elenco já tem outra versão deste jogador' : (d.legLimit >= 0 && it.leg && d.legCnt[ti] >= d.legLimit) ? 'limite de lendas do elenco' : (d.rule && !d.cm && d.rule.n - d.ruleCnt[ti] - (it.rm ? 1 : 0) > D.SIZE - d.sq[ti].length - 1) ? 'impediria cumprir o mínimo da regra' : d.spent[ti] + it.price > d.budget ? 'estoura o orçamento' : isFinite(D.minFill(d, ti, it)) ? 'não deixa verba para completar o elenco' : 'faltariam vagas ou mínimos por setor') : '';
-    return `<tr style="${ok ? '' : 'opacity:.5'}"><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}<div class="mut sm">${esc(origin(it))}</div></td><td>${it.o}</td>${unl ? '' : '<td>' + it.price + '</td>'}<td class="mut sm">${esc(keyAttrs(it))}</td><td>${ok ? `<button class="b ${sel ? '' : 's'} mini" data-pk="${it.id}">${sel ? 'Confirmar?' : 'Escolher'}</button>` : `<span class="mut sm">${why}</span>`}</td></tr>`;
+    return `<tr style="${ok ? '' : 'opacity:.5'}"><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}<div class="mut sm">${esc(origin(it))}</div></td>${hid ? '' : `<td>${it.o}</td>${unl ? '' : '<td>' + it.price + '</td>'}<td class="mut sm">${esc(keyAttrs(it))}</td>`}<td>${ok ? `<button class="b ${sel ? '' : 's'} mini" data-pk="${it.id}">${sel ? 'Confirmar?' : 'Escolher'}</button>` : `<span class="mut sm">${why}</span>`}</td></tr>`;
   }).join('') || `<tr><td colspan="6" class="mut">Nenhum jogador encontrado.</td></tr>`;
   const done = filt ? d.log.filter(e => e.round === D.round(d) && !e.fill).map(e => `<span class="tag"><span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(short(e.it.n))}</span>`).join(' ') : '';
-  const mine = d.sq[ti].slice().sort((a, b) => b.o - a.o).map(it => `<tr><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}</td><td>${it.o}</td><td>${it.price}</td></tr>`).join('');
-  const sf = filt ? '' : `<div class="row" style="margin-bottom:8px"><input type="text" id="qt" placeholder="Buscar por nome" value="${esc(S.q.txt)}"><select id="qc"><option value="">Todos os setores</option>${D.CATS.map(k => `<option value="${k}" ${S.q.cat === k ? 'selected' : ''}>${SECN[k]}</option>`).join('')}</select><label class="sm">Overall mín. <input type="text" id="qm" value="${S.q.min}" style="width:48px"></label>${unl ? '' : `<label class="sm">Preço máx. <input type="text" id="qp" value="${S.q.maxp || ''}" style="width:48px" placeholder="—"></label>`}</div>`;
+  const mine = (hid ? d.sq[ti].slice() : d.sq[ti].slice().sort((a, b) => b.o - a.o)).map(it => `<tr><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}<div class="mut sm">${esc(origin(it))}</div></td>${hid ? '' : `<td>${it.o}</td><td>${it.price}</td>`}</tr>`).join('');
+  const sf = filt ? '' : `<div class="row" style="margin-bottom:8px"><input type="text" id="qt" placeholder="Buscar por nome" value="${esc(S.q.txt)}"><select id="qc"><option value="">Todos os setores</option>${D.CATS.map(k => `<option value="${k}" ${S.q.cat === k ? 'selected' : ''}>${SECN[k]}</option>`).join('')}</select>${hid ? '' : `<label class="sm">Overall mín. <input type="text" id="qm" value="${S.q.min}" style="width:48px"></label>`}${unl || hid ? '' : `<label class="sm">Preço máx. <input type="text" id="qp" value="${S.q.maxp || ''}" style="width:48px" placeholder="—"></label>`}</div>`;
   T.innerHTML = `<div class="card"><div class="row"><span class="dot" style="background:${S.P[ti].color}"></span><b>${esc(S.P[ti].name)}</b>${statusLine(d, ti)}<span class="tag" id="dcw">${S.dsec ? 'Tempo: <b id="dcd">' + S.dleft + ' s</b>' : 'sem cronômetro'}</span></div>
-  ${filt ? `<h3>Lista da rodada (${items.length} restantes)${done ? ' · já escolhidos: ' + done : ''}</h3>` : '<h3>Busca livre (40 melhores que atendem aos critérios)</h3>'}${sf}
-  <table><tr><th></th><th>Jogador</th><th>Ovr</th>${unl ? '' : '<th>Preço</th>'}<th>Atributos-chave</th><th></th></tr>${rowsHtml}</table>
-  ${d.cm && d.sq[ti].length < D.SIZE - d.cm.cur ? '<div class="row" style="margin-top:8px"><button class="b s mini" id="bo">Melhores do país</button><span class="mut sm">preenche as vagas do país com os melhores, respeitando as posições mínimas</span></div>' : ''}
-  <details style="margin-top:10px"><summary>Meu elenco (${d.sq[ti].length})</summary><table><tr><th></th><th>Jogador</th><th>Ovr</th><th>Preço</th></tr>${mine || '<tr><td colspan="4" class="mut">Vazio</td></tr>'}</table></details></div>`;
+  ${filt ? `<h3>Lista da rodada (${items.length} restantes)${done ? ' · já escolhidos: ' + done : ''}</h3>` : `<h3>${hid ? 'Às cegas: 40 jogadores em ordem aleatória que atendem aos critérios' : 'Busca livre (40 melhores que atendem aos critérios)'}</h3>`}${sf}
+  <table><tr><th></th><th>Jogador</th>${hid ? '' : `<th>Ovr</th>${unl ? '' : '<th>Preço</th>'}<th>Atributos-chave</th>`}<th></th></tr>${rowsHtml}</table>
+  ${d.cm && !hid && d.sq[ti].length < D.SIZE - d.cm.cur ? '<div class="row" style="margin-top:8px"><button class="b s mini" id="bo">Melhores do país</button><span class="mut sm">preenche as vagas do país com os melhores, respeitando as posições mínimas</span></div>' : ''}
+  <details style="margin-top:10px"><summary>Meu elenco (${d.sq[ti].length})</summary><table><tr><th></th><th>Jogador</th>${hid ? '' : '<th>Ovr</th><th>Preço</th>'}</tr>${mine || '<tr><td colspan="4" class="mut">Vazio</td></tr>'}</table></details></div>`;
   if ($('#bo')) $('#bo').onclick = () => { D.bestOwn(d, ti); S.dsel = null; draftLoop(); };
   T.querySelectorAll('[data-pk]').forEach(b => b.onclick = () => {
     const it = d.avail.find(x => x.id === +b.dataset.pk);
@@ -1209,7 +1260,7 @@ function humanPanel(d, ti) {
     const res = D.pick(d, ti, it); if (res.ok) { S.dsel = null; draftLoop(); }
   });
   if (!filt) {
-    const upd = () => { S.q.txt = $('#qt').value; S.q.cat = $('#qc').value; S.q.min = +$('#qm').value || 70; S.q.maxp = $('#qp') ? (+$('#qp').value || 0) : 0; S.dsel = null; humanPanel(d, ti); const el = $('#qt'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } };
+    const upd = () => { S.q.txt = $('#qt').value; S.q.cat = $('#qc').value; if ($('#qm')) S.q.min = +$('#qm').value || 70; S.q.maxp = $('#qp') ? (+$('#qp').value || 0) : 0; S.dsel = null; humanPanel(d, ti); const el = $('#qt'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } };
     $('#qt').oninput = upd; ['#qc', '#qm', '#qp'].forEach(s => { if ($(s)) $(s).onchange = upd; });
   }
 }
@@ -1420,7 +1471,8 @@ function renderSetup(a) {
   <label>Orçamento <input type="text" id="bud" value="${S.budget}" style="width:64px" ${UNL() ? 'disabled' : ''}> <span class="mut sm">(200 a 1000)</span></label>${S.dmode === 'country' ? `<label><input type="checkbox" id="cbud" ${S.cbud ? 'checked' : ''}> Usar orçamento</label>` : `<label><input type="checkbox" id="unl" ${S.unl ? 'checked' : ''}> Ilimitado</label>`}
   ${S.dmode === 'filter' ? `<label>Jogadores do filtro <select id="fr"><option value="0" ${S.frand ? '' : 'selected'}>Os melhores</option><option value="1" ${S.frand ? 'selected' : ''}>Aleatórios</option></select></label>` : ''}${S.dmode === 'country' ? `<label>Curingas <select id="cur">${[0,1,2].map(v => `<option value="${v}" ${S.cur === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label><label><input type="checkbox" id="same" ${S.same ? 'checked' : ''}> Permitir o mesmo país para dois técnicos</label><label>Ordem da escolha do país <select id="cord"><option value="snake" ${S.corder === 'snake' ? 'selected' : ''}>Ordem dos técnicos (snake)</option><option value="rand" ${S.corder === 'rand' ? 'selected' : ''}>Sorteada</option></select></label>` : ''}<label>Tempo por escolha <select id="dsec">${[0,30,45,60,90,120,180].map(v => `<option value="${v}" ${S.dsec === v ? 'selected' : ''}>${v ? v + ' s' : 'sem limite'}</option>`).join('')}</select></label></div>
   <div class="grid2" style="margin-top:10px">${prow}</div>
-  <div class="row" style="margin-top:12px"><label><input type="checkbox" id="ko" ${S.ko ? 'checked' : ''}> Mata-mata na partida (prorrogação e pênaltis em caso de empate)</label></div>
+  <div class="row" style="margin-top:12px"><label><input type="checkbox" id="hid" ${S.hide ? 'checked' : ''}> Draft às cegas: esconder overall, atributos e preço (jogadores em ordem aleatória; tudo é revelado ao fim do draft)</label></div>
+  <div class="row" style="margin-top:6px"><label><input type="checkbox" id="ko" ${S.ko ? 'checked' : ''}> Mata-mata na partida (prorrogação e pênaltis em caso de empate)</label></div>
   <p class="mut sm">${S.dmode === 'country' ? 'Um país por técnico: cada técnico escolhe um país (na ordem do snake ou sorteada) e monta o elenco só com jogadores dele, por busca livre, sem Filtro Aleatório. Com curingas, as últimas escolhas podem ser de qualquer país, em ordem invertida, entre jogadores que ainda não foram escolhidos. O botão Melhores do país completa o elenco automaticamente.' : ''} ${S.dmode === 'filter' ? 'Filtro Aleatório: a cada rodada do snake sorteia-se um filtro (cerca de 200 no catálogo) e todos escolhem entre os melhores jogadores que o atendem.' : 'Busca livre: cada técnico busca qualquer jogador do pool.'} ${S.dmode === 'filter' ? (S.frand ? 'Os 16 jogadores da lista são sorteados entre todos que cumprem o filtro.' : 'A lista traz os 16 melhores que cumprem o filtro.') : ''} ${UNL() ? 'Sem limite de orçamento: preços não limitam as escolhas.' : 'Cada jogador tem preço (tabela provisória por overall e posição); quando a verba esgota, o elenco é completado automaticamente com os piores jogadores de cada setor que falta.'} O elenco tem 23 jogadores, com ao menos 3 goleiros, 6 defensores, 6 meio-campistas e 4 atacantes.</p>
   <div class="row"><button class="b" id="draft" ${bad ? 'disabled' : ''}>Iniciar draft</button><button class="b s" id="adraft" ${bad ? 'disabled' : ''}>Draft automático (bots decidem tudo)</button></div></div>`;
   let sq = '';
@@ -1447,6 +1499,7 @@ function renderSetup(a) {
   if ($('#cur')) $('#cur').onchange = e => { S.cur = +e.target.value; reset(); };
   if ($('#same')) $('#same').onchange = e => { S.same = e.target.checked; reset(); };
   if ($('#cord')) $('#cord').onchange = e => { S.corder = e.target.value; reset(); };
+  if ($('#hid')) $('#hid').onchange = e => { S.hide = e.target.checked; reset(); };
   if ($('#fr')) $('#fr').onchange = e => { S.frand = e.target.value === '1'; reset(); };
   $('#dsec').onchange = e => { S.dsec = +e.target.value; };
   document.querySelectorAll('[data-ty]').forEach(s => s.onchange = () => { S.P[+s.dataset.ty].type = +s.value; reset(); });
@@ -1506,11 +1559,18 @@ function coachPanel(ti, prep, done) {
   const t = S.teams[ti], m = S.m, ov = $('#ovl'), kind = S.kind, ht = !prep && (kind === 'ht' || kind === 'et-ht' || kind === 'pre-et' || kind === 'pre-pk');
   const subsLeft = t.maxSubs - t.subs, pk = kind === 'pre-pk', emg = !prep && kind === 'emerg';
   const winsOk = prep || ht || t.windows < t.maxWin || S.winUsed[ti];
-  let sel = null;
+  let sel = null, swp = null;
+  const snap = E.snapTeam(t), done0 = done;
+  const kd = e => { if (e.key === 'Escape' && swp !== null) { swp = null; draw(); } };
+  document.addEventListener('keydown', kd);
+  done = x => { document.removeEventListener('keydown', kd); done0(x); };
+  const ptsOf = i => E.slotPts(t.xi[i].pos, t.slots[i]);
+  const ovrHtml = i => { const p = t.xi[i], k = ptsOf(i); if (!k) return p.o; const c = k >= 20 ? '#e5484d' : k >= 8 ? '#f07b29' : '#f0b429'; return `<span style="color:${c};font-weight:700" title="fora da posição natural: −${k}">${p.o} → ${p.o - k}</span>`; };
   function draw() {
     const showMo = !prep;
-    const xiHtml = t.xi.map((p, i) => `<tr><td><span class="pos">${E.POSL[t.slots[i]]}</span></td><td>${esc(p.n)}</td><td class="mut sm">${posL(p)}</td><td>${p.o}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}${p.yc ? '🟨' : ''}</td>
-      <td><button class="b s mini" data-out="${i}" ${(pk || emg || (!prep && (subsLeft <= 0 || !winsOk))) ? 'disabled' : ''}>${sel === i ? 'escolha…' : 'Trocar'}</button></td></tr>`).join('');
+    const xiHtml = t.xi.map((p, i) => { const k = ptsOf(i), bd = swp === i ? 'outline:2px solid var(--ac)' : (swp !== null ? 'background:rgba(47,125,246,.10)' : (k ? 'border-left:3px solid ' + (k >= 20 ? '#e5484d' : k >= 8 ? '#f07b29' : '#f0b429') : ''));
+      return `<tr style="${bd}"><td><span class="pos">${E.POSL[t.slots[i]]}</span></td><td>${esc(p.n)}</td><td class="mut sm">${posL(p)}</td><td>${ovrHtml(i)}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}${p.yc ? '🟨' : ''}</td>
+      <td><button class="b s mini" data-sw="${i}" ${pk ? 'disabled' : ''}>${swp === i ? 'Cancelar' : swp !== null ? 'Trocar com este' : '⇄ Posição'}</button> <button class="b s mini" data-out="${i}" ${(swp !== null || pk || emg || (!prep && (subsLeft <= 0 || !winsOk))) ? 'disabled' : ''}>${sel === i ? 'escolha…' : 'Trocar'}</button></td></tr>`; }).join('');
     const bench = t.bench.filter(p => !p.inj), open = t.xi.length < E.cap(t), ev = emg ? m.emerg.find(e => e.ti === ti) : null;
     const benchHtml = bench.map(p => `<tr><td><span class="pos">${posL(p)}</span></td><td>${esc(p.n)}</td><td>${p.o}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}</td><td>${sel !== null ? `<button class="b mini" data-in="${t.bench.indexOf(p)}">Entra</button>` : (emg && open) ? `<button class="b mini" data-fill="${t.bench.indexOf(p)}" ${subsLeft <= 0 ? 'disabled' : ''}>Entra na vaga</button>` : ''}</td></tr>`).join('');
     const pkOrd = pk ? pkDefault(t) : [];
@@ -1525,16 +1585,21 @@ function coachPanel(ti, prep, done) {
     <div><h3>Ritmo</h3><div class="seg" id="sr">${E.RHY.map((x, i) => `<button class="${t.rhy === i ? 'on' : ''}" data-r="${i}">${x}</button>`).join('')}</div>
     <h3>Contra-ataque</h3><div class="seg" id="sc"><button class="${!t.counter ? 'on' : ''}" data-c="0">Desligado</button><button class="${t.counter ? 'on' : ''}" data-c="1">Ligado</button></div></div></div>
     <p class="mut sm">Alto: pressão e subida rápida, mais gols a favor e contra, mais faltas, mais cansaço. Contra-ataque: transições rápidas, cansa laterais, meio e ataque; rende contra quem se expõe.</p>
-    <h3>Em campo ${sel !== null ? '— escolha o reserva que entra no lugar de ' + esc(t.xi[sel].n) : ''}</h3>
+    <h3>Em campo ${sel !== null ? '— escolha o reserva que entra no lugar de ' + esc(t.xi[sel].n) : swp !== null ? '— clique em "Trocar com este" no jogador que muda de posição com ' + esc(t.xi[swp].n) + ' (Esc cancela)' : ''}</h3>
+    <p class="mut sm">⇄ Posição troca dois titulares de lugar, sem custo. Fora da posição natural o jogador rende menos (overall efetivo em cor: amarelo pequena perda, laranja média, vermelho grande) e cansa mais.</p>
     <table><tr><th></th><th>Jogador</th><th>Pos.</th><th>Ovr</th><th>Energia</th><th>${prep ? '' : 'Moral'}</th><th></th></tr>${xiHtml}</table>
     <h3>Banco (${bench.length})</h3><table><tr><th>Pos.</th><th>Jogador</th><th>Ovr</th><th>Energia</th><th>${prep ? '' : 'Moral'}</th><th></th></tr>${benchHtml}</table>
-    <div class="row" style="margin-top:14px"><button class="b" id="ok">Confirmar</button>${prep ? '<button class="b s" id="ap">Escalação automática</button>' : '<button class="b s" id="ap">Piloto automático</button>'}</div></div></div>`;
+    <div class="row" style="margin-top:14px"><button class="b" id="ok">Confirmar</button><button class="b s" id="rst">Restaurar posições</button>${prep ? '<button class="b s" id="ba">Melhor arranjo</button>' : ''}${swp !== null ? '<button class="b s" id="swc">Cancelar troca</button>' : ''}${prep ? '<button class="b s" id="ap">Escalação automática</button>' : '<button class="b s" id="ap">Piloto automático</button>'}</div></div></div>`;
     if (prep) $('#sj').onclick = e => { const j = e.target.dataset.j; if (j !== undefined) { t.loj = +j; draw(); } };
     ov.querySelectorAll('[data-up]').forEach(b => b.onclick = () => { const ord = pkDefault(t), i = +b.dataset.up; [ord[i-1], ord[i]] = [ord[i], ord[i-1]]; t.pkOrder = ord; draw(); });
     $('#sf').onclick = e => { const f = e.target.dataset.f; if (f) { E.reslot(t, f); sel = null; draw(); } };
     $('#sm').onclick = e => { const v = e.target.dataset.m; if (v !== undefined) { t.ment = +v; draw(); } };
     $('#sr').onclick = e => { const v = e.target.dataset.r; if (v !== undefined) { t.rhy = +v; draw(); } };
     $('#sc').onclick = e => { const v = e.target.dataset.c; if (v !== undefined) { t.counter = v === '1'; draw(); } };
+    ov.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => { const i = +b.dataset.sw; if (swp === null) swp = i; else if (swp === i) swp = null; else { E.swapSlots(t, swp, i); swp = null; } sel = null; draw(); });
+    $('#rst').onclick = () => { E.restoreTeam(t, snap, prep); swp = null; sel = null; draw(); };
+    if ($('#ba')) $('#ba').onclick = () => { const ch = E.bestArrangement(t); swp = null; sel = null; draw(); if (!ch) { const h = document.createElement('span'); h.className = 'tag'; h.textContent = 'Já é o melhor arranjo (ganho menor que 1 ponto).'; $('#ba').after(h); } };
+    if ($('#swc')) $('#swc').onclick = () => { swp = null; draw(); };
     ov.querySelectorAll('[data-out]').forEach(b => b.onclick = () => { sel = sel === +b.dataset.out ? null : +b.dataset.out; draw(); });
     ov.querySelectorAll('[data-in]').forEach(b => b.onclick = () => {
       const out = t.xi[sel], inn = t.bench[+b.dataset.in];

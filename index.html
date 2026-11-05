@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +6,6 @@
 <title>Draft FC</title>
 <style>
 :root{--bg:#0a1310;--card:#111f1a;--card2:#192a23;--tx:#e9f3ee;--mut:#8fa89d;--ac:#3ddc84;--wa:#ffb020;--rd:#ff5d5d;--bd:#26403a;--yl:#ffd84a}
-@media (prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#eef4f0;--card:#fff;--card2:#f0f6f2;--tx:#14231c;--mut:#587064;--ac:#118a4a;--wa:#b86e00;--rd:#c62828;--bd:#d0ddd5;--yl:#c9a100}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 header{display:flex;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
 header h1{font-size:17px;margin:0;margin-right:auto}
@@ -84,11 +82,79 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
 .stp{display:none}.stp.cur{display:block}.snav{display:flex;justify-content:space-between;gap:10px;margin:4px 0 18px}.snav .b{min-width:130px}
 .rev{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}.rev b{color:var(--mut);font-weight:600}
 @media(max-width:760px){.qk{grid-template-columns:1fr}.hero .htit{font-size:24px}.stepper button span{display:none}.stepper button{min-width:48px;flex:none}.stepper button.on span{display:inline}}
+/* ===== v19: tema estádio escuro + draft redesenhado ===== */
+:root{color-scheme:dark;--bg:#070f0b;--card:#0e1b15;--card2:#16281f;--bd:#264238;--tx:#eaf5ef;--mut:#93ada1;--ac:#34d97f}
+body{background:radial-gradient(900px 380px at 50% -140px,#14402a 0,transparent 72%),repeating-linear-gradient(90deg,#ffffff04 0 90px,transparent 90px 180px),var(--bg);background-attachment:fixed}
+.card{box-shadow:0 1px 0 #ffffff0a inset,0 8px 24px #0006;border-radius:14px}
+header{background:#08130dcc;backdrop-filter:blur(6px)}
+.dr{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:14px;align-items:start;margin-top:10px}
+.dr-side{grid-column:2;position:sticky;top:10px;display:flex;flex-direction:column;gap:12px}
+.dlist{grid-column:1;grid-row:1;min-width:0}
+.dp{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--bd);border-left:5px solid var(--pc,#3b5);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:background .12s,border-color .12s,transform .12s}
+.dp:hover{background:var(--card2);border-color:var(--ac)}.dp.sel{background:#12341f;border-color:var(--ac);box-shadow:0 0 0 2px var(--ac) inset}.dp.off{opacity:.45;cursor:default}.dp.off:hover{background:var(--card);border-color:var(--bd)}
+.dp-o{font-size:24px;font-weight:900;text-align:center;line-height:1;border-radius:10px;padding:8px 0;background:#ffffff0d}
+.dp-t1{color:#ffd84a;background:#ffd84a1f}.dp-t2{color:#3ddc84;background:#3ddc841c}.dp-t3{color:#8fd0ff;background:#8fd0ff18}.dp-t4{color:#c8d3cd}
+.dp-n{font-weight:700;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dp-s{display:flex;gap:8px;align-items:center;color:var(--mut);font-size:13px;margin-top:3px;min-width:0}.dp-s span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dp-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:260px;text-align:right}.dp-a{font-size:12.5px;color:var(--mut)}
+.dsel{border-color:var(--pc,var(--ac));border-left-width:5px}.dsel-n{font-size:18px}.dsel .dp-o{font-size:22px;padding:6px 12px}
+.fgrp2{display:grid;grid-template-columns:104px 1fr 28px;gap:8px;align-items:center;font-size:13px;margin:5px 0}.fbar2{height:8px;border-radius:5px;background:var(--card2);overflow:hidden}.fbar2 i{display:block;height:100%}
+.dcf{width:100%;min-height:46px;font-size:16px;margin:4px 0 6px}
+.dhint{text-align:center;padding:18px}
+.pitchf{margin-top:8px;border-radius:12px;padding:10px;background:linear-gradient(180deg,#14402a,#0f3220);border:1px solid #2a5a3e;position:relative;overflow:hidden}
+.pitchf:before{content:"";position:absolute;left:10px;right:10px;top:50%;border-top:1px solid #ffffff22}
+.brow{position:relative;margin:8px 0}.bl{font-size:11.5px;font-weight:700;color:#cfe6d8;letter-spacing:.4px;margin-bottom:4px}
+.bch{display:flex;flex-wrap:wrap;gap:5px}.bc{display:inline-flex;align-items:center;gap:5px;background:#0a1a12e6;border:1px solid #ffffff22;border-left:3px solid var(--pc);border-radius:8px;padding:3px 7px;font-size:12.5px;max-width:100%}.bc i{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:92px}.bc b{color:var(--yl)}.bc.empty{width:62px;height:26px;border:1px dashed #ffffff3a;background:transparent}
+@media (max-width:900px){.dr{grid-template-columns:1fr}.dr-side{display:contents}.dlist{grid-column:1;grid-row:auto;order:2}#dsel{order:1;position:sticky;top:0;z-index:6}#dboard{order:3}.dhint{display:none}.dp-r{display:none}.dp{grid-template-columns:48px minmax(0,1fr)}}
+@media (max-width:900px){.dp.off .dp-r{display:flex;grid-column:1/-1;max-width:none;text-align:left;align-items:flex-start}.dp.off{grid-template-columns:48px minmax(0,1fr)}}
+@media (max-width:900px){.fbars .fgrp2:nth-child(n+4){display:none}.dsel{padding:8px 10px}.dsel .dp-o{font-size:18px;padding:4px 10px}.dcf{min-height:42px;margin:2px 0}.dsel .mut.sm{margin:2px 0!important}}
+.vp .vpl.vac .vpo{background:transparent!important;border:2px dashed #e5484d!important;color:#e5484d}.vp .vpl.vac .vpn{background:transparent;color:#e5484d}.vp .vpl.vac .vsg{color:#e5484d}
+/* ===== v23: partida ao vivo e painel em abas ===== */
+.msb{position:sticky;top:0;z-index:8;background:#07120ce8;backdrop-filter:blur(8px);border:1px solid var(--bd);border-radius:14px;padding:8px 14px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;box-shadow:0 6px 18px #0008}
+.msb .sbm{display:flex;align-items:center;gap:12px;justify-content:center;font-size:30px;font-weight:900}
+.msb .tm{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;min-width:0}.msb .tm.r{justify-content:flex-end}
+.msb .clk{text-align:center;line-height:1.1;min-width:92px}.msb .clk b{font-size:22px;color:var(--ac)}.msb .clk small{display:block;color:var(--mut);font-size:11.5px}
+.msb .ctl{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;border-top:1px solid var(--bd);padding-top:8px}
+.mgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;align-items:start}
+.mgrid .mright{position:sticky;top:104px}.mgrid .log{height:min(560px,64vh)}
+.lgf{margin-left:auto}
+.lgi{display:grid;grid-template-columns:42px 22px 1fr;gap:6px;align-items:start}.lgi .mi{color:var(--mut);font-size:12.5px;text-align:right}.lgi.ev-goal{background:#34d97f1c;border-radius:8px;padding:4px 6px!important;border:1px solid #34d97f55!important}
+.sbar{display:grid;grid-template-columns:52px 1fr 52px;gap:8px;align-items:center;font-size:13.5px;margin:6px 0}.sbar .tr{height:10px;border-radius:6px;overflow:hidden;display:flex;background:var(--card2)}.sbar .tr i{display:block;height:100%}.sbar b{text-align:center}.sbar>span{font-weight:700}.sbar>span:last-child{text-align:right}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}.sgrid>div{background:var(--card2);border-radius:10px;padding:8px 10px;font-size:13px}.sgrid h4{margin:0 0 4px;font-size:12px;color:var(--mut);font-weight:600}
+.sgrid .two{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+@media (max-width:980px){.mgrid{grid-template-columns:1fr}.mgrid .mright{position:static}.mgrid .log{height:300px}.msb{grid-template-columns:1fr auto 1fr;font-size:14px}.msb .sbm{font-size:24px}.sgrid{grid-template-columns:1fr}}
+.ctabs{position:sticky;top:-16px;z-index:4;background:var(--bg);padding:8px 0;margin:6px 0 10px}.ctabs button{flex:1;min-height:40px;font-weight:700}
+.box .tp{display:none}.box[data-tab="esc"] .tp[data-t="esc"],.box[data-tab="tat"] .tp[data-t="tat"],.box[data-tab="ban"] .tp[data-t="ban"],.box[data-tab="res"] .tp[data-t="res"]{display:block}
+.cfrow{position:sticky;bottom:-16px;z-index:4;background:var(--bg);padding:10px 0;border-top:1px solid var(--bd)}
+.ov .box{max-width:920px}
+.rt{display:inline-block;min-width:36px;text-align:center;border-radius:8px;padding:1px 6px;font-weight:800;color:#0b1410;font-size:13px}
+.rli{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13.5px;flex-wrap:wrap}.rli small{margin-left:auto}
+.mvp{display:flex;gap:12px;align-items:center;background:var(--card2);border-radius:12px;padding:10px 12px;margin-bottom:10px}.mvs{font-size:30px}
+.fd{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:3px;vertical-align:middle}.fd.V{background:#27c46b}.fd.E{background:#8a948f}.fd.D{background:#e5484d}
+.brk{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;align-items:center}.bcol .bh{font-size:12px;color:var(--mut);margin-bottom:2px;text-align:center}
+.bm{border:1px solid var(--bd);border-radius:10px;background:var(--card2);margin:10px 0;overflow:hidden;position:relative}.bm>div{display:flex;justify-content:space-between;gap:8px;padding:7px 10px}.bm>div+div{border-top:1px solid var(--bd)}.bm .w{font-weight:800}.bm.tbd{opacity:.65;border-style:dashed}.bm.champ{border-color:var(--ac);text-align:center}.bm.champ>div{justify-content:center}
+.bcol.c1 .bm:after{content:"";position:absolute;right:-22px;top:50%;width:22px;border-top:2px solid var(--bd)}
+@media (max-width:700px){.brk{grid-template-columns:1fr;gap:4px}.bcol.c1 .bm:after{display:none}}
+
+/* ===== v27: layout celular ===== */
+.mtabs,.cfm{display:none}.cfmore{display:contents}.lastev{display:none}header .sh{display:none}
+@media (max-width:760px){
+header{flex-wrap:nowrap;padding:6px 10px;gap:6px}header h1{font-size:15px;white-space:nowrap}header .ver{display:none}.tab{padding:6px 9px;font-size:13px;white-space:nowrap}header .lg{display:none}header .sh{display:inline}
+.msb{padding:6px 10px;margin-bottom:6px;gap:4px 8px;border-radius:12px}.msb{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}.msb .tm{font-size:13px}#nm0,#nm1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.msb .dot{flex:none}.mgrid{gap:0}.msb .sbm{font-size:22px;gap:8px}.msb .clk{min-width:64px}.msb .clk b{font-size:16px}.msb .clk small{font-size:10.5px}
+.msb .ctl{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-top:6px;gap:6px}.msb .ctl>*{flex:none}.msb .ctl .b,.msb .ctl .seg button{padding:5px 10px;min-height:0;font-size:13px;line-height:1.2}
+.mtabs{display:flex;gap:6px;margin:0 0 8px}.mtabs button{flex:1;padding:9px 4px;border-radius:10px;background:var(--card2);border:1px solid var(--bd);color:var(--tx);font-weight:700;font-size:13px}.mtabs button.on{background:var(--ac);color:#06210f;border-color:var(--ac)}
+.mgrid[data-mt=campo] .mc-stats,.mgrid[data-mt=campo] .mc-relato,.mgrid[data-mt=relato] .mc-campo,.mgrid[data-mt=relato] .mc-stats,.mgrid[data-mt=stats] .mc-campo,.mgrid[data-mt=stats] .mc-relato{display:none}
+.mgrid .log{height:calc(100vh - 250px);min-height:260px}
+.lastev:empty{display:none}.lastev{display:block;margin-top:8px;padding:6px 8px;border-radius:8px;background:var(--card2);font-size:13px}
+.dhead{padding:8px 10px;margin-bottom:6px}.dhead .row{flex-wrap:nowrap;overflow-x:auto;gap:6px}.dhead .row>*{flex:none;white-space:nowrap}.dhead .bar{margin-top:6px!important}
+.dord{padding:6px 10px;margin-bottom:6px}.dord .row{flex-wrap:nowrap;overflow-x:auto;margin-top:0!important;gap:6px}.dord .row>*{flex:none;white-space:nowrap}
+.nat{display:none}
+.cfrow{flex-wrap:wrap;gap:8px}.cfrow>.b{flex:1}.cfm{display:inline-block;flex:none!important}.cfmore{display:none;width:100%;gap:8px;flex-wrap:wrap}.cfmore.open{display:flex}.cfmore .b{flex:1}
+}
 </style>
 </head>
 <body>
-<header><h1>⚽ Draft FC <small class="ver">v18 · original</small></h1>
-<button class="tab on" data-t="home">Partida</button><button class="tab" data-t="lab">Laboratório</button><button class="tab" data-t="help">Como funciona</button></header>
+<header><h1>⚽ Draft FC <small class="ver">v27 · original</small></h1>
+<button class="tab on" data-t="home">Partida</button><button class="tab" data-t="lab">Lab<span class="lg">oratório</span>.</button><button class="tab" data-t="help"><span class="lg">Como funciona</span><span class="sh">Ajuda</span></button></header>
 <main id="app"></main>
 <div id="ovl"></div>
 
@@ -296,7 +362,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     p.cr = 0.40*g('vis')+0.25*g('drib')+0.20*g('sp')+0.15*g('cross');                       // criação
     p.dq = 0.30*g('mark')+0.30*g('stack')+0.20*g('head')+0.20*g('str');                      // aptidão de zagueiro
     p.wbq = 0.4*p.pace+0.3*g('sta')+0.3*Math.max(g('cross'), g('sp'));                       // aptidão de lateral
-    p.mo0 = 40 + Math.random()*20; p.mo = p.mo0; p.e = 100; p.yc = 0; p.red = false; p.inj = false; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0};
+    p.mo0 = 40 + Math.random()*20; p.mo = p.mo0; p.e = 100; p.yc = 0; p.red = false; p.inj = false; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0,tk:0,ga:0};
     return p;
   }
   // penalidade de posição em pontos de overall (tabela por afinidade)
@@ -416,6 +482,24 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
   function moveVac(t, i, base) {
     const p = t.xi[i]; if (!p || !vacant(t).includes(base)) return false;
     p.sl = base; t.slots[i] = base; t.man = true; autoRoles(t); return true;
+  }
+  // escalação do zero: nenhum titular, elenco todo no banco
+  function clearLineup(t) { t.xi = []; t.slots = []; t.man = true; t.pm = []; t.squad.forEach(p => { p.sl = undefined; }); t.bench = t.squad.slice(); return true; }
+  // coloca um reserva numa vaga (base = posição escolhida; sem base, vai para a melhor vaga)
+  function fillSlot(t, inn, base) {
+    if (!t.bench.includes(inn) || t.xi.length >= cap(t)) return false;
+    t.bench.splice(t.bench.indexOf(inn), 1); t.xi.push(inn);
+    if (base !== null && base !== undefined && vacant(t).includes(base)) { inn.sl = base; t.slots.push(base); t.man = true; autoRoles(t); }
+    else { inn.sl = undefined; t.man = true; reslot(t); }
+    return true;
+  }
+  // completa os titulares que faltam com a melhor opção do banco
+  function completeLineup(t) {
+    if (t.xi.length >= cap(t)) return false;
+    const free = vacant(t), pool = t.bench.filter(p => !p.inj && !p.una && !p.red); if (!free.length || !pool.length) return false;
+    const res = solve(pool, free, true, (p, sl) => WARR[group(sl)] * effOvr(p, sl)); if (!res) return false;
+    res.forEach((k, i) => { if (k >= 0 && t.xi.length < cap(t)) { const p = pool[i]; t.bench.splice(t.bench.indexOf(p), 1); t.xi.push(p); p.sl = free[k]; t.slots.push(free[k]); } });
+    t.man = true; autoRoles(t); return true;
   }
   const snapTeam = t => ({xi: t.xi.slice(), bench: t.bench.slice(), form: t.form, man: !!t.man, sl: t.xi.map(p => p.sl), sty: t.sty|0, opt: cloneOpt(t.opt || STYP[0]), pm: (t.pm || []).slice()});
   function restoreTeam(t, sn, full) {
@@ -633,18 +717,18 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
 
   class Match {
     constructor(A, B, seed, opts) {
-      opts = opts || {};
+      opts = opts || {}; completeLineup(A); completeLineup(B);
       this.seed = seed || (Math.random()*4e9|0); this.t = [A, B]; this.r = rng(this.seed);
       this.ko = !!opts.ko; this.var = opts.var !== false; this.et = false; this.end = 90; this.shoot = null; this.shootPaused = false; this.req = [false,false]; this.winner = -1; this.pkScore = null; this.emerg = [];
       this.min = 0; this.score = [0,0]; this.log = []; this.over = false;
       [A,B].forEach(t => { t.maxSubs = 5; t.maxWin = 3; t.mor = 50 + (t.loj-2)*2 + t.xi.filter(p => p.o >= 90).length*1.5;
         t.squad.forEach(p => { p.mo = clamp(p.mo0 + campShift(p, t), 0, 100); }); });
-      this.stats = [0,1].map(() => ({shots:0, on:0, fouls:0, y:0, rd:0, poss:0, counters:0, pens:0, inj:0, brk:0, pmc:0, pma:0}));
+      this.stats = [0,1].map(() => ({shots:0, on:0, fouls:0, y:0, rd:0, poss:0, counters:0, pens:0, inj:0, brk:0, pmc:0, pma:0, corners:0, offs:0}));
       [A,B].forEach(t => t.xi.forEach(p => p.st.enter = 0));
       this.start = [A,B].map(t => ({team: t.name, form: t.form, ment: t.ment, rhy: t.rhy, counter: !!t.counter, style: STY[t.sty|0], opts: Object.assign({}, t.opt || STYP[0]), playmakers: (t.pm || []).map(p => p.n), xi: t.xi.map((p, i) => ({id: p.id, n: p.n, pos: POSL[t.slots[i]], ovr: p.o})), bench: t.bench.filter(p => !p.inj).map(p => ({id: p.id, n: p.n, ovr: p.o}))}));
       this.add('start', -1, 'Bola rolando!');
     }
-    add(type, team, text, extra) { this.log.push(Object.assign({m: this.min, type, team, text}, extra||{})); }
+    add(type, team, text, extra) { this.log.push(Object.assign({m: this.min, type, team, text}, extra||{})); if (type === 'goal' && team >= 0) this.t[1-team].xi.forEach(p => p.st.ga++); }
     nm(p) { return p.n; }
     // um minuto
     step() {
@@ -666,6 +750,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
       const snow = ld >= 2 ? 1 + C.SNOW*(ld-1) : ld <= -2 ? 1 + C.SNOWD*(-ld-1) : 1;
       const c = C.C0 * Math.pow(ax/dy, C.expC) * snow * FX[attI].shotN;
       if (r() < c) this.shot(attI, false, P);
+      if (r() < 0.05*Math.min(2, P[attI].A/P[defI].D)) this.stats[attI].offs++;
       // lance de ruptura de craque (88+): chance extra, goleiro pesa menos
       const sts = stars(T[attI]);
       if (sts.length) {
@@ -753,7 +838,8 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
         const x = r();
         if (x < 0.42) { S.on++; if (gk) gk.st.sv++; this.add('save', ti, `${sh.n} chuta${counter ? ' no contra-ataque' : ''}, ${gk ? gk.n : 'goleiro'} defende.`); }
         else if (x < 0.78) this.add('miss', ti, `${sh.n} chuta para fora.`);
-        else this.add('block', ti, `Chute de ${sh.n} é bloqueado.`);
+        else { this.add('block', ti, `Chute de ${sh.n} é bloqueado.`); const dd = o.xi.filter((q, i) => group(o.slots[i]) !== 'GK' && group(o.slots[i]) !== 'ST'); if (dd.length) dd[Math.floor(r()*dd.length)].st.tk++; }
+        if (r() < (x < 0.42 ? 0.28 : x < 0.78 ? 0.08 : 0.5)) S.corners++;
       }
     }
     foul(ti) { // time ti comete a falta
@@ -799,7 +885,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     injure(ti, p) {
       const t = this.t[ti]; p.inj = true; this.stats[ti].inj++; this.addMor(ti, -2); this.addMo(ti, p, -3);
       this.add('inj', ti, `${p.n} (${t.name}) se lesiona.`);
-            t.xi = t.xi.filter(x => x !== p); reslot(t);
+            t.xi = t.xi.filter(x => x !== p); t.man = true; reslot(t);
       this.flag(ti, 'inj', p);
       this.add('sub', ti, `${t.name} joga com ${t.xi.length} até ajustar o time.`);
     }
@@ -822,7 +908,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     varGoal(ti, sh, ass) {
       if (!this.var || this.r() >= 0.08) return false;
       const why = ['impedimento na origem da jogada', 'falta no início do lance', 'toque de mão antes do gol'][Math.floor(this.r()*3)];
-      this.score[ti]--; sh.st.g--; if (ass) ass.st.a--;
+      this.score[ti]--; sh.st.g--; if (ass) ass.st.a--; this.t[1-ti].xi.forEach(p => p.st.ga--);
       this.addMor(ti, -4); this.addMo(ti, sh, -6); this.addMor(1-ti, 4);
       this.add('var', ti, `VAR: gol de ${sh.n} (${this.t[ti].name}) anulado — ${why}.`, {pl: sh.id}); return true;
     }
@@ -857,7 +943,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
       if (!this.et && STOPS.includes(m) && this.req[0] || !this.et && STOPS.includes(m) && this.req[1]) return 'opt';
       return null;
     }
-    clearPause() { this.req = [false,false]; this.emerg = []; if (this.shoot) this.shootPaused = true; }
+    clearPause() { if (!this.shoot && !this.over) { ensureGK(this, 0); ensureGK(this, 1); } this.req = [false,false]; this.emerg = []; if (this.shoot) this.shootPaused = true; }
     recover(f) { this.t.forEach(t => t.squad.forEach(p => { p.e = p.e + (100 - p.e)*f; })); }
     // disputa de pênaltis
     startShoot() {
@@ -890,13 +976,22 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
       return {tk, ok};
     }
     // melhor jogador
+    // nota 0-10 pelo desempenho nos lances (base 6,0); reservas só com 20+ minutos
+    rate(p, ti) {
+      const s = p.st, g = group(p.pos), dfn = g === 'GK' ? 1 : (g === 'CB' || g === 'WB' || g === 'DM') ? 0.8 : 0.35;
+      const res = this.winner === undefined || this.winner < 0 ? 0 : this.winner === ti ? 1 : -1;
+      let n = 1.0*s.g + 0.65*s.a + 0.08*Math.min(5, s.sh) + (g === 'GK' ? 0.4*s.sv : 0.22*Math.min(4, s.tk)) - 0.28*dfn*s.ga + (s.ga === 0 && s.min >= 60 ? 0.5*dfn : 0) + 0.3*res - 0.4*s.y - 2*s.r;
+      n = 6 + n*(0.5 + 0.5*Math.min(1, s.min/60));
+      return Math.round(Math.max(3, Math.min(10, n))*10)/10;
+    }
+    ratings() {
+      const o = [];
+      this.t.forEach((t, ti) => t.squad.forEach(p => { if (p.st.min >= 20 || p.st.r) o.push({p, ti, n: this.rate(p, ti)}); }));
+      return o;
+    }
     best() {
-      let b = null, bs = -9;
-      this.t.forEach((t, ti) => t.squad.forEach(p => {
-        const s = p.st; if (!s.min) return;
-        const sc = s.g*2 + s.a*1.2 + s.sv*0.5 - s.r*2 - s.y*0.2 + (this.score[ti] > this.score[1-ti] ? 0.4 : 0) + s.min/200 + p.o/500;
-        if (sc > bs) { bs = sc; b = {p, ti, sc}; }
-      }));
+      let b = null;
+      this.ratings().forEach(x => { const k = x.n*1000 + (x.p.st.g + x.p.st.a)*10 + x.p.st.min/200; if (!b || k > b.sc) b = {p: x.p, ti: x.ti, sc: k, n: x.n}; });
       return b;
     }
   }
@@ -927,6 +1022,18 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
       const b = bs.reduce((a, d) => d.o*fat(d.e) > a.o*fat(a.e) ? d : a);
       if (!m.fill(ti, b)) break;
     }
+  }
+  // goleiro expulso/lesionado e ninguém no gol: entra o goleiro reserva (tirando um atacante) ou o melhor de linha vai ao gol
+  function ensureGK(m, ti) {
+    const t = m.t[ti]; if (!t.xi.length || t.xi.some((p, i) => group(t.slots[i]) === 'GK')) return false;
+    const gb = t.bench.filter(b => !b.inj && b.pos === 0);
+    if (gb.length && t.subs < t.maxSubs) {
+      const g = gb.reduce((a, d) => d.o > a.o ? d : a), rk = p => { const gr = group(p.sl); return (gr === 'ST' || gr === 'W' ? 0 : gr === 'AM' || gr === 'CM' || gr === 'WM' || gr === 'DM' ? 50 : 100) + p.o; };
+      const out = t.xi.reduce((a, d) => rk(d) < rk(a) ? d : a);
+      if (m.subs(ti, out, g)) { const k = t.xi.indexOf(g); if (k >= 0) moveVac(t, k, 0); m.add('sub', ti, `${t.name}: ${g.n} vai ao gol.`); return true; }
+    }
+    let bi = 0, bv = -1; t.xi.forEach((p, i) => { const v = valPos(p, 0); if (v > bv) { bv = v; bi = i; } });
+    moveVac(t, bi, 0); m.add('sub', ti, `${t.name}: ${t.xi[bi].n} vai para o gol.`); return true;
   }
   function autopilot(m, ti) {
     const t = m.t[ti], o = m.t[1-ti], diff = m.score[ti] - m.score[1-ti], min = m.min;
@@ -1018,7 +1125,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
   }
   function mkBot(t, lvl, style) { t.bot = {lvl, style: style === undefined ? Math.floor(Math.random()*3) : style}; botSetup(t); }
   function resetTeam(t) {
-    t.squad.forEach(p => { p.yc = 0; p.red = false; p.inj = false; p.e = 100; p.mo0 = 40 + Math.random()*20; p.mo = p.mo0; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0}; });
+    t.squad.forEach(p => { p.yc = 0; p.red = false; p.inj = false; p.e = 100; p.mo0 = 40 + Math.random()*20; p.mo = p.mo0; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0,tk:0,ga:0}; });
     t.subs = 0; t.windows = 0; t.maxSubs = 5; t.maxWin = 3; t.pkOrder = null; t.mor = 50;
     if (t.bot) botSetup(t); else { autoPick(t, null); t.ment = 2; t.rhy = 1; t.counter = false; setStyle(t, 0); t.pm = []; }
   }
@@ -1064,7 +1171,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     return m;
   }
 
-  const API = {vacant, moveVac, POSN, ROLES, ROLEBY, VS, VSI, SYN, roleOf, roleIdOf, baseOf, wOf, roleOpts, setRole, autoRoles, roleFx, roleBlock, rolesOf, aptR, aptS, bestApt, qOf, secOfGroup, group0, roleScore, botRoles, roleNote, STY, STYK, STYD, STYP, MU, OPTK, OPTT, OPTN, setStyle, setPm, pmOK, pmList, starK, stars, midInfo, fitOf, fitSty, tacFx, tacSummary, validTaker, AI, POS, POSL, FORM, MENT, RHY, CAMP, BOTLV, STYLES, STOPS, group, slotPts, effOvr, swapSlots, snapTeam, restoreTeam, bestArrangement, mkPlayer, mkTeam, autoPick, setLineup, reslot, doSub, power, Match, autopilot, cap, botMaybeRequest, botSetup, mkBot, resetTeam, randomSquads, simulate, pen, fat, rng, C, band, effMo, avgE};
+  const API = {clearLineup, fillSlot, completeLineup, ensureGK, vacant, moveVac, POSN, ROLES, ROLEBY, VS, VSI, SYN, roleOf, roleIdOf, baseOf, wOf, roleOpts, setRole, autoRoles, roleFx, roleBlock, rolesOf, aptR, aptS, bestApt, qOf, secOfGroup, group0, roleScore, botRoles, roleNote, STY, STYK, STYD, STYP, MU, OPTK, OPTT, OPTN, setStyle, setPm, pmOK, pmList, starK, stars, midInfo, fitOf, fitSty, tacFx, tacSummary, validTaker, AI, POS, POSL, FORM, MENT, RHY, CAMP, BOTLV, STYLES, STOPS, group, slotPts, effOvr, swapSlots, snapTeam, restoreTeam, bestArrangement, mkPlayer, mkTeam, autoPick, setLineup, reslot, doSub, power, Match, autopilot, cap, botMaybeRequest, botSetup, mkBot, resetTeam, randomSquads, simulate, pen, fat, rng, C, band, effMo, avgE};
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Engine = API;
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
@@ -1258,7 +1365,7 @@ svg.pitch{width:100%;height:auto;border-radius:10px;background:#1b6b3a}
     const need = {}; let ns = 0;
     CATS.forEach(c => { need[c] = Math.max(0, MIN[c] - cnt[c]); ns += need[c]; });
     if (ns > left) return Infinity;
-    const free = left - ns; let cost = 0; const rest = [], skip = Math.max(0, d.active.length - 1) * Math.min(left, 5);   // os outros técnicos também disputam os mais baratos
+    const free = left - ns; let cost = 0; const rest = [], skip = d.cm ? 0 : Math.max(0, d.active.length - 1) * Math.min(left, 5);   // os outros técnicos também disputam os mais baratos
     for (const c of CATS) {
       let t = 0, sk = 0; const offs = Math.min(skip, Math.max(0, d.byCat[c].length - need[c] - free));
       for (const it of d.byCat[c]) {
@@ -1586,9 +1693,13 @@ const aptTag = a => a >= 78 ? ['apto', '#1f9a54'] : a >= 65 ? ['parcial', '#e0a2
 const roleName = sl => { const r = E.roleOf(sl); return r ? r.n : 'Goleiro'; };
 const lineOrd = t => { const key = i => { const s = t.slots[i], g = E.group(s), lat = E.POS[s][1]; return g === 'GK' ? 0 : g === 'WB' ? (lat >= 0 ? 1 : 3) : g === 'CB' ? 2 : g === 'W' ? (lat >= 0 ? 5 : 7) : g === 'ST' ? 6 : 4; };
   return t.xi.map((p, i) => i).sort((a, b) => (key(a) - key(b)) || (E.POS[t.slots[a]][0] - E.POS[t.slots[b]][0]) || (E.POS[t.slots[b]][1] - E.POS[t.slots[a]][1]) || a - b); };
+const lineOrdV = t => { const key = s => { const g = E.group(s), lat = E.POS[s][1]; return g === 'GK' ? 0 : g === 'WB' ? (lat >= 0 ? 1 : 3) : g === 'CB' ? 2 : g === 'W' ? (lat >= 0 ? 5 : 7) : g === 'ST' ? 6 : 4; };
+  const e = lineOrd(t).map(i => ({i, s: t.slots[i]})).concat((t.xi.length < 11 ? E.vacant(t) : []).map(b => ({v: b, s: b})));
+  return e.sort((a, b) => (key(a.s) - key(b.s)) || (E.POS[a.s][0] - E.POS[b.s][0]) || (E.POS[b.s][1] - E.POS[a.s][1]) || ((a.i === undefined ? 99 : a.i) - (b.i === undefined ? 99 : b.i))); };
 const lineMap = (t, sel) => { let h = '<div class="vp"><i class="ln mid"></i><i class="ln cc"></i><i class="ln ga"></i><i class="ln gb"></i>';
   lineOrd(t).forEach(i => { const p = t.xi[i], sl = t.slots[i], [d, lat] = E.POS[sl], k = E.slotPts(p, sl), cl = posCls(sl), ap = aptTag(aptOf(p, sl));
     h += `<div class="vpl ${sel === i ? 'sel' : ''}" data-fm="${i}" style="left:${50 + lat*19}%;top:${90 - d/6.4*80}%" title="${esc(p.n)} · ${roleName(sl)} · ${ap[0]}${k ? ' · −' + k + ' pts' : ''}"><span class="vpo" style="background:${SECCOL[cl]};border-color:${ap[1]}">${p.o - k}<small class="vsg">${E.POSL[sl]}</small></span><span class="vpn">${esc(short(p.n))}</span></div>`; });
+  if (t.xi.length < 11) E.vacant(t).forEach(b => { const [d, lat] = E.POS[b]; h += `<div class="vpl vac" style="left:${50 + lat*19}%;top:${90 - d/6.4*80}%" title="vaga: ${E.POSN[b] || ''}"><span class="vpo"><small class="vsg">${E.POSL[b]}</small>?</span><span class="vpn">vaga</span></div>`; });
   return h + '</div>'; };
 const ATG = [['Finalização', [1, 15, 4, 24, 22]], ['Passe e visão', [3, 8, 23, 0, 7]], ['Drible e controle', [5, 9, 12, 14, 13]], ['Ritmo e físico', [10, 11, 17, 18, 16]], ['Defesa', [25, 26, 27, 21, 2]]];
 const ATGK = [['Mergulho', [28]], ['Mãos', [29]], ['Reposição (chute)', [30]], ['Posicionamento', [31]], ['Reflexos', [32]]];
@@ -1652,6 +1763,7 @@ function renderMain() {
   const a = $('#app');
   if (S.tab === 'help') return a.innerHTML = helpHtml();
   if (S.tab === 'lab') return renderLab(a);
+  if (S.stage === 'setup' && S.hideAsk) return renderHideAsk(a);
   if (S.stage === 'setup') return renderSetup(a);
   if (S.stage === 'draft') return renderDraft(a);
   if (S.stage === 'match') return renderMatch(a);
@@ -1659,16 +1771,18 @@ function renderMain() {
   if (S.stage === 'tn') return renderTn(a);
   if (S.stage === 'tprep') return renderTprep(a);
 }
-function helpHtml() { return `<div class="card"><h2>O que este jogo faz (versão 17)</h2>
+function helpHtml() { return `<div class="card"><h2>O que este jogo faz (versão 26)</h2>
 <p>Simula uma partida entre dois treinadores no mesmo computador, com jogadores reais (80+ de overall). Cada lado pode ser humano ou bot.</p>
-<ul><li><b>Bases de dados:</b> ative uma ou mais (Clubes 1999–2010, Seleções 2010–18, Era 1990–2000, FIFA 15 · 2014/15, EA FC 26 · 2026) e escolha o corte de overall (80+, 75+ ou 70+). O pool é a união das bases; quando o mesmo jogador tem overall diferente entre bases, aparece como duas versões rotuladas, por exemplo "Baggio (Era 90)".</li><li><b>Draft interativo:</b> de 2 a 8 técnicos (humanos ou bots), em ordem snake, 23 jogadores por elenco (mínimo 3 goleiros, 6 defensores, 6 meio-campistas e 4 atacantes) e orçamento ilimitado (padrão em todos os modos) ou limitado (de 200 a 1000), com três sugestões por pool: econômico, normal e folgado. Cada jogador tem um preço (tabela provisória por overall e posição) e só pode ser escolhido se sobrar verba para completar o elenco. Quando a verba esgota, o elenco é completado na hora com os piores jogadores de cada setor que falta (mínimos primeiro) e o técnico sai da ordem; esse preenchimento pode passar o orçamento em poucos pontos. Cronômetro configurável por escolha (30 a 180 s ou sem limite): ao zerar, o jogo escolhe o melhor jogador que cabe. Cada técnico abre a própria tela (os demais desviam o olhar) e vê só o seu elenco e o seu orçamento. A escolha é definitiva, em dois cliques.</li>
+<ul><li><b>Resumo da partida (v26):</b> ao fim do jogo a tela abre no resumo: melhor em campo, campo com a nota (0 a 10) de cada jogador, linha do tempo com filtros (gols, cartões, trocas e lesões, chances) e estatísticas lado a lado (posse, chutes, faltas, escanteios, impedimentos, cartões, substituições, cansaço e moral). A nota parte de 6,0 e sobe com gols, assistências, defesas, desarmes e jogo sem sofrer gol, e cai com gols sofridos e cartões; reservas só recebem nota com 20 minutos ou mais.</li>
+<li><b>Torneio em abas (v26):</b> Tabela (com forma recente, próximos jogos e chaveamento em árvore), Jogos, Artilharia (gols, assistências, notas e defesas; empatados dividem a posição) e Disciplina (cartões, suspensos, pendurados e lesionados). O melhor jogador é quem tem a maior média de notas (mínimo de 3 jogos). Ao fim aparece o elenco campeão.</li>
+<li><b>Bases de dados:</b> ative uma ou mais (Clubes 1999–2010, Seleções 2010–18, Era 1990–2000, FIFA 15 · 2014/15, EA FC 26 · 2026) e escolha o corte de overall (80+, 75+ ou 70+). O pool é a união das bases; quando o mesmo jogador tem overall diferente entre bases, aparece como duas versões rotuladas, por exemplo "Baggio (Era 90)".</li><li><b>Draft interativo:</b> de 2 a 8 técnicos (humanos ou bots), em ordem snake, 23 jogadores por elenco (mínimo 3 goleiros, 6 defensores, 6 meio-campistas e 4 atacantes) e orçamento ilimitado (padrão em todos os modos) ou limitado (de 200 a 1000), com três sugestões por pool: econômico, normal e folgado. Cada jogador tem um preço (tabela provisória por overall e posição) e só pode ser escolhido se sobrar verba para completar o elenco. Quando a verba esgota, o elenco é completado na hora com os piores jogadores de cada setor que falta (mínimos primeiro) e o técnico sai da ordem; esse preenchimento pode passar o orçamento em poucos pontos. Cronômetro configurável por escolha (30 a 180 s ou sem limite): ao zerar, o jogo escolhe o melhor jogador que cabe. Cada técnico abre a própria tela (os demais desviam o olhar) e vê só o seu elenco e o seu orçamento. A escolha é definitiva, em dois cliques.</li>
 <li><b>Dois modos:</b> <i>busca livre</i> (qualquer jogador do pool) e <i>Filtro Aleatório</i> (a cada rodada do snake sorteia-se um filtro entre cerca de 200: atributos, posições, faixas de overall e preço, seleções, edições de Copa e Eurocopa, clubes e ligas). Todos escolhem dentro do mesmo filtro, entre 16 jogadores (os melhores que o atendem ou 16 sorteados entre todos que o atendem, à escolha do organizador), e a lista encolhe a cada escolha. O filtro só é sorteado se tiver pelo menos o dobro de técnicos em jogadores disponíveis (considerando só os técnicos que ainda escolhem) e nunca se repete em rodadas seguidas. Se nenhum servir, vale o "pote de ouro" (os maiores overalls). Se nenhum da lista couber no seu orçamento, o jogo escolhe por você.</li>
 <li><b>Recortes do pool:</b> combine época (faixas de 5 anos), tipo de origem, região/nacionalidade, liga do clube e faixa de overall (dentro de um grupo vale OU, entre grupos vale E). Há presets prontos (ex.: Brasileirão, corte 70), você pode salvar os seus, exportar/importar a configuração, e os ajustes avançados trazem multiplicadores de preço, limite de lendas, lista de banidos e mínimo por região/liga. A última configuração fica lembrada. Nas bases antigas, jogadores só de clube não têm nacionalidade e ficam fora dos recortes de região.</li>
 <li><b>Uma região por técnico:</b> no modo Um país, a opção Escolher por Região deixa cada técnico escolher UEFA ou CONMEBOL (vários técnicos podem escolher a mesma); o resto funciona igual, inclusive os curingas.</li>
 <li><b>Um país por técnico:</b> cada técnico escolhe um país (ordem do snake ou sorteada; só países com pool suficiente) e monta o elenco só com jogadores dele (orçamento ilimitado ou limitado, como nos outros modos). Opção de permitir o mesmo país para dois técnicos. Curingas (0–2, definidos antes do draft): as últimas escolhas podem ser de qualquer país, em ordem invertida, entre jogadores ainda não escolhidos. "Melhores do país" completa o elenco automaticamente.</li>
 <li><b>Troca de posições:</b> na escalação e em qualquer pausa (inclusive de emergência), clique em "⇄ Posição" num titular e depois em "Trocar com este" em outro; os dois trocam de lugar, sem custo. Fora da posição natural o overall efetivo cai (vizinha −3, mesmo setor −8, outro setor −14, oposta −20; jogador de linha no gol −35) e o gasto de energia sobe na mesma proporção. "Restaurar posições" desfaz; "Melhor arranjo" (só antes da partida) escolhe os 10 de linha que maximizam o overall efetivo ponderado, com goleiro fixo. Bots reorganizam sozinhos após expulsão ou lesão.</li>
 <li><b>Draft às cegas:</b> caixa na configuração. Esconde overall, atributos-chave, preço e o saldo do orçamento; os jogadores aparecem em ordem aleatória (40 por vez) e tudo é revelado ao fim do draft. Filtros por overall e preço saem do sorteio, o botão Melhores do país fica desativado e os bots enxergam o overall com erro de ±5. No draft automático não tem efeito.</li>
-<li><b>Depois do draft:</b> você vê todos os elencos, escolhe quais dois times jogam e segue para escalação e partida. O botão "Draft automático" faz tudo com bots, sem telas.</li>
+<li><b>Depois do draft:</b> a tela vai direto para a montagem dos times (partida única) ou para o torneio, conforme o formato escolhido antes do draft. No draft às cegas o jogo pergunta se você quer ver o resumo (que revela os overalls) ou ir para a montagem. O botão "Draft automático" faz tudo com bots, sem telas.</li>
 <li><b>Pausas:</b> obrigatórias no intervalo, antes da prorrogação e no intervalo da prorrogação. As de 15, 30, 60 e 75 minutos só acontecem se alguém pedir (botão na partida); o pedido vale para a próxima parada.</li>
 <li><b>Mata-mata:</b> empate no tempo normal vai para 2 tempos de 15 minutos (1 troca e 1 janela extra) e depois pênaltis, com ordem dos batedores escolhida pelo técnico.</li>
 <li><b>Moral:</b> do time e de cada jogador (efeito de até ±10% no rendimento e no cansaço). Cada técnico vê só o próprio, em faixas (Baixo, Normal, Alto), dentro da tela escondida.</li>
@@ -1711,6 +1825,7 @@ const UNL = () => !isFinite(budgetOf());
 function newDrafter(hide) {
   const mask = S.bases.reduce((x, on, i) => x + (on ? BASES[i].bit : 0), 0), rc = S.rc, cm = S.dmode === 'country';
   const mult = (it, m) => { let k = 1; if (it.leg) k *= rc.mult.leg; const cs = m[1].filter(c => (c >> 3) !== 16); k *= rc.mult.era[cs.length ? Math.max(...cs.map(c => c & 7)) : 5]; return k; };
+  S.hideAsk = false;
   S.dr = D.create({rows:getPool(), n:S.n, mode:cm ? 'free' : S.dmode, hide: hide === undefined ? S.hide : hide, seed:Math.random()*1e9|0, mask, tags:TAGS, types:S.P.slice(0, S.n).map(p => p.type), budget:budgetOf(), rand:S.frand,
     meta:MTR, conf:META.conf, legLimit:rc.leg, rule:(rc.rule.on && !cm) ? {kind:rc.rule.kind, key:rc.rule.key, n:rc.rule.n} : null, mult, country:cm ? {cur:S.cur, same:S.same || S.cunit === 'conf', order:S.corder, unit:S.cunit} : null});
 }
@@ -1722,7 +1837,22 @@ function autoDraft() {
 function finishDraft() {
   clearD(); $('#ovl').innerHTML = ''; const d = S.dr;
   S.squads = d.sq.map(s => s.map(it => it.r)); S.dsum = d.sq.map((s, i) => ({spent:d.spent[i], items:s.slice().sort((a, b) => b.o - a.o), country:d.cm ? UNAME(d, d.cnat[i]) : null}));
-  S.teams = null; S.pair = [0, 1]; S.stage = 'setup'; S.step = 4; render();
+  S.teams = null; S.pair = [0, 1]; S.stage = 'setup'; S.step = 4;
+  if (!S.hide) { if (goAfterDraft()) return; }
+  else if (canAfterDraft()) S.hideAsk = true;   // draft às cegas: o usuário escolhe entre ver o resumo (revela os overalls) e ir para a montagem
+  render();
+}
+const canAfterDraft = () => (S.fmtSel === 'tourn' && S.n >= 3) || (S.fmtSel !== 'tourn' && S.n === 2);
+function goAfterDraft() {
+  if (S.fmtSel === 'tourn' && S.n >= 3) { startTournament(S.tfmt === 'groups' && S.n >= 6 ? 'groups' : 'league'); tnNext(); return true; }
+  if (S.fmtSel !== 'tourn' && S.n === 2) { buildMatch(); setTimeout(() => { const e = $('#mcard'); if (e) e.scrollIntoView({block: 'start'}); }, 60); return true; }
+  return false;
+}
+function renderHideAsk(a) {
+  a.innerHTML = `<div class="card" style="text-align:center"><h2>Draft às cegas concluído</h2><p class="mut">Os overalls e preços ainda estão ocultos. O resumo do draft revela tudo; você também pode ir direto para a montagem dos times.</p>
+  <div class="row" style="justify-content:center"><button class="b s" id="ha1">Ver resumo do draft (revela os overalls)</button><button class="b" id="ha2">Ir para a montagem dos times</button></div></div>`;
+  $('#ha1').onclick = () => { S.hideAsk = false; render(); };
+  $('#ha2').onclick = () => { S.hideAsk = false; if (!goAfterDraft()) render(); };
 }
 function startDraft() { resetDraftState(); newDrafter(); S.stage = 'draft'; S.open = false; S.dsel = null; S.revDone = -1; S.fast = false; draftLoop(); }
 function cancelDraft() { clearD(); $('#ovl').innerHTML = ''; S.dr = null; S.stage = 'setup'; render(); }
@@ -1783,7 +1913,7 @@ function showReveal() {
   let t = 0; const fin = () => {
     clearInterval(S.rtid); $('#rv').textContent = f.name; $('#rv').style.color = 'var(--ac)';
     $('#rvs').textContent = f.gold ? 'Nenhum filtro com jogadores suficientes: usa-se o pote de ouro.' : `${D.TYPES[f.type]} · ${d.flt.count} jogadores atendem · os ${d.listLeft.length} melhores vão para a lista`;
-    $('#rvb').style.display = ''; $('#rvs2').style.display = 'none'; $('#rvb').onclick = S.rcont; if (allBots) S.rtid = setTimeout(S.rcont, 900);
+    $('#rvb').style.display = ''; $('#rvs2').style.display = 'none'; $('#rvb').onclick = S.rcont; S.rtid = setTimeout(S.rcont, allBots ? 900 : 2600);
   };
   $('#rvs2').onclick = fin;
   S.rtid = setInterval(() => { $('#rv').textContent = names[Math.floor(Math.random() * names.length)]; if (++t >= 14) fin(); }, 110);
@@ -1792,20 +1922,20 @@ function showReveal() {
 function statusLine(d, ti) {
   const c = d.cnt[ti], unl = !isFinite(d.budget), left = d.budget - d.spent[ti], mf = D.minFill(d, ti, null);
   const cx = d.cm ? `<span class="tag">${d.cm.unit === 'conf' ? 'Região' : 'País'}: <b>${esc(UNAME(d, d.cnat[ti]))}</b></span><span class="tag">Curingas: ${d.sq[ti].filter(x => x.nat !== d.cnat[ti]).length}/${d.cm.cur}</span>` : '', lg = d.legLimit >= 0 ? `<span class="tag">Lendas: ${d.legCnt[ti]}/${d.legLimit}</span>` : '', ru = d.rule && !d.cm ? `<span class="tag">Mínimo ${d.ruleCnt[ti]}/${d.rule.n}</span>` : '';
-  return cx + lg + ru + `<span class="tag">${unl ? 'Orçamento ilimitado' : d.hide ? 'Orçamento: oculto até o fim do draft' : 'Orçamento: <b>' + left + '</b> de ' + d.budget}</span><span class="tag">Vagas: ${d.sq[ti].length}/${D.SIZE}</span>${D.CATS.map(k => `<span class="tag" style="${c[k] >= D.MIN[k] ? '' : 'color:var(--wa)'}">${SECN[k]} ${c[k]}/${D.MIN[k]}</span>`).join('')}${unl || d.hide ? '' : '<span class="tag">Reserva mínima p/ completar: ' + (isFinite(mf) ? mf : '—') + '</span>'}`;
+  return cx + lg + ru + `<span class="tag">${unl ? 'Orçamento ilimitado' : d.hide ? 'Orçamento: oculto até o fim do draft' : 'Orçamento: <b>' + left + '</b> de ' + d.budget}</span>${unl || d.hide ? '' : '<span class="tag">Média por vaga: <b>' + Math.floor(left / Math.max(1, D.SIZE - d.sq[ti].length)) + '</b></span>'}<span class="tag">Vagas: ${d.sq[ti].length}/${D.SIZE}</span>${D.CATS.map(k => `<span class="tag" style="${c[k] >= D.MIN[k] ? '' : 'color:var(--wa)'}">${SECN[k]} ${c[k]}/${D.MIN[k]}${c[k] < D.MIN[k] ? ' · faltam ' + (D.MIN[k] - c[k]) : ''}</span>`).join('')}${unl || d.hide ? '' : '<span class="tag">Reserva mínima p/ completar: ' + (isFinite(mf) ? mf : '—') + '</span>'}`;
 }
 function renderDraft(a) {
   if (S.dr.phase === 'country') return renderCountry(a);
   const d = S.dr, n = d.n, r = D.round(d), ti = D.who(d), order = d.order, pr = d.pos;
   const tm = i => `<span class="dot" style="background:${S.P[i].color}"></span> ${esc(S.P[i].name)}${d.types[i] >= 0 ? ' 🤖' : ''}`;
   const strip = order.map((i, j) => `<span class="tag" style="${i === ti ? 'border-color:var(--ac);color:var(--tx);font-weight:700' : j < pr ? 'opacity:.55' : ''}">${j + 1}º ${tm(i)}${j < pr ? ' ✓' : ''}</span>`).join(' ') + (d.active.length < n ? ` <span class="mut sm">· ${n - d.active.length} elenco(s) já completo(s)</span>` : '');
-  const fcard = d.mode === 'filter' && d.flt ? `<div class="card" style="border-color:var(--ac)"><div class="mut sm">Filtro da rodada ${r + 1} (vale até o último técnico escolher)</div><div class="big">${esc(d.flt.f.name)}</div><div class="mut sm">${D.TYPES[d.flt.f.type]} · ${d.flt.count} jogadores atendem no início · restam ${d.listLeft.length} na lista</div></div>` : '';
-  const last = d.log.slice(-10).reverse().map(e => `<div class="sm"><span class="mut">${e.k + 1}.</span> <span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(S.P[e.ti].name)} → <b>${esc(e.it.n)}</b> <span class="mut">${E.POSL[e.it.pos]}${d.hide ? '' : ' · ' + e.it.o}</span>${e.fill ? ' <span class="tag">verba esgotada: completado automaticamente</span>' : ''}${e.timeout ? ' <span class="tag">tempo esgotado</span>' : ''}${e.noopt ? ' <span class="tag">nenhum da lista cabia: escolha automática</span>' : ''}</div>`).join('') || '<div class="mut sm">Nenhuma escolha ainda.</div>';
+  const ordH = `<div class="row" style="margin-top:8px"><span class="mut sm">Ordem (snake):</span>${strip}</div>`;
+  const fcard = d.mode === 'filter' && d.flt ? `<div class="card" style="border-color:var(--ac)"><div class="mut sm">Filtro da rodada ${r + 1} (vale até o último técnico escolher)</div><div class="big">${esc(d.flt.f.name)}</div><div class="mut sm">${D.TYPES[d.flt.f.type]} · ${d.flt.count} jogadores atendem no início · restam ${d.listLeft.length} na lista</div>${ordH}</div>` : '';
+  const last = d.log.slice(-10).reverse().map(e => `<div class="sm"><span class="mut">${e.k + 1}.</span> <span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(S.P[e.ti].name)} → <b>${esc(e.it.n)}</b> ${posPill(e.it.pos)}${d.hide ? '' : ' <span class="mut">' + e.it.o + '</span>'}${e.fill ? ' <span class="tag">verba esgotada: completado automaticamente</span>' : ''}${e.timeout ? ' <span class="tag">tempo esgotado</span>' : ''}${e.noopt ? ' <span class="tag">nenhum da lista cabia: escolha automática</span>' : ''}</div>`).join('') || '<div class="mut sm">Nenhuma escolha ainda.</div>';
   const isBot = d.types[ti] >= 0;
-  a.innerHTML = `<div class="card"><div class="row"><b>Draft · ${MODEN[d.mode]}</b><span class="tag">Rodada ${r + 1}/${D.SIZE}</span><span class="tag">Escolha ${d.k + 1}/${D.total(d)}</span><span class="tag">${isFinite(d.budget) ? 'Orçamento ' + d.budget : 'Orçamento ilimitado'}</span><span class="tag">${S.dsec ? S.dsec + ' s por escolha' : 'sem cronômetro'}</span><span style="margin-left:auto" class="row"><label class="sm"><input type="checkbox" id="fast" ${S.fast ? 'checked' : ''}> Acelerar bots</label><button class="b s mini" id="cx">Cancelar draft</button></span></div>
+  a.innerHTML = `<div class="card dhead"><div class="row"><b>Draft · ${MODEN[d.mode]}</b><span class="tag">Rodada ${r + 1}/${D.SIZE}</span><span class="tag">Escolha ${d.k + 1}/${D.total(d)}</span><span class="tag">${isFinite(d.budget) ? 'Orçamento ' + d.budget : 'Orçamento ilimitado'}</span><span class="tag">${S.dsec ? S.dsec + ' s por escolha' : 'sem cronômetro'}</span><span style="margin-left:auto" class="row"><label class="sm"><input type="checkbox" id="fast" ${S.fast ? 'checked' : ''}> Acelerar bots</label><button class="b s mini" id="cx">Cancelar draft</button></span></div>
   <div class="bar" style="margin-top:8px"><i style="width:${d.k / D.total(d) * 100}%;background:var(--ac)"></i></div></div>
-  ${fcard}
-  <div class="card"><h3 style="margin-top:0">Ordem da rodada (snake)</h3><div class="row">${strip}</div></div>
+  ${fcard || '<div class="card dord">' + ordH + '</div>'}
   <div id="turn"></div>
   <div class="card"><h3 style="margin-top:0">Últimas escolhas</h3>${last}</div>`;
   $('#cx').onclick = cancelDraft; $('#fast').onchange = e => { S.fast = e.target.checked; };
@@ -1823,30 +1953,64 @@ function humanPanel(d, ti, TT) {
   let items; const hid = d.hide;
   const hk = d.k + ':' + ti; if (S.hrk !== hk) { S.hrk = hk; S.hrn = new Map(); }
   const hr = it => { if (!S.hrn.has(it.id)) S.hrn.set(it.id, Math.random()); return S.hrn.get(it.id); };   // ordem aleatória, fixa durante a vez
-  if (filt) items = hid ? d.listLeft.slice().sort((x, y) => hr(x) - hr(y)) : d.listLeft;
+  let fnote = '';
+  if (filt) items = d.listLeft.slice().sort((x, y) => hr(x) - hr(y));   // filtro aleatório: lista sempre em ordem aleatória
   else {
-    const q = norm(S.q.txt); items = d.avail.filter(it => D.allowed(d, ti, it) && (hid || it.o >= S.q.min) && (!S.q.cat || it.cat === S.q.cat) && (hid || !S.q.maxp || it.price <= S.q.maxp) && (!q || norm(it.n).includes(q)));
-    if (hid) items.sort((x, y) => hr(x) - hr(y));
-    items = items.slice(0, 40);
+    const q = norm(S.q.txt);
+    const base = useMin => d.avail.filter(it => D.allowed(d, ti, it) && (hid || !useMin || it.o >= S.q.min) && (!S.q.cat || it.cat === S.q.cat) && (hid || !S.q.maxp || it.price <= S.q.maxp) && (!q || norm(it.n).includes(q)));
+    const fit = arr => { const ok = [], no = []; for (const it of arr) { if (D.canPick(d, ti, it)) { if (ok.length < 40) ok.push(it); } else if (no.length < 40) no.push(it); if (ok.length >= 40) break; } return {ok, no}; };
+    items = base(true); if (hid) items.sort((x, y) => hr(x) - hr(y));
+    let f = fit(items);
+    if (!hid && !f.ok.length && (S.q.min > 0)) { const alt = fit(base(false)); if (alt.ok.length) { f = alt; fnote = `Nenhum jogador com overall mínimo ${S.q.min} cabe agora (orçamento, vagas ou mínimos por setor): mostrando os que cabem.`; } }
+    items = f.ok.concat(f.no).slice(0, 40);   // quem pode ser escolhido vem primeiro
   }
+  const tier = o => o >= 90 ? 'dp-t1' : o >= 85 ? 'dp-t2' : o >= 80 ? 'dp-t3' : 'dp-t4';
+  const noFit = it => {
+    const hd = d.hide, cnt = Object.assign({}, d.cnt[ti]); cnt[it.cat]++;
+    const left = D.SIZE - d.sq[ti].length - 1, falta = D.CATS.map(k => [k, Math.max(0, D.MIN[k] - cnt[k])]).filter(x => x[1] > 0), tot = falta.reduce((a, x) => a + x[1], 0);
+    if (d.cm && !D.allowed(d, ti, it)) return 'fora do seu ' + (d.cm.unit === 'conf' ? 'grupo' : 'país') + ' (curingas esgotados)';
+    if (tot > left) return `faltariam vagas para os mínimos por setor: ainda precisa de ${falta.map(x => x[1] + ' ' + SECN[x[0]]).join(', ')} e só sobrariam ${left} vaga${left === 1 ? '' : 's'}`;
+    const mf = D.minFill(d, ti, it);
+    if (isFinite(mf)) return hd ? 'não deixa verba para completar o elenco' : `não deixa verba para completar o elenco: precisaria guardar ${mf} para as ${left} vagas restantes (saldo após a escolha: ${d.budget - d.spent[ti] - it.price})`;
+    return d.cm ? 'não há jogadores suficientes do seu país nos setores que faltam' : 'os jogadores que restam nos setores mínimos não bastam para completar o elenco';
+  };
+  const whyNot = it => d.keys[ti].has(it.key) ? 'seu elenco já tem outra versão deste jogador' : (d.legLimit >= 0 && it.leg && d.legCnt[ti] >= d.legLimit) ? 'limite de lendas do elenco' : (d.rule && !d.cm && d.rule.n - d.ruleCnt[ti] - (it.rm ? 1 : 0) > D.SIZE - d.sq[ti].length - 1) ? 'impediria cumprir o mínimo da regra' : d.spent[ti] + it.price > d.budget ? (d.hide ? 'estoura o orçamento' : 'estoura o orçamento (preço ' + it.price + ', saldo ' + (d.budget - d.spent[ti]) + ')') : noFit(it);
   const rowsHtml = items.map(it => {
-    const ok = D.canPick(d, ti, it), sel = S.dsel === it.id, why = !ok ? (d.keys[ti].has(it.key) ? 'seu elenco já tem outra versão deste jogador' : (d.legLimit >= 0 && it.leg && d.legCnt[ti] >= d.legLimit) ? 'limite de lendas do elenco' : (d.rule && !d.cm && d.rule.n - d.ruleCnt[ti] - (it.rm ? 1 : 0) > D.SIZE - d.sq[ti].length - 1) ? 'impediria cumprir o mínimo da regra' : d.spent[ti] + it.price > d.budget ? 'estoura o orçamento' : isFinite(D.minFill(d, ti, it)) ? 'não deixa verba para completar o elenco' : 'faltariam vagas ou mínimos por setor') : '';
-    return `<tr style="${ok ? '' : 'opacity:.5'}"><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}<div class="mut sm">${esc(origin(it))}</div></td>${hid ? '' : `<td>${it.o}</td>${unl ? '' : '<td>' + it.price + '</td>'}<td class="mut sm">${esc(keyAttrs(it))}</td>`}<td>${ok ? `<button class="b ${sel ? '' : 's'} mini" data-pk="${it.id}">${sel ? 'Confirmar?' : 'Escolher'}</button>` : `<span class="mut sm">${why}</span>`}</td></tr>`;
-  }).join('') || `<tr><td colspan="6" class="mut">Nenhum jogador encontrado.</td></tr>`;
+    const ok = D.canPick(d, ti, it), sel = S.dsel === it.id;
+    return `<div class="dp ${ok ? '' : 'off'} ${sel ? 'sel' : ''}" ${ok ? `data-pk="${it.id}" role="button" tabindex="0"` : ''} style="--pc:${SECCOL[posCls(it.pos)]}">
+      <div class="dp-o ${hid ? '' : tier(it.o)}">${hid ? '?' : it.o}</div>
+      <div><div class="dp-n">${esc(it.n)}</div><div class="dp-s">${posPill(it.pos)} <span>${esc(origin(it))}</span></div></div>
+      <div class="dp-r">${ok ? (hid ? '' : `<span class="dp-a">${esc(keyAttrs(it))}</span>`) + (unl || hid ? '' : `<span class="tag">preço ${it.price}</span>`) : `<span class="mut sm">${whyNot(it)}</span>`}</div></div>`;
+  }).join('') || `<div class="mut">Nenhum jogador encontrado.</div>`;
   const done = filt ? d.log.filter(e => e.round === D.round(d) && !e.fill).map(e => `<span class="tag"><span class="dot" style="background:${S.P[e.ti].color}"></span> ${esc(short(e.it.n))}</span>`).join(' ') : '';
-  const mine = (hid ? d.sq[ti].slice() : d.sq[ti].slice().sort((a, b) => b.o - a.o)).map(it => `<tr><td><span class="pos">${E.POSL[it.pos]}</span></td><td>${esc(it.n)}<div class="mut sm">${esc(origin(it))}</div></td>${hid ? '' : `<td>${it.o}</td><td>${it.price}</td>`}</tr>`).join('');
-  const sf = filt ? '' : `<div class="row" style="margin-bottom:8px"><input type="text" id="qt" placeholder="Buscar por nome" value="${esc(S.q.txt)}"><select id="qc"><option value="">Todos os setores</option>${D.CATS.map(k => `<option value="${k}" ${S.q.cat === k ? 'selected' : ''}>${SECN[k]}</option>`).join('')}</select>${hid ? '' : `<label class="sm">Overall mín. <input type="text" id="qm" value="${S.q.min}" style="width:48px"></label>`}${unl || hid ? '' : `<label class="sm">Preço máx. <input type="text" id="qp" value="${S.q.maxp || ''}" style="width:48px" placeholder="—"></label>`}</div>`;
-  T.innerHTML = `<div class="card"><div class="row"><span class="dot" style="background:${S.P[ti].color}"></span><b>${esc(S.P[ti].name)}</b>${statusLine(d, ti)}<span class="tag" id="dcw">${S.dsec ? 'Tempo: <b id="dcd">' + S.dleft + ' s</b>' : 'sem cronômetro'}</span></div>
-  ${filt ? `<h3>Lista da rodada (${items.length} restantes)${done ? ' · já escolhidos: ' + done : ''}</h3>` : `<h3>${hid ? 'Às cegas: 40 jogadores em ordem aleatória que atendem aos critérios' : 'Busca livre (40 melhores que atendem aos critérios)'}</h3>`}${sf}
-  <table><tr><th></th><th>Jogador</th>${hid ? '' : `<th>Ovr</th>${unl ? '' : '<th>Preço</th>'}<th>Atributos-chave</th>`}<th></th></tr>${rowsHtml}</table>
-  ${d.cm && !hid && d.sq[ti].length < D.SIZE - d.cm.cur ? '<div class="row" style="margin-top:8px"><button class="b s mini" id="bo">Melhores do país</button><span class="mut sm">preenche as vagas do país com os melhores, respeitando as posições mínimas</span></div>' : ''}
-  <details style="margin-top:10px"><summary>Meu elenco (${d.sq[ti].length})</summary><table><tr><th></th><th>Jogador</th>${hid ? '' : '<th>Ovr</th><th>Preço</th>'}</tr>${mine || '<tr><td colspan="4" class="mut">Vazio</td></tr>'}</table></details></div>`;
+  const sf = filt ? '' : `<div class="row" style="margin-bottom:8px"><input type="text" id="qt" placeholder="Buscar por nome" value="${esc(S.q.txt)}"><select id="qc"><option value="">Todos os setores</option>${D.CATS.map(k => `<option value="${k}" ${S.q.cat === k ? 'selected' : ''}>${SECN[k]}</option>`).join('')}</select>${hid ? '' : `<label class="sm">Overall mín. <input type="text" id="qm" value="${S.q.min}" style="width:48px"></label>`}${unl || hid ? '' : `<label class="sm">Preço máx. <input type="text" id="qp" value="${S.q.maxp || ''}" style="width:48px" placeholder="—"></label>`}</div>${fnote ? `<div class="mut sm" style="margin-bottom:8px;color:var(--wa)">${fnote}</div>` : ''}`;
+  const attrsOf = it => { const lo = it.cat === 'GK' ? 28 : 0, hi = it.cat === 'GK' ? 33 : 28, a = []; for (let i = lo; i < hi; i++) a.push([i, it.r[6 + i]]); return a.sort((x, y) => y[1] - x[1]); };
+  const detHtml = () => {
+    const it = items.find(x => x.id === S.dsel); if (!it) return `<div class="card dhint mut">Clique num jogador da lista para ver a ficha e confirmar a escolha.</div>`;
+    const ok = D.canPick(d, ti, it), c = d.cnt[ti];
+    const bars = hid ? '' : '<div class="fbars">' + attrsOf(it).slice(0, 8).map(([i, v]) => `<div class="fgrp2"><span>${ATN[i]}</span><span class="fbar2"><i style="width:${v}%;background:${v >= 85 ? 'var(--ac)' : v >= 70 ? '#7fcf5a' : v >= 55 ? 'var(--yl)' : 'var(--wa)'}"></i></span><b>${v}</b></div>`).join('') + '</div>';
+    return `<div class="card dsel" style="--pc:${SECCOL[posCls(it.pos)]}"><div class="row">${posPill(it.pos)} <b class="dsel-n">${esc(it.n)}</b>${hid ? '' : `<span class="dp-o ${tier(it.o)}" style="margin-left:auto">${it.o}</span>`}</div><div class="mut sm">${esc(origin(it))}${unl || hid ? '' : ' · preço ' + it.price}</div>${bars}<div class="mut sm" style="margin:6px 0">${SECN[it.cat]}: ${c[it.cat]} → ${c[it.cat] + 1} (mínimo ${D.MIN[it.cat]})</div><button class="b dcf" data-cf="${it.id}" ${ok ? '' : 'disabled'}>Confirmar escolha</button><button class="b s mini" data-cl>Cancelar</button></div>`;
+  };
+  const boardHtml = () => {
+    const rowsB = ['ATT', 'MID', 'DEF', 'GK'].map(k => {
+      const ps = d.sq[ti].filter(x => x.cat === k).sort((x, y) => hid ? 0 : y.o - x.o), n = Math.max(D.MIN[k], ps.length), chips = [];
+      for (let i = 0; i < n; i++) { const p = ps[i]; chips.push(p ? `<span class="bc" style="--pc:${SECCOL[posCls(p.pos)]}" title="${esc(p.n)}">${posPill(p.pos)}<i>${esc(short(p.n))}</i>${hid ? '' : `<b>${p.o}</b>`}</span>` : '<span class="bc empty"></span>'); }
+      return `<div class="brow"><div class="bl">${SECN[k]} <b style="${ps.length >= D.MIN[k] ? '' : 'color:var(--wa)'}">${ps.length}/${D.MIN[k]}</b></div><div class="bch">${chips.join('')}</div></div>`;
+    }).join('');
+    return `<div class="card"><div class="row" style="justify-content:space-between"><b>Seu elenco</b><span class="tag">${d.sq[ti].length}/${D.SIZE}</span></div><div class="pitchf">${rowsB}</div></div>`;
+  };
+  T.innerHTML = `<div class="card"><div class="row"><span class="dot" style="background:${S.P[ti].color}"></span><b>${esc(S.P[ti].name)}</b>${statusLine(d, ti)}<span class="tag" id="dcw">${S.dsec ? 'Tempo: <b id="dcd">' + S.dleft + ' s</b>' : 'sem cronômetro'}</span></div></div>
+  <div class="dr"><div class="dlist">${filt ? `<h3 style="margin-top:0">Lista da rodada (${items.length} restantes)${done ? ' · já escolhidos: ' + done : ''}</h3>` : `<h3 style="margin-top:0">${hid ? 'Às cegas: 40 jogadores em ordem aleatória que atendem aos critérios' : 'Busca livre (40 melhores que atendem aos critérios)'}</h3>`}${sf}${rowsHtml}
+  ${d.cm && !hid && d.sq[ti].length < D.SIZE - d.cm.cur ? '<div class="row" style="margin-top:8px"><button class="b s mini" id="bo">Melhores do país</button><span class="mut sm">preenche as vagas do país com os melhores, respeitando as posições mínimas</span></div>' : ''}</div>
+  <div class="dr-side"><div id="dsel">${detHtml()}</div><div id="dboard">${boardHtml()}</div></div></div>`;
   if ($('#bo')) $('#bo').onclick = () => { D.bestOwn(d, ti); S.dsel = null; draftLoop(); };
-  T.querySelectorAll('[data-pk]').forEach(b => b.onclick = () => {
-    const it = d.avail.find(x => x.id === +b.dataset.pk);
-    if (S.dsel !== it.id) { S.dsel = it.id; humanPanel(d, ti, TT); return; }
-    const res = D.pick(d, ti, it); if (res.ok) { S.dsel = null; draftLoop(); }
-  });
+  const bindSel = () => {
+    T.querySelectorAll('[data-cf]').forEach(b => b.onclick = () => { const it = d.avail.find(x => x.id === +b.dataset.cf); if (!it) return; const res = D.pick(d, ti, it); if (res.ok) { S.dsel = null; draftLoop(); } });
+    T.querySelectorAll('[data-cl]').forEach(b => b.onclick = () => setSel(null));
+  };
+  const setSel = id => { S.dsel = id; T.querySelectorAll('.dp').forEach(e => e.classList.toggle('sel', +e.dataset.pk === id && id !== null)); $('#dsel').innerHTML = detHtml(); bindSel(); };
+  T.querySelectorAll('[data-pk]').forEach(b => { b.onclick = () => setSel(S.dsel === +b.dataset.pk ? null : +b.dataset.pk); b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.onclick(); } }; });
+  bindSel();
   if (!filt) {
     const upd = () => { S.q.txt = $('#qt').value; S.q.cat = $('#qc').value; if ($('#qm')) S.q.min = +$('#qm').value || 70; S.q.maxp = $('#qp') ? (+$('#qp').value || 0) : 0; S.dsel = null; humanPanel(d, ti, TT); const el = $('#qt'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } };
     $('#qt').oninput = upd; ['#qc', '#qm', '#qp'].forEach(s => { if ($(s)) $(s).onchange = upd; });
@@ -2077,14 +2241,14 @@ function renderSetup(a) {
     <h3>Partida entre</h3><div class="row">${sel('pa', S.pair[0])} <b>x</b> ${sel('pb', S.pair[1])}<button class="b" id="bm" ${S.pair[0] === S.pair[1] ? 'disabled' : ''}>Montar times da partida</button></div></div>`;
   }
   const allBots = S.teams && S.types[0] >= 0 && S.types[1] >= 0;
-  const mcard = S.teams ? `<div class="card"><h2>Escalação e partida</h2><div class="grid2">${[0,1].map(i => teamBrief(i)).join('')}</div>
+  const mcard = S.teams ? `<div class="card" id="mcard"><h2>Escalação e partida</h2><div class="grid2">${[0,1].map(i => teamBrief(i)).join('')}</div>
   <div class="row" style="margin-top:12px"><button class="b" id="go" ${S.prepDone[0] && S.prepDone[1] ? '' : 'disabled'}>Começar a partida</button>${allBots ? '<button class="b s" id="fast">Simular direto (só resultado)</button>' : ''}<button class="b s" id="auto">Os humanos em piloto automático</button></div></div>` : '';
-  const cur = Math.max(0, Math.min(4, S.step|0)), fm = S.fmtSel || 'single';
+  const cur = Math.max(0, Math.min(4, S.step|0)), fm = S.fmtSel || 'single'; const tnT = () => S.tfmt === 'groups' && S.n >= 6 ? 'groups' : 'league';
   const humans = S.P.slice(0, S.n).filter(p => p.type < 0).length, modeN = {filter:'Filtro Aleatório', free:'Busca livre', country:'Um país por técnico'}[S.dmode];
   const baseNames = BASES.filter((b, i) => S.bases[i]).map(b => b.label).join(' + ') || 'nenhuma';
-  const sum = [['Técnicos', S.n + ' (' + humans + ' humano' + (humans === 1 ? '' : 's') + ', ' + (S.n - humans) + ' bot' + (S.n - humans === 1 ? '' : 's') + ')'], ['Bases', baseNames + ' · ' + S.cut + '+'], ['Pool', ps.n.toLocaleString('pt-BR') + ' jogadores'], ['Draft', modeN + (UNL() ? ' · orçamento livre' : ' · orçamento ' + S.budget)], ['Formato', fm === 'tourn' ? 'Torneio' : 'Partida única' + (S.ko ? ' (mata-mata)' : '')]];
+  const sum = [['Técnicos', S.n + ' (' + humans + ' humano' + (humans === 1 ? '' : 's') + ', ' + (S.n - humans) + ' bot' + (S.n - humans === 1 ? '' : 's') + ')'], ['Bases', baseNames + ' · ' + S.cut + '+'], ['Pool', ps.n.toLocaleString('pt-BR') + ' jogadores'], ['Draft', modeN + (UNL() ? ' · orçamento livre' : ' · orçamento ' + S.budget)], ['Formato', fm === 'tourn' ? 'Torneio · ' + (tnT() === 'groups' ? 'grupos + mata-mata' : 'pontos corridos') : 'Partida única' + (S.ko ? ' (mata-mata)' : '')]];
   const hero = `<div class="hero"><svg class="hp" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#fff" stroke-width="1.2"><rect x="8" y="8" width="384" height="104" rx="4"/><line x1="200" y1="8" x2="200" y2="112"/><circle cx="200" cy="60" r="20"/><rect x="8" y="34" width="46" height="52"/><rect x="346" y="34" width="46" height="52"/></g></svg>
-    <div class="hin"><div class="hlogo">⚽</div><div><div class="htit">Draft FC</div><div class="hsub">Monte o elenco no draft e simule a partida · ${S.net ? 'versão premium (Wi-Fi)' : 'versão original'} · v17</div></div></div>
+    <div class="hin"><div class="hlogo">⚽</div><div><div class="htit">Draft FC</div><div class="hsub">Monte o elenco no draft e simule a partida · ${S.net ? 'versão premium (Wi-Fi)' : 'versão original'} · v26</div></div></div>
     <div class="hbtns"><button class="hb pri" id="hqk">⚡ Jogo rápido</button>${S.squads ? '' : ''}<button class="hb" id="hld">📂 Continuar torneio salvo</button><button class="hb" id="hhp">Como funciona</button><button class="hb" id="hlb">Laboratório</button></div></div>`;
   const quick = S.quick ? `<div class="qk"><button data-q="solo"><b>Você contra um bot</b><span>2 técnicos, bot médio, draft com Filtro Aleatório, orçamento livre. Vai direto para Revisar e iniciar.</span></button>
     <button data-q="amigos"><b>Torneio com amigos</b><span>4 técnicos humanos, Filtro Aleatório, orçamento livre, formato Torneio.</span></button>
@@ -2095,7 +2259,7 @@ function renderSetup(a) {
   const dP4 = `<div class="card"><h2>Formato</h2><div class="seg" id="fmt"><button data-f="single" class="${fm === 'single' ? 'on' : ''}">Partida única</button><button data-f="tourn" class="${fm === 'tourn' ? 'on' : ''}">Torneio</button></div>
   <p class="mut sm">${fm === 'tourn' ? 'Torneio: depois do draft, todos os técnicos jogam com os elencos montados (pontos corridos ou grupos + mata-mata, escolhidos na etapa final). Precisa de ao menos 3 técnicos.' : 'Partida única: depois do draft você escolhe quais dois times jogam e segue para a escalação.'}</p>
   <div class="row" style="margin-top:10px"><label><input type="checkbox" id="ko" ${S.ko ? 'checked' : ''}> Mata-mata na partida (prorrogação e pênaltis em caso de empate)</label><label style="margin-left:14px"><input type="checkbox" id="var" ${S.var ? 'checked' : ''}> VAR (anula alguns gols, reverte alguns vermelhos e pênaltis)</label></div>
-  <p class="mut sm">Essas opções valem para as partidas. No torneio, o mata-mata só vale nas fases finais.</p></div>`;
+  <p class="mut sm">Essas opções valem para as partidas. No torneio, o mata-mata só vale nas fases finais.</p>${fm === 'tourn' ? `<div class="row" style="margin-top:6px"><label>Tipo de torneio <select id="tfmt0"><option value="league" ${tnT() === 'league' ? 'selected' : ''}>Pontos corridos (turno único)</option><option value="groups" ${tnT() === 'groups' ? 'selected' : ''} ${S.n >= 6 ? '' : 'disabled'}>Grupos + mata-mata (6 a 8 técnicos)</option></select></label><span class="mut sm">${S.n < 3 ? '<b style="color:var(--wa)">Torneio precisa de ao menos 3 técnicos.</b> ' : ''}Decidido agora: ao fim do draft o torneio começa direto na montagem dos times.</span></div>` + `<div class="row" style="margin-top:6px"><label><input type="checkbox" id="scr" ${S.scratch ? 'checked' : ''}> Escalar do zero: no primeiro jogo de cada técnico a escalação começa vazia (sem pré-escalação)</label></div>` : ''}</div>`;
   const dP5 = `<div class="card"><h2>Revisar e iniciar</h2><div class="rev">${sum.map(r => `<b>${r[0]}</b><span>${esc(r[1])}</span>`).join('')}</div>
   ${bad ? '<p class="sm" style="color:var(--rd)">Há um problema na configuração do pool (veja a etapa Jogadores). Ajuste antes de iniciar.</p>' : ''}
   <div class="row" style="margin-top:12px"><button class="b" id="draft" ${bad ? 'disabled' : ''}>Iniciar draft</button><button class="b s" id="adraft" ${bad ? 'disabled' : ''}>Draft automático (bots decidem tudo)</button></div>
@@ -2131,7 +2295,9 @@ function renderSetup(a) {
   document.querySelectorAll('[data-col]').forEach(s => s.oninput = () => { S.P[+s.dataset.col].color = s.value; });
   document.querySelectorAll('[data-nm]').forEach(s => s.oninput = () => { S.P[+s.dataset.nm].name = s.value || 'Time ' + (+s.dataset.nm + 1); });
   $('#ko').onchange = e => S.ko = e.target.checked;
+  if ($('#scr')) $('#scr').onchange = e => { S.scratch = e.target.checked; };
   $('#var').onchange = e => S.var = e.target.checked;
+  if ($('#tfmt0')) $('#tfmt0').onchange = e => { S.tfmt = e.target.value; render(); };
   document.querySelectorAll('[data-fixc]').forEach(b => b.onclick = () => { S.P[+b.dataset.fixc].color = b.dataset.to; render(); });
   $('#draft').onclick = startDraft; $('#adraft').onclick = autoDraft;
   if (S.net) S.net.bind();
@@ -2185,7 +2351,7 @@ function openCoach(ti, prep) {
   if (S.kind !== 'emerg' || prep) tid = setInterval(() => { left--; const c = $('#cd'); if (c) c.textContent = 'Tempo: ' + left + ' s'; if (left <= 0) { clearInterval(tid); finish(true); } }, 1000);
   $('#show').onclick = () => { clearInterval(tid); coachPanel(ti, prep, finish); };
   function finish(timeout) {
-    if (timeout) { if (prep) { if (!S.tn) E.autoPick(t, null); } else if (S.kind !== 'pre-pk') E.autopilot(S.m, ti); }
+    if (timeout) { if (prep) { if (!S.tn) E.autoPick(t, null); else E.completeLineup(t); } else if (S.kind !== 'pre-pk') E.autopilot(S.m, ti); }
     close();
     if (prep) { S.prepDone[ti] = true; t.ljSet = true; render(); }
     else coachDone(ti);
@@ -2210,50 +2376,73 @@ function tacHtml(t) {
     <p style="margin:8px 0 2px"><span class="mut sm">Prévia dos efeitos (sem contar o rival): </span>${chips}</p>
     <p class="sm"><b>Meio-campo:</b> proteção ${Math.round(mi.cP*100)}% · passe/posse ${Math.round(mi.cQ*100)}% · criação ${Math.round(mi.cR*100)}% → <b style="color:var(--${mi.bonus >= 0 ? 'ac' : 'rd'})">${mi.bonus >= 0 ? '+' : ''}${Math.round(mi.bonus*100)}%</b> em posse e criação${mi.gap === 'dm' ? ' <span style="color:var(--wa)">· meio muito defensivo: menos criação</span>' : mi.gap === 'am' ? ' <span style="color:var(--wa)">· meio sem proteção: defesa exposta</span>' : ''}</p>
     ${(() => { const syn = (sm.fx.rf && sm.fx.rf.syn) || []; return syn.length ? '<p class="sm"><b>Sinergias de funções:</b> ' + syn.map(x => esc(x.t)).join(' ') + '</p>' : ''; })()}
-    <p class="sm"><b>Criadores (${pmN}/2):</b> ${pmN ? E.pmList(t).map(p => esc(short(p.n)) + ' (criação ' + Math.round(p.cr) + ')').join(' · ') : 'nenhum. Marque "☆ Criador" na lista abaixo (até 2, jogadores de meio ou ataque).'}</p>`;
+    <p class="sm"><b>Criadores (${pmN}/2):</b> ${pmN ? E.pmList(t).map(p => esc(short(p.n)) + ' (criação ' + Math.round(p.cr) + ')').join(' · ') : 'nenhum. Marque "☆ Criador" na lista da aba Escalação (até 2, jogadores de meio ou ataque).'}</p>`;
 }
 function coachPanel(ti, prep, done, ovEl) {
   const ov = ovEl || document.querySelector('#ovl'), $ = q => ov.querySelector(q);
   const t = S.teams[ti], m = S.m, kind = S.kind, ht = !prep && (kind === 'ht' || kind === 'et-ht' || kind === 'pre-et' || kind === 'pre-pk');
   const subsLeft = t.maxSubs - t.subs, pk = kind === 'pre-pk', emg = !prep && kind === 'emerg';
   const winsOk = prep || ht || t.windows < t.maxWin || S.winUsed[ti];
-  let sel = null, swp = null, fp = null, rs = null, reg = [];
+  let sel = null, swp = null, fp = null, rs = null, vt = null, reg = [], tab = emg && t.xi.length < E.cap(t) ? 'ban' : 'esc';
   const fn = (p, sl) => { reg.push({p, slot: sl}); return `<a class="fnm" data-fn="${reg.length - 1}">${esc(p.n)}</a>`; };
   const snap = E.snapTeam(t), done0 = done;
-  const kd = e => { if (e.key === 'Escape') { if (rs !== null) { rs = null; draw(); } else if (fp) { fp = null; draw(); } else if (swp !== null) { swp = null; draw(); } } };
+  const kd = e => { if (e.key === 'Escape') { if (rs !== null) { rs = null; draw(); } else if (fp) { fp = null; draw(); } else if (swp !== null) { swp = null; draw(); } else if (vt !== null) { vt = null; draw(); } } };
   document.addEventListener('keydown', kd);
   done = x => { document.removeEventListener('keydown', kd); done0(x); };
   const ptsOf = i => E.slotPts(t.xi[i], t.slots[i]);
   const ovrHtml = i => { const p = t.xi[i], k = ptsOf(i); if (!k) return p.o; const c = k >= 20 ? '#e5484d' : k >= 8 ? '#f07b29' : '#f0b429'; return `<span style="color:${c};font-weight:700" title="fora da posição natural: −${k}">${p.o} → ${p.o - k}</span>`; };
-  const vacHtml = () => { const v = E.vacant(t); if (!v.length || t.xi.length >= 11) return ''; return `<div class="row" style="background:rgba(229,72,77,.10);padding:6px 8px;border-radius:8px;margin:6px 0"><b class="sm">Posição vaga:</b> ${v.map(b => swp !== null ? `<button class="b mini" data-vac="${b}">${(E.POSN[b] || b)} ← ${esc(t.xi[swp].n)}</button>` : `<span class="tag">${(E.POSN[b] || b)}</span>`).join(' ')}<span class="mut sm">${swp !== null ? 'clique na vaga para mover o jogador (Esc cancela)' : 'use "⇄ Posição" em um jogador e depois clique na vaga'}</span></div>`; };
+  const vacHtml = () => (prep && t.xi.length < 11 ? '<p class="sm" style="background:rgba(47,125,246,.12);padding:6px 8px;border-radius:8px"><b>Escalação do zero:</b> escolha a formação e preencha as vagas (use <b>Preencher vaga</b> e depois <b>Entra como…</b> no banco, ou só <b>Entra na vaga</b> para a melhor posição). Faltando tempo, o sistema completa com a melhor opção.</p>' : '') + vacWarn();
+  const vacWarn = () => { const v = E.vacant(t); if (!v.length || t.xi.length >= 11) return ''; if (!v.includes(0)) return ''; return `<div class="row" style="background:rgba(229,72,77,.10);padding:6px 8px;border-radius:8px;margin:6px 0"><b class="sm">Posição vaga:</b> ${v.map(b => swp !== null ? `<button class="b mini" data-vac="${b}">${(E.POSN[b] || b)} ← ${esc(t.xi[swp].n)}</button>` : `<span class="tag">${(E.POSN[b] || b)}</span>`).join(' ')}${v.includes(0) ? '<b class="sm" style="color:#e5484d">⚠ Sem goleiro! Mova alguém para o gol; se nada for feito, o sistema coloca o reserva goleiro (no lugar de um atacante) ou o melhor jogador de linha.</b> ' : ''}</div>`; };
+  const resHtml = () => {
+    const sm = E.tacSummary(t, null), good = [1, 1, 1, 0, 0, 0], n = Math.max(1, t.xi.length), eff = Math.round(t.xi.reduce((q, p, i) => q + p.o - ptsOf(i), 0)/n), en = Math.round(t.xi.reduce((q, p) => q + p.e, 0)/n);
+    const chips = sm.chips.map((c, i) => { const v = c[1], cls = v === 0 ? '' : ((v > 0) === !!good[i] ? 'g' : 'r'); return `<span class="fxc ${cls}">${c[0]} ${v > 0 ? '+' : ''}${v}%</span>`; }).join('');
+    const o = 1 - ti, st = m && m.stats ? m.stats : null, tot = st ? Math.max(1, st[0].poss + st[1].poss) : 1;
+    return `<h3>Resumo do time</h3><div class="sgrid"><div><h4>Formação · estilo</h4><b>${t.form} · ${E.STY[t.sty|0]}</b></div><div><h4>Mentalidade · ritmo</h4><b>${E.MENT[t.ment]} · ${E.RHY[t.rhy]}${t.counter ? ' · contra-ataque' : ''}</b></div><div><h4>Overall efetivo dos ${t.xi.length} em campo</h4><b>${eff}</b></div>
+    <div><h4>Energia média</h4><b>${en}%</b></div><div><h4>Moral do time</h4><b>${band(t.mor)}</b></div><div><h4>${prep ? 'Substituições permitidas' : 'Trocas usadas'}</h4><b>${prep ? t.maxSubs : t.subs + '/' + t.maxSubs + ' · janelas ' + t.windows + '/' + t.maxWin}</b></div></div>
+    <p style="margin:10px 0 2px"><span class="mut sm">Prévia dos efeitos (sem contar o rival): </span>${chips}</p>
+    ${st ? `<h3>A partida</h3><div class="sgrid"><div><h4>Placar · minuto</h4><b>${m.score[ti]} x ${m.score[o]} · ${m.min}'</b></div><div><h4>Posse (você x rival)</h4><b>${Math.round(st[ti].poss/tot*100)}% x ${Math.round(st[o].poss/tot*100)}%</b></div><div><h4>Chutes no gol</h4><b>${st[ti].on} x ${st[o].on}</b></div><div><h4>Cartões (você)</h4><b>🟨 ${st[ti].y} · 🟥 ${st[ti].rd}</b></div><div><h4>Faltas</h4><b>${st[ti].fouls} x ${st[o].fouls}</b></div><div><h4>Lesões</h4><b>${st[ti].inj} x ${st[o].inj}</b></div></div>` : ''}`;
+  };
+  let moreOpen = false;
   function draw() {
     const showMo = !prep; reg = [];
-    const xiHtml = lineOrd(t).map(i => { const p = t.xi[i], k = ptsOf(i), bd = swp === i ? 'outline:2px solid var(--ac)' : (swp !== null ? 'background:rgba(47,125,246,.10)' : (k ? 'border-left:3px solid ' + (k >= 20 ? '#e5484d' : k >= 8 ? '#f07b29' : '#f0b429') : ''));
-      return `<tr style="${bd}"><td>${E.group(t.slots[i]) === 'GK' ? posPill(t.slots[i]) : `<button class="rolebtn" data-rs="${i}" title="Escolher a função">${posPill(t.slots[i])}<small>▾</small></button>`}</td><td>${fn(p, t.slots[i])}<div class="mut sm">${esc(roleName(t.slots[i]))} · <span style="color:${aptTag(aptOf(p, t.slots[i]))[1]}">${aptTag(aptOf(p, t.slots[i]))[0]}</span></div></td><td class="mut sm">${posL(p)}</td><td>${ovrHtml(i)}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}${p.yc ? '🟨' : ''}</td>
-      <td>${E.pmOK(p) ? `<button class="b s mini" data-pm="${i}" ${pk ? 'disabled' : ''}>${t.pm.includes(p) ? '⭐ Criador' : '☆ Criador'}</button> ` : ''}<button class="b s mini" data-sw="${i}" ${pk ? 'disabled' : ''}>${swp === i ? 'Cancelar' : swp !== null ? 'Trocar com este' : '⇄ Posição'}</button> <button class="b s mini" data-out="${i}" ${(swp !== null || pk || emg || (!prep && (subsLeft <= 0 || !winsOk))) ? 'disabled' : ''}>${sel === i ? 'escolha…' : 'Trocar'}</button></td></tr>`; }).join('');
+    const xiHtml = lineOrdV(t).map(en => { if (en.v !== undefined) { const b = en.v, evx = emg ? m.emerg.find(e => e.ti === ti) : null, why = evx && evx.k === 'red' ? 'expulsão' : evx && evx.k === 'inj' ? 'lesão' : 'jogador a menos';
+      return `<tr style="background:rgba(229,72,77,.13);outline:1px dashed #e5484d"><td>${posPill(b)}</td><td colspan="5"><b style="color:#e5484d">VAGA</b> <span class="mut sm">${E.POSN[b] || ''} sem jogador (${why})${b === 0 ? ' · <b style="color:#e5484d">⚠ sem goleiro!</b>' : ''}</span></td><td>${swp !== null ? `<button class="b mini" data-vac="${b}">Mover ${esc(t.xi[swp].n)} para cá</button>` : vt === b ? `<button class="b s mini" data-vacx>Cancelar</button> <span class="mut sm">escolha o jogador</span>` : `<button class="b mini" data-vacpick="${b}" ${pk ? 'disabled' : ''}>Preencher vaga</button>`}</td></tr>`; }
+      const i = en.i, p = t.xi[i], k = ptsOf(i), bd = swp === i ? 'outline:2px solid var(--ac)' : ((swp !== null || vt !== null) ? 'background:rgba(47,125,246,.10)' : (k ? 'border-left:3px solid ' + (k >= 20 ? '#e5484d' : k >= 8 ? '#f07b29' : '#f0b429') : ''));
+      return `<tr style="${bd}"><td>${E.group(t.slots[i]) === 'GK' ? posPill(t.slots[i]) : `<button class="rolebtn" data-rs="${i}" title="Escolher a função">${posPill(t.slots[i])}<small>▾</small></button>`}</td><td>${fn(p, t.slots[i])}<div class="mut sm">${esc(roleName(t.slots[i]))} · <span style="color:${aptTag(aptOf(p, t.slots[i]))[1]}">${aptTag(aptOf(p, t.slots[i]))[0]}</span></div></td><td class="mut sm nat">${posL(p)}</td><td>${ovrHtml(i)}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}${p.yc ? '🟨' : ''}</td>
+      <td>${E.pmOK(p) ? `<button class="b s mini" data-pm="${i}" ${pk ? 'disabled' : ''}>${t.pm.includes(p) ? '⭐ Criador' : '☆ Criador'}</button> ` : ''}<button class="b s mini" data-sw="${i}" ${pk ? 'disabled' : ''}>${vt !== null ? 'Mover para a vaga' : swp === i ? 'Cancelar' : swp !== null ? 'Trocar com este' : '⇄ Posição'}</button> <button class="b s mini" data-out="${i}" ${(swp !== null || vt !== null || pk || emg || (!prep && (subsLeft <= 0 || !winsOk))) ? 'disabled' : ''}>${sel === i ? 'escolha…' : 'Trocar'}</button></td></tr>`; }).join('');
     const bench = t.bench.filter(p => !p.inj), open = t.xi.length < E.cap(t), ev = emg ? m.emerg.find(e => e.ti === ti) : null;
-    const benchHtml = bench.map(p => `<tr><td>${posPill(p.pos)}</td><td>${fn(p, null)}</td><td>${p.o}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}</td><td>${sel !== null ? `<button class="b mini" data-in="${t.bench.indexOf(p)}">Entra</button>` : (emg && open) ? `<button class="b mini" data-fill="${t.bench.indexOf(p)}" ${subsLeft <= 0 ? 'disabled' : ''}>Entra na vaga</button>` : ''}</td></tr>`).join('');
+    const benchHtml = bench.map(p => `<tr><td>${posPill(p.pos)}</td><td>${fn(p, null)}</td><td>${p.o}</td><td><div class="bar"><i style="width:${p.e|0}%;background:${eCol(p.e)}"></i></div></td><td>${showMo ? bandChip(p.mo) : ''}</td><td>${sel !== null ? `<button class="b mini" data-in="${t.bench.indexOf(p)}">Entra</button>` : ((emg || prep) && open) ? `<button class="b mini" data-fill="${t.bench.indexOf(p)}" ${!prep && subsLeft <= 0 ? 'disabled' : ''}>${prep && vt !== null ? 'Entra como ' + (E.POSN[vt] || '') : 'Entra na vaga'}</button>` : ''}</td></tr>`).join('');
     const pkOrd = pk ? pkDefault(t) : [];
-    ov.innerHTML = `<div class="ov"><div class="box">
+    ov.innerHTML = `<div class="ov"><div class="box" data-tab="${tab}">
     <div class="row"><span class="dot" style="background:${t.color}"></span><b>${esc(t.name)}</b>${prep ? '<span class="tag">Escalação inicial</span>' : `<span class="tag">${LABEL[kind] || 'Pausa'} · ${m.min}' · ${m.score[ti]} x ${m.score[1-ti]}</span><span class="tag">Trocas: ${t.subs}/${t.maxSubs}</span><span class="tag">Janelas: ${t.windows}/${t.maxWin}${ht ? ' (esta pausa não conta)' : ''}</span>`}
     ${prep ? '' : `<span class="tag">Alojamento: ${E.CAMP[t.loj]}</span><span class="tag">Moral do time: ${band(t.mor)}</span>`}</div>
     ${prep && !(S.tn && t.ljSet) ? `<h3>Alojamento (vale para o torneio todo; só você vê)</h3><div class="seg" id="sj">${E.CAMP.map((x, i) => `<button class="${t.loj === i ? 'on' : ''}" data-j="${i}">${x}</button>`).join('')}</div><p class="mut sm">Do Militar (mais energia e disciplina) à Festa total (mais moral, mais cartões e lesões). Nesta versão o efeito é sutil.</p>` : ''}
     ${pk ? `<h3>Ordem dos batedores de pênalti</h3><table>${pkOrd.map((p, i) => `<tr><td>${i+1}º</td><td>${esc(p.n)}</td><td class="mut sm">pên. ${p.a[E.AI.pen]}</td><td>${bandChip(p.mo)}</td><td><button class="b s mini" data-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button></td></tr>`).join('')}</table>` : ''}
     ${emg ? `<p class="tag" style="background:#5b1d22;color:#fff">${ev && ev.k === 'inj' ? '🚑 ' + esc(ev.p.n) + ' se lesionou. ' + (open ? 'Entrada de reserva conta como troca normal (sem gastar janela).' : '') : '🟥 ' + (ev ? esc(ev.p.n) : '') + ' foi expulso: o time segue com um a menos. Reorganize a formação e as posições.'}</p><p class="mut sm">Pausa imediata: só o seu time ajusta; sem limite de tempo.</p>` : ''}
+    <div class="seg ctabs" id="ctb"><button data-tb="esc" class="${tab === 'esc' ? 'on' : ''}">Escalação</button><button data-tb="tat" class="${tab === 'tat' ? 'on' : ''}">Tática</button><button data-tb="ban" class="${tab === 'ban' ? 'on' : ''}">Banco (${bench.length})</button><button data-tb="res" class="${tab === 'res' ? 'on' : ''}">Resumo</button></div>
+    <div class="tp" data-t="esc">
     <h3>Formação</h3><div class="seg" id="sf">${Object.keys(E.FORM).map(f => `<button class="${t.form === f ? 'on' : ''}" data-f="${f}">${f}</button>`).join('')}</div>
+    <h3>Em campo ${sel !== null ? '— escolha o reserva que entra no lugar de ' + esc(t.xi[sel].n) : swp !== null ? '— clique em "Trocar com este" no jogador que muda de posição com ' + esc(t.xi[swp].n) + ' (Esc cancela)' : ''}</h3>
+    <div class="row" style="justify-content:space-between"><span class="mut sm">Mapa da escalação (toque num jogador para ver a ficha)</span><span class="mut sm"><span class="pos s-GK">GOL</span> <span class="pos s-ZAG">DEF</span> <span class="pos s-MF">MEIO</span> <span class="pos s-PD">PONTA</span> <span class="pos s-ATA">ATA</span></span></div>${lineMap(t, swp)}
+    ${vacHtml()}<p class="mut sm">⇄ Posição troca dois titulares de lugar, sem custo. Fora da posição natural o jogador rende menos (overall efetivo em cor: amarelo pequena perda, laranja média, vermelho grande) e cansa mais.</p>
+    <table><tr><th>Função</th><th>Jogador</th><th class="nat">Natural</th><th>Ovr</th><th>Energia</th><th>${prep ? '' : 'Moral'}</th><th></th></tr>${xiHtml}</table>
+    </div>
+    <div class="tp" data-t="tat">
     <div class="grid2"><div><h3>Mentalidade</h3><div class="seg" id="sm">${E.MENT.map((x, i) => `<button class="${t.ment === i ? 'on' : ''}" data-m="${i}">${x}</button>`).join('')}</div></div>
     <div><h3>Ritmo</h3><div class="seg" id="sr">${E.RHY.map((x, i) => `<button class="${t.rhy === i ? 'on' : ''}" data-r="${i}">${x}</button>`).join('')}</div>
     <h3>Contra-ataque</h3><div class="seg" id="sc"><button class="${!t.counter ? 'on' : ''}" data-c="0">Desligado</button><button class="${t.counter ? 'on' : ''}" data-c="1">Ligado</button></div></div></div>
     <p class="mut sm">Alto: pressão e subida rápida, mais gols a favor e contra, mais faltas, mais cansaço. Contra-ataque: transições rápidas, cansa laterais, meio e ataque; rende contra quem se expõe.</p>
     ${pk ? '' : tacHtml(t)}
-    <h3>Em campo ${sel !== null ? '— escolha o reserva que entra no lugar de ' + esc(t.xi[sel].n) : swp !== null ? '— clique em "Trocar com este" no jogador que muda de posição com ' + esc(t.xi[swp].n) + ' (Esc cancela)' : ''}</h3>
-    <div class="row" style="justify-content:space-between"><span class="mut sm">Mapa da escalação (toque num jogador para ver a ficha)</span><span class="mut sm"><span class="pos s-GK">GOL</span> <span class="pos s-ZAG">DEF</span> <span class="pos s-MF">MEIO</span> <span class="pos s-PD">PONTA</span> <span class="pos s-ATA">ATA</span></span></div>${lineMap(t, swp)}
-    ${vacHtml()}<p class="mut sm">⇄ Posição troca dois titulares de lugar, sem custo. Fora da posição natural o jogador rende menos (overall efetivo em cor: amarelo pequena perda, laranja média, vermelho grande) e cansa mais.</p>
-    <table><tr><th>Função</th><th>Jogador</th><th>Natural</th><th>Ovr</th><th>Energia</th><th>${prep ? '' : 'Moral'}</th><th></th></tr>${xiHtml}</table>
     ${pk || emg ? '' : takerHtml(t)}
+    </div>
+    <div class="tp" data-t="ban">
     <h3>Banco (${bench.length})</h3><table><tr><th>Pos.</th><th>Jogador</th><th>Ovr</th><th>Energia</th><th>${prep ? '' : 'Moral'}</th><th></th></tr>${benchHtml}</table>
     ${t.squad.some(p => p.una) ? `<p class="sm" style="color:var(--wa)">Indisponíveis: ${t.squad.filter(p => p.una).map(p => esc(p.n) + (p.una === 'susp' ? ' (suspenso, ' + p.tsusp + ' jogo' + (p.tsusp > 1 ? 's' : '') + ')' : ' (lesionado, ' + p.tinj + ' jogo' + (p.tinj > 1 ? 's' : '') + ')')).join(' · ')}</p>` : ''}
-    <div class="row" style="margin-top:14px"><button class="b" id="ok">Confirmar</button><button class="b s" id="rst">Restaurar posições</button>${prep ? '<button class="b s" id="ba">Melhor arranjo</button>' : ''}${swp !== null ? '<button class="b s" id="swc">Cancelar troca</button>' : ''}${prep ? '<button class="b s" id="ap">Escalação automática</button>' : '<button class="b s" id="ap">Piloto automático</button>'}</div></div>${fp ? fichaHtml(fp.p, {t, slot: fp.slot, prep}) : ''}${rs !== null ? roleMenuHtml(t, rs) : ''}</div>`;
+    </div>
+    <div class="tp" data-t="res">${resHtml()}</div>
+    <div class="row cfrow"><button class="b" id="ok" ${prep && t.xi.length < 11 ? 'disabled title="Preencha as 11 vagas"' : ''}>Confirmar</button>${prep && t.xi.length < 11 ? '<button class="b s" id="cmp">Completar automaticamente (' + (11 - t.xi.length) + ' vagas)</button>' : ''}<button class="b s cfm" id="cfm">Mais ⋯</button><span class="cfmore ${moreOpen ? 'open' : ''}"><button class="b s" id="rst">Restaurar posições</button>${prep ? '<button class="b s" id="ba">Melhor arranjo</button>' : ''}${swp !== null ? '<button class="b s" id="swc">Cancelar troca</button>' : ''}${prep ? '<button class="b s" id="ap">Escalação automática</button>' : '<button class="b s" id="ap">Piloto automático</button>'}</span></div></div>${fp ? fichaHtml(fp.p, {t, slot: fp.slot, prep}) : ''}${rs !== null ? roleMenuHtml(t, rs) : ''}</div>`;
+    { const cm = ov.querySelector('#cfm'); if (cm) cm.onclick = () => { moreOpen = !moreOpen; draw(); }; }
+    ov.querySelectorAll('[data-tb]').forEach(b => b.onclick = () => { tab = b.dataset.tb; ov.querySelector('.box').dataset.tab = tab; ov.querySelectorAll('[data-tb]').forEach(x => x.classList.toggle('on', x === b)); });
     ov.querySelectorAll('[data-rs]').forEach(b => b.onclick = () => { rs = +b.dataset.rs; draw(); });
     ov.querySelectorAll('[data-ro]').forEach(b => b.onclick = () => { if (E.setRole(t, rs, b.dataset.ro)) { rs = null; sel = null; draw(); } });
     ov.querySelectorAll('[data-rclose]').forEach(b => b.onclick = e => { if (b.tagName === 'BUTTON' || e.target === b) { rs = null; draw(); } });
@@ -2270,20 +2459,23 @@ function coachPanel(ti, prep, done, ovEl) {
     if ($('#ss')) $('#ss').onclick = e => { const v = e.target.dataset.s; if (v !== undefined) { E.setStyle(t, +v); draw(); } };
     if ($('#so')) $('#so').onclick = e => { const v = e.target.dataset.ov, k = e.target.parentElement && e.target.parentElement.dataset.ok; if (v !== undefined && k) { t.opt[k] = +v; draw(); } };
     ov.querySelectorAll('[data-pm]').forEach(b => b.onclick = () => { E.setPm(t, t.xi[+b.dataset.pm]); draw(); });
-    ov.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => { const i = +b.dataset.sw; if (swp === null) swp = i; else if (swp === i) swp = null; else { E.swapSlots(t, swp, i); swp = null; } sel = null; draw(); });
+    ov.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => { const i = +b.dataset.sw; if (vt !== null) { E.moveVac(t, i, vt); vt = null; swp = null; sel = null; draw(); return; } if (swp === null) swp = i; else if (swp === i) swp = null; else { E.swapSlots(t, swp, i); swp = null; } sel = null; draw(); });
+    ov.querySelectorAll('[data-vacpick]').forEach(b => b.onclick = () => { vt = +b.dataset.vacpick; swp = null; sel = null; tab = 'ban'; draw(); });
+    ov.querySelectorAll('[data-vacx]').forEach(b => b.onclick = () => { vt = null; tab = 'esc'; draw(); });
     ov.querySelectorAll('[data-vac]').forEach(b => b.onclick = () => { if (swp !== null) E.moveVac(t, swp, +b.dataset.vac); swp = null; sel = null; draw(); });
     $('#rst').onclick = () => { E.restoreTeam(t, snap, prep); swp = null; sel = null; draw(); };
     if ($('#ba')) $('#ba').onclick = () => { const ch = E.bestArrangement(t); swp = null; sel = null; draw(); if (!ch) { const h = document.createElement('span'); h.className = 'tag'; h.textContent = 'Já é o melhor arranjo (ganho menor que 1 ponto).'; $('#ba').after(h); } };
     if ($('#swc')) $('#swc').onclick = () => { swp = null; draw(); };
-    ov.querySelectorAll('[data-out]').forEach(b => b.onclick = () => { sel = sel === +b.dataset.out ? null : +b.dataset.out; draw(); });
+    ov.querySelectorAll('[data-out]').forEach(b => b.onclick = () => { sel = sel === +b.dataset.out ? null : +b.dataset.out; tab = sel !== null ? 'ban' : 'esc'; draw(); });
     ov.querySelectorAll('[data-in]').forEach(b => b.onclick = () => {
       const out = t.xi[sel], inn = t.bench[+b.dataset.in];
       if (prep) { const xi = t.xi.slice(); xi[sel] = inn; E.setLineup(t, t.form, xi); }
       else { if (m.subs(ti, out, inn)) { if (!ht && !S.winUsed[ti]) { S.winUsed[ti] = true; t.windows++; } } }
-      sel = null; draw();
+      sel = null; tab = 'esc'; draw();
     });
-    ov.querySelectorAll('[data-fill]').forEach(b => b.onclick = () => { m.fill(ti, t.bench[+b.dataset.fill]); sel = null; draw(); });
+    ov.querySelectorAll('[data-fill]').forEach(b => b.onclick = () => { if (prep) { E.fillSlot(t, t.bench[+b.dataset.fill], vt); vt = null; } else m.fill(ti, t.bench[+b.dataset.fill]); sel = null; tab = 'esc'; draw(); });
     $('#ap').onclick = () => { if (prep) E.autoPick(t, null); else E.autopilot(m, ti); sel = null; draw(); };
+    if ($('#cmp')) $('#cmp').onclick = () => { E.completeLineup(t); vt = null; swp = null; sel = null; draw(); };
     $('#ok').onclick = () => done(false);
   }
   draw();
@@ -2322,18 +2514,25 @@ function handlePause() {
   }
 }
 function renderMatch(a) {
-  a.innerHTML = `<div class="card"><div class="score"><div class="tm"><span class="dot" id="d0"></span><span id="nm0"></span></div><span id="sc0">0</span><span>x</span><span id="sc1">0</span><div class="tm"><span id="nm1"></span><span class="dot" id="d1"></span></div></div>
-  <div style="text-align:center" class="mut"><span id="clk" class="big" style="color:var(--tx)">0'</span> <span id="ph"></span><div id="pks" class="sm"></div></div>
-  <div class="row" style="justify-content:center;margin-top:8px"><button class="b" id="pp">⏸ Pausar</button><div class="seg" id="spd"><button data-s="330" class="${S.speed === 330 ? 'on' : ''}">Normal</button><button data-s="110" class="${S.speed === 110 ? 'on' : ''}">Rápido</button><button data-s="12" class="${S.speed === 12 ? 'on' : ''}">Instantâneo</button></div></div>
-  <div class="row" style="justify-content:center;margin-top:8px" id="rq"></div></div>
-  <div class="card"><div class="hp-live" id="pt"></div></div>
-  <div class="grid2"><div class="card"><div class="stat" id="st"></div></div>
-  <div class="card"><h2>Lances</h2><div class="log" id="lg"></div></div></div>`;
+  a.innerHTML = `<div class="msb"><div class="tm"><span class="dot" id="d0"></span><span id="nm0"></span></div>
+  <div class="sbm"><span id="sc0">0</span><div class="clk"><b id="clk">0'</b><small id="ph"></small></div><span id="sc1">0</span></div>
+  <div class="tm r"><span id="nm1"></span><span class="dot" id="d1"></span></div>
+  <div class="ctl"><button class="b" id="pp">⏸ Pausar</button><div class="seg" id="spd"><button data-s="330" class="${S.speed === 330 ? 'on' : ''}">Normal</button><button data-s="110" class="${S.speed === 110 ? 'on' : ''}">Rápido</button><button data-s="12" class="${S.speed === 12 ? 'on' : ''}">Instantâneo</button></div><span id="rq" class="row"></span><span id="pks" class="sm"></span></div></div>
+  <div class="mtabs">${[['campo', 'Campo'], ['relato', 'Relato'], ['stats', 'Estatísticas']].map(([k, l]) => `<button data-mt="${k}" class="${(S.mtab || 'campo') === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+  <div class="mgrid" data-mt="${S.mtab || 'campo'}"><div><div class="card mc-campo"><div class="hp-live" id="pt"></div><div class="lastev" id="lastev"></div></div><div class="card mc-stats"><h2 style="margin-top:0">Estatísticas</h2><div id="st"></div></div></div>
+  <div class="card mright mc-relato"><div class="row"><h2 style="margin:0">Relato</h2><div class="seg lgf" id="lgf"><button data-f="all" class="${S.lgf === 'all' ? 'on' : ''}">Tudo</button><button data-f="mov" class="${S.lgf === 'mov' || !S.lgf ? 'on' : ''}">Lances</button><button data-f="goal" class="${S.lgf === 'goal' ? 'on' : ''}">Gols</button></div></div><div class="log" id="lg"></div></div></div>`;
+  if (!S.lgf) S.lgf = 'mov';
+  document.querySelectorAll('.mtabs [data-mt]').forEach(b => b.onclick = () => { S.mtab = b.dataset.mt; renderMatch($('#app')); updMatch(); });
   $('#pp').onclick = () => { if (S.running) pauseGame(); else if (!S.coachQueue.length) resume(); };
   $('#spd').onclick = e => { const s = e.target.dataset.s; if (!s) return; S.speed = +s; document.querySelectorAll('#spd button').forEach(b => b.classList.toggle('on', b === e.target)); if (S.running) resume(); };
-  S.m.log.forEach(addLog); updMatch();
+  $('#lgf').onclick = e => { const f = e.target.dataset.f; if (!f) return; S.lgf = f; document.querySelectorAll('#lgf button').forEach(b => b.classList.toggle('on', b === e.target)); applyLgf(); };
+  S.m.log.forEach(addLog); applyLgf(); updMatch();
 }
-function addLog(ev) { const l = $('#lg'); if (!l) return; const d = document.createElement('div'); d.className = 'ev-' + (ev.type === 'pkgoal' ? 'goal' : ev.type === 'pkmiss' ? 'inj' : ev.type); d.innerHTML = (ev.m >= 0 && ev.type !== 'start' ? `<span class="mut">${ev.m}'</span> ` : '') + esc(ev.text); l.appendChild(d); l.scrollTop = l.scrollHeight; }
+const EVI = {goal: '⚽', pkgoal: '⚽', pkmiss: '❌', save: '🧤', miss: '🎯', block: '🛡️', brk: '✨', card: '🟨', red: '🟥', sub: '🔁', inj: '🚑', pen: '🥅', fk: '🎯', var: '📺', ht: '⏱️', end: '🏁', req: '⏸', pkstart: '🥅', start: '▶️'};
+const lgVis = ty => S.lgf === 'all' || (S.lgf === 'goal' ? (ty === 'goal' || ty === 'pkgoal') : ty !== 'play');
+function applyLgf() { const l = $('#lg'); if (!l) return; l.querySelectorAll('[data-ty]').forEach(d => { d.style.display = lgVis(d.dataset.ty) ? '' : 'none'; }); l.scrollTop = l.scrollHeight; }
+function addLog(ev) { const l = $('#lg'); if (!l) return; const d = document.createElement('div'); d.className = 'lgi ev-' + (ev.type === 'pkgoal' ? 'goal' : ev.type === 'pkmiss' ? 'inj' : ev.type); d.dataset.ty = ev.type;
+  d.innerHTML = `<span class="mi">${ev.m >= 0 && ev.type !== 'start' ? ev.m + "'" : ''}</span><span>${EVI[ev.type] || ''}</span><span>${esc(ev.text)}</span>`; d.style.display = lgVis(ev.type) ? '' : 'none'; l.appendChild(d); l.scrollTop = l.scrollHeight; const le = $('#lastev'); if (le && ev.type !== 'start') le.textContent = (ev.m >= 0 ? ev.m + "' " : '') + (EVI[ev.type] || '') + ' ' + ev.text; }
 function updMatch() {
   const m = S.m; if (!$('#sc0')) return;
   $('#nm0').textContent = S.teams[0].name; $('#nm1').textContent = S.teams[1].name; $('#d0').style.background = S.teams[0].color; $('#d1').style.background = S.teams[1].color;
@@ -2344,8 +2543,13 @@ function updMatch() {
   const nx = E.STOPS.find(x => x > m.min), can = !m.et && !m.shoot && !m.over && nx;
   $('#rq').innerHTML = [0,1].filter(i => !S.teams[i].bot).map(i => isRemoteT(i) ? `<span class="tag"><span class="dot" style="background:${S.teams[i].color}"></span> ${esc(S.teams[i].name)} (celular): ${m.req[i] ? '⏸ pediu pausa' : can ? 'pode pedir pausa' : 'sem pausas opcionais'}</span>` : `<button class="b s" data-rq="${i}" ${(!can || m.req[i]) ? 'disabled' : ''}><span class="dot" style="background:${S.teams[i].color}"></span> ${esc(S.teams[i].name)}: ${m.req[i] ? 'pausa pedida' : can ? 'pedir pausa (aos ' + nx + "')" : 'sem pausas opcionais'}</button>`).join('');
   document.querySelectorAll('[data-rq]').forEach(b => b.onclick = () => { m.requestPause(+b.dataset.rq); updMatch(); });
-  const s = m.stats, tot = Math.max(1, s[0].poss + s[1].poss), rows = [['Posse', Math.round(s[0].poss/tot*100)+'%', Math.round(s[1].poss/tot*100)+'%'], ['Chutes (no alvo)', s[0].shots+' ('+s[0].on+')', s[1].shots+' ('+s[1].on+')'], ['Faltas', s[0].fouls, s[1].fouls], ['Amarelos', s[0].y, s[1].y], ['Vermelhos', s[0].rd, s[1].rd], ['Contra-ataques', s[0].counters, s[1].counters], ['Lances de craque', s[0].brk, s[1].brk], ['Jogadas do criador', s[0].pmc, s[1].pmc], ['Energia média', avgE(0), avgE(1)]];
-  $('#st').innerHTML = rows.map(r => `<span>${r[1]}</span><b>${r[0]}</b><span>${r[2]}</span>`).join('');
+  const s = m.stats, tot = Math.max(1, s[0].poss + s[1].poss), p0 = Math.round(s[0].poss/tot*100), sh = Math.max(1, s[0].on + s[1].on), C = S.teams.map(t => t.color);
+  const bar = (l, a, b, ta, tb, fa, fb) => `<div class="sbar"><span>${fa}</span><div><div class="mut sm" style="text-align:center">${l}</div><div class="tr"><i style="width:${a/Math.max(1, a + b)*100}%;background:${C[0]}"></i><i style="width:${b/Math.max(1, a + b)*100}%;background:${C[1]}"></i></div></div><span>${fb}</span></div>`;
+  const avgMo = i => { const t = S.teams[i]; return band(t.xi.reduce((q, p) => q + E.effMo(p, t), 0)/Math.max(1, t.xi.length)); };
+  const two = (f) => `<div class="two"><span>${f(0)}</span><span>${f(1)}</span></div>`;
+  $('#st').innerHTML = bar('Posse de bola', p0, 100 - p0, 0, 0, p0 + '%', (100 - p0) + '%') + bar('Chutes no gol (chutes)', s[0].on, s[1].on, 0, 0, s[0].on + ' (' + s[0].shots + ')', s[1].on + ' (' + s[1].shots + ')') + `<div class="sgrid">
+    <div><h4>Cartões</h4>${two(i => '🟨 ' + s[i].y + ' · 🟥 ' + s[i].rd)}</div><div><h4>Substituições (usadas/máx.)</h4>${two(i => S.teams[i].subs + '/' + S.teams[i].maxSubs)}</div>
+    <div><h4>Cansaço (energia média)</h4>${two(i => avgE(i))}</div><div><h4>Moral média</h4>${two(i => avgMo(i))}</div></div>`;
   drawPitch();
   if (S.net) S.net.sync();
 }
@@ -2366,22 +2570,52 @@ function drawPitch() {
     if (o.dataset.ec !== ec) { o.style.borderColor = ec; o.dataset.ec = ec; } b.title = p.n + ' · ' + E.POSL[t.slots[i]] + ' · energia ' + (p.e|0) + '%'; });
 }
 function upd() { const b = $('#pp'); if (b) b.textContent = S.running ? '⏸ Pausar' : '▶ Continuar'; }
-function endMatch() { if (S.tn) tnProcess(); S.stage = 'end'; render(); }
+function endMatch() { if (S.tn) tnProcess(); S.stage = 'end'; S.tlf = 'all'; render(); }
 
-function renderEnd(a) {
-  const m = S.m, T = S.teams, s = m.stats, best = m.best();
+// ---------- resumo da partida (v26)
+const rtCol = n => n >= 8 ? '#27c46b' : n >= 7 ? '#8fd14f' : n >= 6 ? '#e3b93c' : n >= 5 ? '#f08a3c' : '#e5484d';
+const rtChip = n => `<span class="rt" style="background:${rtCol(n)}">${n.toFixed(1)}</span>`;
+const avgMoI = i => { const t = S.teams[i]; return band(t.xi.reduce((q, p) => q + E.effMo(p, t), 0)/Math.max(1, t.xi.length)); };
+const sbarH = (l, a, b, fa, fb) => { const C = S.teams.map(t => t.color); return `<div class="sbar"><span>${fa}</span><div><div class="mut sm" style="text-align:center">${l}</div><div class="tr"><i style="width:${a/Math.max(1, a + b)*100}%;background:${C[0]}"></i><i style="width:${b/Math.max(1, a + b)*100}%;background:${C[1]}"></i></div></div><span>${fb}</span></div>`; };
+function endStatsHtml(m) {
+  const s = m.stats, tot = Math.max(1, s[0].poss + s[1].poss), p0 = Math.round(s[0].poss/tot*100), two = f => `<div class="two"><span>${f(0)}</span><span>${f(1)}</span></div>`;
+  return sbarH('Posse de bola', p0, 100 - p0, p0 + '%', (100 - p0) + '%') + sbarH('Chutes no gol (chutes)', s[0].on, s[1].on, s[0].on + ' (' + s[0].shots + ')', s[1].on + ' (' + s[1].shots + ')')
+    + sbarH('Faltas', s[0].fouls, s[1].fouls, s[0].fouls, s[1].fouls) + sbarH('Escanteios', s[0].corners, s[1].corners, s[0].corners, s[1].corners) + sbarH('Impedimentos', s[0].offs, s[1].offs, s[0].offs, s[1].offs)
+    + `<div class="sgrid"><div><h4>Cartões</h4>${two(i => '🟨 ' + s[i].y + ' · 🟥 ' + s[i].rd)}</div><div><h4>Substituições (usadas/máx.)</h4>${two(i => S.teams[i].subs + '/' + S.teams[i].maxSubs)}</div><div><h4>Lesões</h4>${two(i => s[i].inj)}</div>
+    <div><h4>Cansaço (energia média)</h4>${two(i => avgE(i))}</div><div><h4>Moral média</h4>${two(i => avgMoI(i))}</div><div><h4>Lances de craque</h4>${two(i => s[i].brk)}</div></div>`;
+}
+function endPitchHtml(m, rs, best) {
+  const T = S.teams, nt = new Map(rs.map(x => [x.p, x.n]));
+  let h = '<i class="ln mid"></i><i class="ln cc"></i><i class="ln ga"></i><i class="ln gb"></i>';
+  T.forEach((t, ti) => t.xi.forEach((p, i) => {
+    const [d, lat] = E.POS[t.slots[i]], x = ti === 0 ? 5 + d/6.4*42 : 95 - d/6.4*42, y = 50 + (ti === 0 ? 1 : -1)*lat*19, n = nt.get(p);
+    h += `<div class="vpl" style="left:${x}%;top:${y}%;cursor:default"><span class="vpo" style="background:${n ? rtCol(n) : '#555'};border-color:${t.color};color:#0b1410">${n ? n.toFixed(1) : '–'}</span><span class="vpn">${best && best.p === p ? '⭐ ' : ''}${esc(short(p.n))}</span></div>`;
+  }));
+  return h;
+}
+const tlOk = (ty, f) => f === 'goal' ? (ty === 'goal' || ty === 'pkgoal' || ty === 'var') : f === 'card' ? (ty === 'card' || ty === 'red') : f === 'sub' ? (ty === 'sub' || ty === 'inj') : f === 'chance' ? ['save', 'miss', 'block', 'brk', 'pen', 'fk'].includes(ty) : ty !== 'play';
+const tlHtml = (m, f) => m.log.filter(ev => tlOk(ev.type, f)).map(ev => `<div class="lgi ev-${ev.type === 'pkgoal' ? 'goal' : ev.type === 'pkmiss' ? 'inj' : ev.type}" style="${ev.team >= 0 ? 'border-left:3px solid ' + S.teams[ev.team].color + ';padding-left:6px' : ''}"><span class="mi">${ev.m >= 0 && ev.type !== 'start' ? ev.m + "'" : ''}</span><span>${EVI[ev.type] || ''}</span><span>${esc(ev.text)}</span></div>`).join('') || '<div class="mut sm">Nenhum lance deste tipo.</div>';
+function ratingListHtml(rs, best, ti) {
+  return rs.filter(x => x.ti === ti).sort((a, b) => b.n - a.n).map(x => { const s = x.p.st; return `<div class="rli">${rtChip(x.n)}<span>${best && best.p === x.p ? '⭐ ' : ''}${esc(x.p.n)}</span><small class="mut">${posL(x.p)} · ${s.min}'${s.g ? ' · ⚽' + s.g : ''}${s.a ? ' · 🅰' + s.a : ''}${s.sv ? ' · 🧤' + s.sv : ''}${s.y ? ' · 🟨' : ''}${s.r ? ' · 🟥' : ''}</small></div>`; }).join('');
+}
+function endSummaryHtml(m, phone) {
+  const T = S.teams, rs = m.ratings(), best = m.best(), f = S.tlf || 'all';
   const res = m.winner < 0 ? 'Empate' : 'Vitória de ' + T[m.winner].name + (m.pkScore ? ` nos pênaltis (${m.pkScore[0]} x ${m.pkScore[1]})` : m.et ? ' na prorrogação' : '');
   const sc = [0,1].map(ti => T[ti].squad.filter(p => p.st.g).map(p => esc(p.n) + (p.st.g > 1 ? ' ×' + p.st.g : '')).join(', ') || '—');
-  const tot = Math.max(1, s[0].poss + s[1].poss);
-  a.innerHTML = `<div class="card"><div class="score"><div class="tm"><span class="dot" style="background:${T[0].color}"></span>${esc(T[0].name)}</div><span>${m.score[0]}</span><span>x</span><span>${m.score[1]}</span><div class="tm">${esc(T[1].name)}<span class="dot" style="background:${T[1].color}"></span></div></div>
-  <p style="text-align:center" class="big">${res}</p>
-  <div class="grid2"><div class="mut sm">${T[0].bot ? '🤖 ' + E.BOTLV[T[0].bot.lvl] + ' · ' + E.STYLES[T[0].bot.style] + ' · ' : ''}Estilo: ${E.STY[T[0].sty|0]} · Alojamento: ${E.CAMP[T[0].loj]} · Gols: ${sc[0]}</div><div class="mut sm">${T[1].bot ? '🤖 ' + E.BOTLV[T[1].bot.lvl] + ' · ' + E.STYLES[T[1].bot.style] + ' · ' : ''}Estilo: ${E.STY[T[1].sty|0]} · Alojamento: ${E.CAMP[T[1].loj]} · Gols: ${sc[1]}</div></div></div>
-  <div class="grid2"><div class="card"><h2>Estatísticas</h2><div class="stat">${[['Posse', Math.round(s[0].poss/tot*100)+'%', Math.round(s[1].poss/tot*100)+'%'], ['Chutes', s[0].shots, s[1].shots], ['No alvo', s[0].on, s[1].on], ['Faltas', s[0].fouls, s[1].fouls], ['Amarelos', s[0].y, s[1].y], ['Vermelhos', s[0].rd, s[1].rd], ['Lesões', s[0].inj, s[1].inj], ['Lances de craque', s[0].brk, s[1].brk], ['Jogadas do criador', s[0].pmc, s[1].pmc], ['Gols com passe do criador', s[0].pma, s[1].pma], ['Substituições', T[0].subs, T[1].subs], ['Moral do time ao fim', E.band(T[0].mor), E.band(T[1].mor)]].map(r => `<span>${r[1]}</span><b>${r[0]}</b><span>${r[2]}</span>`).join('')}</div></div>
-  <div class="card"><h2>Craque do jogo</h2>${best ? `<div class="big">${esc(best.p.n)}</div><div class="mut">${esc(T[best.ti].name)} · ${posL(best.p)} · ovr ${best.p.o}</div><p>${best.p.st.g} gol(s), ${best.p.st.a} assist., ${best.p.st.sv} defesas, ${best.p.st.min} min.</p>` : ''}</div></div>
-  <div class="card"><h2>Lances</h2><div class="log" style="height:260px" id="lg2">${m.log.map(ev => `<div class="ev-${ev.type === 'pkgoal' ? 'goal' : ev.type === 'pkmiss' ? 'inj' : ev.type}">${ev.m >= 0 && ev.type !== 'start' ? `<span class="mut">${ev.m}'</span> ` : ''}${esc(ev.text)}</div>`).join('')}</div></div>
-  <div class="row"><button class="b s" id="xp">Exportar dados da partida (arquivo)</button>${S.tn ? '<button class="b" id="tback">Voltar ao torneio</button>' : '<button class="b" id="rm">Revanche (mesmos elencos)</button><button class="b s" id="nw">Novos elencos</button>'}</div>`;
+  const head = `<div class="card"><div class="score"><div class="tm"><span class="dot" style="background:${T[0].color}"></span>${esc(T[0].name)}</div><span>${m.score[0]}</span><span>x</span><span>${m.score[1]}</span><div class="tm">${esc(T[1].name)}<span class="dot" style="background:${T[1].color}"></span></div></div>
+  <p style="text-align:center" class="big">${res}</p><div class="grid2"><div class="mut sm">Gols: ${sc[0]}</div><div class="mut sm">Gols: ${sc[1]}</div></div></div>`;
+  const mvp = best ? `<div class="mvp"><span class="mvs">⭐</span><div><div class="mut sm">Melhor em campo</div><div class="big">${esc(best.p.n)} ${rtChip(best.n)}</div><div class="mut sm">${esc(T[best.ti].name)} · ${posL(best.p)} · ${best.p.st.g} gol(s), ${best.p.st.a} assist., ${best.p.st.sv} defesas, ${best.p.st.min} min</div></div></div>` : '';
+  const campo = `<div class="card">${mvp}<div class="hp-live" id="pt2">${endPitchHtml(m, rs, best)}</div><div class="grid2" style="margin-top:10px"><div><h3 style="margin:0 0 4px"><span class="dot" style="background:${T[0].color}"></span> ${esc(T[0].name)}</h3>${ratingListHtml(rs, best, 0)}</div><div><h3 style="margin:0 0 4px"><span class="dot" style="background:${T[1].color}"></span> ${esc(T[1].name)}</h3>${ratingListHtml(rs, best, 1)}</div></div>
+  <p class="mut sm" style="margin:8px 0 0">Nota 0–10 pelo desempenho nos lances (gols, assistências, defesas, desarmes, gols sofridos, cartões). Reservas só com 20 min ou mais.</p></div>`;
+  const tl = `<div class="card mright"><div class="row"><h2 style="margin:0">Linha do tempo</h2>${phone ? '' : `<div class="seg" id="tlf">${[['all', 'Tudo'], ['goal', 'Gols'], ['card', 'Cartões'], ['sub', 'Trocas e lesões'], ['chance', 'Chances']].map(([k, l]) => `<button data-f="${k}" class="${f === k ? 'on' : ''}">${l}</button>`).join('')}</div>`}</div><div class="log" id="tlg">${tlHtml(m, phone ? 'goal' === f ? 'goal' : 'all' : f)}</div></div>`;
+  return head + `<div class="mgrid"><div>${campo}<div class="card"><h2 style="margin-top:0">Estatísticas</h2>${endStatsHtml(m)}</div></div>${tl}</div>`;
+}
+function renderEnd(a) {
+  const m = S.m;
+  a.innerHTML = endSummaryHtml(m, false) + `<div class="row"><button class="b s" id="xp">Exportar dados da partida (arquivo)</button>${S.tn ? '<button class="b" id="tback">Continuar</button>' : '<button class="b" id="rm">Revanche (mesmos elencos)</button><button class="b s" id="nw">Novos elencos</button>'}</div>`;
   $('#xp').onclick = exportMatch;
-  if (S.tn) { $('#tback').onclick = () => { S.stage = 'tn'; render(); }; return; }
+  const tf = $('#tlf'); if (tf) tf.onclick = e => { const k = e.target.dataset.f; if (!k) return; S.tlf = k; $('#tlg').innerHTML = tlHtml(m, k); tf.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.f === k)); };
+  if (S.tn) { $('#tback').onclick = () => { S.stage = 'tn'; S.ttab = 'tab'; render(); }; return; }
   $('#rm').onclick = () => { S.teams.forEach(t => E.resetTeam(t)); S.prepDone = S.teams.map(t => !!t.bot); S.stage = 'setup'; render(); };
   $('#nw').onclick = () => { S.teams = null; S.stage = 'setup'; render(); };
 }
@@ -2447,14 +2681,14 @@ const tnName = id => S.P[id].name, tnCol = id => S.P[id].color;
 const tnFmtName = f => f === 'groups' ? 'Grupos + mata-mata' : 'Pontos corridos';
 const dl = (name, text) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], {type:'application/json'})); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); };
 function startTournament(fmt) {
-  const ids = [...Array(S.n).keys()], tn = Tourn.create(ids, fmt, Math.random); tn.var = S.var;
+  const ids = [...Array(S.n).keys()], tn = Tourn.create(ids, fmt, Math.random); tn.var = S.var; tn.scratch = !!S.scratch; tn.sdone = {};
   tn.teams = ids.map(i => { const t = E.mkTeam(S.P[i].name, S.P[i].color, S.squads[i]); if (S.P[i].type >= 0) { E.mkBot(t, S.P[i].type); t.ljSet = true; } t.squad.forEach(p => { p.tbase = p.mo0; p.tsusp = 0; p.tinj = 0; p.tyc = 0; }); return t; });
   tn.cur = null; S.tn = tn; S.stage = 'tn'; S.tnProc = null; S.tab = 'home'; render();
 }
 function tnPrepareTeam(t) {
   t.subs = 0; t.windows = 0; t.maxSubs = 5; t.maxWin = 3;
   if (t.tstart) { E.restoreTeam(t, t.tstart.sn, true); t.ment = t.tstart.ment; t.rhy = t.tstart.rhy; t.counter = t.tstart.counter; }
-  t.squad.forEach(p => { p.yc = 0; p.red = false; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0}; p.una = p.tsusp > 0 ? 'susp' : p.tinj > 0 ? 'inj' : null; p.inj = !!p.una; });
+  t.squad.forEach(p => { p.yc = 0; p.red = false; p.st = {g:0,a:0,sv:0,sh:0,min:0,y:0,r:0,tk:0,ga:0}; p.una = p.tsusp > 0 ? 'susp' : p.tinj > 0 ? 'inj' : null; p.inj = !!p.una; });
   if (t.bot) { const lj = t.loj; E.botSetup(t); t.loj = lj; t.squad.forEach(p => { p.inj = !!p.una; }); return; }
   let ch = false;
   t.xi.forEach((p, i) => {
@@ -2469,7 +2703,7 @@ function tnNext() {
   const a = nx.m.a, b = nx.m.b; tn.cur = nx;
   if (tn.ev) { tn.ev = null; }
   S.var = tn.var !== false; S.pair = [a, b]; S.names = [tnName(a), tnName(b)]; S.cols = [tnCol(a), tnCol(b)]; S.types = [S.P[a].type, S.P[b].type]; S.ko = nx.m.ko;
-  S.teams = [a, b].map(id => tn.teams[id]); S.teams.forEach((t, i) => { t.name = S.names[i]; t.color = S.cols[i]; tnPrepareTeam(t); });
+  S.teams = [a, b].map(id => tn.teams[id]); S.teams.forEach((t, i) => { t.name = S.names[i]; t.color = S.cols[i]; tnPrepareTeam(t); if (tn.scratch && !t.bot && !(tn.sdone || {})[[a, b][i]]) E.clearLineup(t); });
   S.prepDone = S.teams.map(t => !!t.bot); S.stage = 'tprep'; S.tnProc = null; render();
 }
 function renderTprep(a) {
@@ -2484,14 +2718,14 @@ function renderTprep(a) {
   $('#go').onclick = startMatch; $('#back').onclick = () => { S.stage = 'tn'; render(); };
   if ($('#fast')) $('#fast').onclick = () => { tnSnapStart(); S.m = E.simulate(S.teams[0], S.teams[1], undefined, {ko: S.ko, var: S.var}); endMatch(); };
 }
-function tnSnapStart() { S.teams.forEach(t => { t.tstart = {sn: E.snapTeam(t), ment: t.ment, rhy: t.rhy, counter: t.counter}; t.tstart.sn.bench = t.bench.slice(); }); }
+function tnSnapStart() { S.teams.forEach(t => E.completeLineup(t)); if (S.tn && S.pair) { S.tn.sdone = S.tn.sdone || {}; S.pair.forEach(id => { S.tn.sdone[id] = true; }); } S.teams.forEach(t => { t.tstart = {sn: E.snapTeam(t), ment: t.ment, rhy: t.rhy, counter: t.counter}; t.tstart.sn.bench = t.bench.slice(); }); }
 const clamp100 = v => Math.max(0, Math.min(100, v));
 function tnProcess() {
   const tn = S.tn, nx = tn.cur, m = S.m; if (!nx || S.tnProc === m) return; S.tnProc = m;
   const ids = [nx.m.a, nx.m.b], sc = m.score;
   let w = -1; if (m.winner >= 0) w = ids[m.winner]; else if (sc[0] !== sc[1]) w = sc[0] > sc[1] ? ids[0] : ids[1];
   const summ = {ri: nx.ri, a: ids[0], b: ids[1], sa: sc[0], sb: sc[1], et: !!m.et, pk: m.pkScore ? m.pkScore.slice() : null, win: w, sc: [[], []], cards: [], inj: [], best: null, log: m.log.map(x => ({m: x.m, type: x.type, text: x.text}))};
-  const b = m.best(); if (b) summ.best = {n: b.p.n, id: ids[b.ti], ovr: b.p.o};
+  const b = m.best(); if (b) summ.best = {n: b.p.n, id: ids[b.ti], ovr: b.p.o, nt: b.n};
   [0, 1].forEach(si => {
     const id = ids[si], t = tn.teams[id], gf = sc[si], ga = sc[1 - si], won = w === id;
     t.squad.forEach((p, k) => {
@@ -2500,6 +2734,7 @@ function tnProcess() {
       if (pl) {
         p.tplr = true;
         const key = id + '|' + p.id, e = tn.ps[key] || (tn.ps[key] = {n: p.n, t: id, c: catOf(p.pos), o: p.o, g: 0, a: 0, sv: 0, min: 0, y: 0, r: 0, w: 0, j: 0, gk: 0, pts: 0});
+        if (s.min >= 20) { e.rs = (e.rs || 0) + m.rate(p, si); e.rn = (e.rn || 0) + 1; }
         e.j++; e.g += s.g; e.a += s.a; e.sv += s.sv; e.min += s.min; e.y += s.y; e.r += s.r; if (won) e.w++;
         if (e.c === 'GK') e.gk += s.sv + (ga === 0 ? 3 : 0) - ga * 0.5;
         e.pts += s.g * 4 + s.a * 3 + s.sv + (won ? 1 : 0) - s.y * 1 - s.r * 3;
@@ -2552,14 +2787,52 @@ function tnLoad(txt) {
 }
 const tnRk = tn => tn.fmt === 'groups' ? Tourn.groupRank(tn) : [Tourn.leagueRank(tn)];
 function tnTable(rk, title, hl) {
-  return `<div class="card"><h3 style="margin-top:0">${title}</h3><table><tr><th>#</th><th>Time</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th></tr>${rk.map((q, i) => `<tr style="${hl && i < hl ? 'background:rgba(47,185,114,.10)' : ''}"><td>${i + 1}</td><td><span class="dot" style="background:${tnCol(q.id)}"></span> ${esc(tnName(q.id))}${S.P[q.id].type >= 0 ? ' 🤖' : ''}</td><td><b>${q.pts}</b></td><td>${q.j}</td><td>${q.v}</td><td>${q.e}</td><td>${q.d}</td><td>${q.gp}</td><td>${q.gc}</td><td>${q.sg}</td></tr>`).join('')}</table></div>`;
+  return `<div class="card"><h3 style="margin-top:0">${title}</h3><table><tr><th>#</th><th>Time</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>Forma</th></tr>${rk.map((q, i) => `<tr style="${hl && i < hl ? 'background:rgba(47,185,114,.10)' : ''}"><td>${i + 1}</td><td><span class="dot" style="background:${tnCol(q.id)}"></span> ${esc(tnName(q.id))}${S.P[q.id].type >= 0 ? ' 🤖' : ''}</td><td><b>${q.pts}</b></td><td>${q.j}</td><td>${q.v}</td><td>${q.e}</td><td>${q.d}</td><td>${q.gp}</td><td>${q.gc}</td><td>${q.sg}</td><td>${tnForm(S.tn, q.id)}</td></tr>`).join('')}</table></div>`;
 }
+const tnForm = (tn, id) => tn.hist.filter(h => h.a === id || h.b === id).slice(-5).map(h => { const r = h.win === id ? 'V' : h.win < 0 ? 'E' : 'D'; return `<i class="fd ${r}" title="${esc(tnName(h.a))} ${h.sa} x ${h.sb} ${esc(tnName(h.b))}"></i>`; }).join('');
 const tnRes = m => !m.res ? '—' : `${m.res.sa} x ${m.res.sb}${m.res.pk ? ` (pên. ${m.res.pk[0]} x ${m.res.pk[1]})` : m.res.et ? ' (pror.)' : ''}`;
 const tnTop = (tn, f, k, n) => Object.values(tn.ps).filter(e => e[k] > 0 && (!f || f(e))).sort((a, b) => b[k] - a[k] || a.min - b.min).slice(0, n);
 function tnAwards(tn) {
   const all = Object.values(tn.ps), best = (arr, f) => arr.slice().sort((a, b) => f(b) - f(a) || b.o - a.o)[0];
   const ideal = [['GK', 1], ['DEF', 4], ['MID', 3], ['ATT', 3]].map(([c, n]) => all.filter(e => e.c === c).sort((a, b) => b.pts - a.pts || b.o - a.o).slice(0, n));
-  return {art: best(all.filter(e => e.g > 0), e => e.g), ast: best(all.filter(e => e.a > 0), e => e.a), gk: best(all.filter(e => e.c === 'GK' && e.j > 0), e => e.gk), mvp: best(all, e => e.pts), ideal};
+  return {art: best(all.filter(e => e.g > 0), e => e.g), ast: best(all.filter(e => e.a > 0), e => e.a), gk: best(all.filter(e => e.c === 'GK' && e.j > 0), e => e.gk), mvp: (() => { const r3 = all.filter(e => (e.rn || 0) >= 3), pool = r3.length ? r3 : all.filter(e => (e.rn || 0) >= 1); return best(pool, e => e.rs / e.rn); })(), ideal};
+}
+function bracketHtml(tn, rk) {
+  if (tn.fmt !== 'groups') return '';
+  const sf = tn.rounds.find(r => r.stage === 'SF'), fi = tn.rounds.find(r => r.stage === 'F');
+  const box = (a, b, m, tbd) => { const ra = m && m.res ? m.res.sa : '', rb = m && m.res ? m.res.sb : '', w = m && m.res ? m.res.win : -9, pk = m && m.res && m.res.pk ? ` <small class="mut">(${m.res.pk[0]}x${m.res.pk[1]})</small>` : '';
+    const row = (id, sc, lbl) => id == null ? `<div class="mut">${lbl}</div>` : `<div class="${w === id ? 'w' : ''}"><span><span class="dot" style="background:${tnCol(id)}"></span> ${esc(tnName(id))}${S.P[id].type < 0 ? ' 🧑' : ''}</span><span>${sc}${w === id ? pk : ''}</span></div>`;
+    return `<div class="bm ${tbd ? 'tbd' : ''}">${row(a, ra, 'A definir')}${row(b, rb, 'A definir')}</div>`; };
+  const g = rk; let s1, s2;
+  if (sf) { s1 = box(sf.matches[0].a, sf.matches[0].b, sf.matches[0]); s2 = box(sf.matches[1].a, sf.matches[1].b, sf.matches[1]); }
+  else { s1 = box(g[0][0] && g[0][0].id, g[1][1] && g[1][1].id, null, true); s2 = box(g[1][0] && g[1][0].id, g[0][1] && g[0][1].id, null, true); }
+  const f = fi ? box(fi.matches[0].a, fi.matches[0].b, fi.matches[0]) : box(null, null, null, true);
+  const ch = tn.done && tn.champion >= 0 ? `<div class="bm champ"><div class="w">🏆 <span class="dot" style="background:${tnCol(tn.champion)}"></span> ${esc(tnName(tn.champion))}</div></div>` : `<div class="bm tbd"><div class="mut">A definir</div></div>`;
+  return `<div class="card"><h3 style="margin-top:0">Chaveamento${sf ? '' : ' <span class="mut sm">(projeção pela classificação atual)</span>'}</h3><div class="brk"><div class="bcol c1"><div class="bh">Semifinais</div>${s1}${s2}</div><div class="bcol c1"><div class="bh">Final</div>${f}</div><div class="bcol"><div class="bh">Campeão</div>${ch}</div></div></div>`;
+}
+function tnUpcoming(tn) {
+  const o = [];
+  for (let r = tn.r; r < tn.rounds.length && o.length < 8; r++) tn.rounds[r].matches.forEach(m => { if (!m.res && o.length < 8) o.push({lb: tn.rounds[r].label, m}); });
+  const cl = id => `<span class="dot" style="background:${tnCol(id)}"></span> ${esc(tnName(id))}${S.P[id].type < 0 ? ' 🧑' : ''}`;
+  return `<div class="card"><h3 style="margin-top:0">Próximos jogos</h3>${o.length ? `<table>${o.map((x, i) => `<tr style="${i === 0 ? 'background:rgba(47,185,114,.10)' : ''}"><td class="mut sm">${esc(x.lb)}</td><td>${cl(x.m.a)}</td><td style="text-align:center">x</td><td>${cl(x.m.b)}</td></tr>`).join('')}</table>` : '<span class="mut sm">Sem mais jogos marcados.</span>'}${tn.fmt === 'groups' && !tn.rounds.some(r => r.stage === 'SF') ? '<p class="mut sm">Semifinais e final são definidas ao fim da fase de grupos.</p>' : ''}</div>`;
+}
+const tnPos = (arr, vf) => { let pos = 0, last = null; return arr.map((e, i) => { const v = vf(e); if (v !== last) { pos = i + 1; last = v; } return [pos, e, v]; }); };
+function tnRank(title, arr, vf, fmt) {
+  const rows = tnPos(arr, vf).map(([p, e, v]) => `<tr><td>${p}º</td><td>${esc(e.n)}</td><td class="sm"><span class="dot" style="background:${tnCol(e.t)}"></span> ${esc(tnName(e.t))}</td><td><b>${fmt ? fmt(e, v) : v}</b></td></tr>`).join('');
+  return `<div class="card"><h3 style="margin-top:0">${title}</h3>${rows ? `<table>${rows}</table>` : '<span class="mut sm">Nada ainda.</span>'}</div>`;
+}
+function tnRankTab(tn) {
+  const all = Object.values(tn.ps), top = (f, vf) => all.filter(f).sort((a, b) => vf(b) - vf(a)).slice(0, 10);
+  const avg = e => e.rs / e.rn;
+  return `<div class="grid2">${tnRank('⚽ Artilharia', top(e => e.g > 0, e => e.g), e => e.g, (e, v) => v + ' gol' + (v > 1 ? 's' : ''))}${tnRank('🅰 Assistências', top(e => e.a > 0, e => e.a), e => e.a)}
+  ${tnRank('⭐ Melhores notas (média, mín. 3 jogos)', top(e => (e.rn || 0) >= 3, avg).map(e => e), e => Math.round(avg(e) * 100), (e, v) => (v / 100).toFixed(2) + ' <small class="mut">(' + e.rn + ' j.)</small>')}${tnRank('🧤 Mais defesas', top(e => e.c === 'GK' && e.sv > 0, e => e.sv), e => e.sv)}</div><p class="mut sm">Jogadores empatados dividem a mesma posição.</p>`;
+}
+function tnDiscTab(tn) {
+  const all = Object.values(tn.ps), cards = all.filter(e => e.y || e.r).sort((a, b) => (b.r * 3 + b.y) - (a.r * 3 + a.y) || b.r - a.r).slice(0, 12);
+  const rows = tn.ids.map(id => { const t = tn.teams[id], sus = t.squad.filter(p => p.tsusp > 0), pen = t.squad.filter(p => p.tyc === 1 && !(p.tsusp > 0)), inj = t.squad.filter(p => p.tinj > 0);
+    return `<tr><td><span class="dot" style="background:${tnCol(id)}"></span> ${esc(tnName(id))}</td><td class="sm">${sus.map(p => esc(p.n) + ' ⛔ ' + p.tsusp + ' jogo' + (p.tsusp > 1 ? 's' : '')).join(' · ') || '—'}</td><td class="sm">${pen.map(p => esc(p.n)).join(' · ') || '—'}</td><td class="sm">${inj.map(p => esc(p.n) + ' 🚑 ' + p.tinj + ' jogo' + (p.tinj > 1 ? 's' : '')).join(' · ') || '—'}</td></tr>`; }).join('');
+  return `<div class="grid2">${tnRank('🟨 🟥 Cartões', cards, e => e.r * 3 + e.y, (e) => (e.y ? '🟨 ' + e.y : '') + (e.r ? ' 🟥 ' + e.r : ''))}<div class="card"><h3 style="margin-top:0">Regras</h3><p class="sm mut">Vermelho: 1 jogo de suspensão. Dois amarelos acumulados: 1 jogo. Os amarelos zeram ao começar o mata-mata. Lesões tiram de 1 a 3 jogos.</p></div></div>
+  <div class="card"><h3 style="margin-top:0">Situação dos elencos</h3><table><tr><th>Time</th><th>Suspensos</th><th>Pendurados (1 amarelo)</th><th>Lesionados</th></tr>${rows}</table></div>`;
 }
 function renderTn(a) {
   const tn = S.tn, rk = tnRk(tn), nx = Tourn.nextMatch(tn), rd = tn.rounds[Math.min(tn.r, tn.rounds.length - 1)];
@@ -2573,10 +2846,16 @@ function renderTn(a) {
     ${tn.ev ? `<div class="row" style="margin-top:10px"><span class="tag" style="color:var(--wa)">📰 Evento fora de campo pendente para ${esc(tnName(tn.ev.team))}</span><button class="b s" id="tev">Abrir (só o técnico)</button><span class="mut sm">Se você iniciar a partida sem abrir, o evento é ignorado.</span></div>` : ''}
     <div class="row" style="margin-top:10px">${nx ? `<button class="b" id="tnx">Próxima partida: ${esc(tnName(nx.m.a))} x ${esc(tnName(nx.m.b))}</button>` : ''}</div></div>`;
     body += tn.fmt === 'groups' ? `<div class="grid2">${rk.map((r, i) => tnTable(r, 'Grupo ' + 'AB'[i], 2)).join('')}</div>` : tnTable(rk[0], 'Classificação', 0);
-    body += tnStatus(tn);
+    body += bracketHtml(tn, rk) + tnUpcoming(tn) + tnStatus(tn);
+    if (S.dsum) body += `<div class="card"><details><summary><b>Elencos do draft</b></summary>${S.dsum.map((q, i) => `<p class="sm"><span class="dot" style="background:${S.P[i].color}"></span> <b>${esc(S.P[i].name)}</b>${UNL() ? '' : ' <span class="mut">· gastou ' + q.spent + ' de ' + S.budget + '</span>'}<br><span class="mut">${q.items.map(x => esc(x.n) + ' ' + x.o).join(' · ')}</span></p>`).join('')}</details></div>`;
   }
-  const hist = tn.hist.slice().reverse().map(h => `<details><summary><b>${esc(tn.rounds[h.ri].label)}</b> · ${esc(tnName(h.a))} ${h.sa} x ${h.sb} ${esc(tnName(h.b))}${h.pk ? ` (pên. ${h.pk[0]} x ${h.pk[1]})` : h.et ? ' (pror.)' : ''}</summary><div class="sm mut">Gols: ${esc(tnName(h.a))}: ${esc(h.sc[0].join(', ') || '—')} · ${esc(tnName(h.b))}: ${esc(h.sc[1].join(', ') || '—')}${h.cards.length ? '<br>Cartões: ' + esc(h.cards.join(', ')) : ''}${h.inj.length ? '<br>Lesões: ' + esc(h.inj.join(', ')) : ''}${h.best ? '<br>Craque: ' + esc(h.best.n) : ''}</div></details>`).join('');
-  a.innerHTML = head + body + `<div class="card"><h2>Histórico de resultados</h2>${hist || '<span class="mut sm">Nenhuma partida jogada.</span>'}</div>`;
+  const hist = tn.hist.slice().reverse().map(h => `<details><summary><b>${esc(tn.rounds[h.ri].label)}</b> · ${esc(tnName(h.a))} ${h.sa} x ${h.sb} ${esc(tnName(h.b))}${h.pk ? ` (pên. ${h.pk[0]} x ${h.pk[1]})` : h.et ? ' (pror.)' : ''}</summary><div class="sm mut">Gols: ${esc(tnName(h.a))}: ${esc(h.sc[0].join(', ') || '—')} · ${esc(tnName(h.b))}: ${esc(h.sc[1].join(', ') || '—')}${h.cards.length ? '<br>Cartões: ' + esc(h.cards.join(', ')) : ''}${h.inj.length ? '<br>Lesões: ' + esc(h.inj.join(', ')) : ''}${h.best ? '<br>Melhor em campo: ' + esc(h.best.n) + (h.best.nt ? ' (' + h.best.nt.toFixed(1) + ')' : '') : ''}</div></details>`).join('');
+  const tab = S.ttab || 'tab';
+  const tabs = `<div class="card"><div class="seg" id="ttabs">${[['tab', 'Tabela'], ['jog', 'Jogos'], ['art', 'Artilharia'], ['dis', 'Disciplina']].map(([k, l]) => `<button data-t="${k}" class="${tab === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>`;
+  const fx = tn.rounds.map((r, ri) => `<h3 style="margin:10px 0 4px">${esc(r.label)}${ri === tn.r && !tn.done ? ' <span class="tag">atual</span>' : ''}</h3><table>${r.matches.map(m => `<tr><td><span class="dot" style="background:${tnCol(m.a)}"></span> ${esc(tnName(m.a))}</td><td style="text-align:center"><b>${tnRes(m)}</b></td><td style="text-align:right">${esc(tnName(m.b))} <span class="dot" style="background:${tnCol(m.b)}"></span></td></tr>`).join('')}</table>`).join('');
+  const jogos = `<div class="card"><h2 style="margin-top:0">Todos os jogos</h2>${fx}</div><div class="card"><h2>Histórico de resultados</h2>${hist || '<span class="mut sm">Nenhuma partida jogada.</span>'}</div>`;
+  a.innerHTML = head + tabs + (tab === 'jog' ? jogos : tab === 'art' ? tnRankTab(tn) : tab === 'dis' ? tnDiscTab(tn) : body);
+  $('#ttabs').onclick = e => { const k = e.target.dataset.t; if (k) { S.ttab = k; render(); } };
   $('#tsv').onclick = tnSave;
   $('#tex').onclick = () => { if (confirm('Sair do torneio? O progresso não salvo será perdido.')) { S.tn = null; S.teams = null; S.stage = 'setup'; if (!S.dsum) S.squads = null; render(); } };
   if ($('#tnx')) $('#tnx').onclick = tnNext;
@@ -2591,6 +2870,11 @@ function tnStatus(tn) {
   return `<div class="grid2"><div class="card"><h3 style="margin-top:0">Disponibilidade e energia</h3><table><tr><th>Time</th><th>Energia</th><th>Fora / pendurados</th></tr>${lines}</table></div>
   <div class="card"><h3 style="margin-top:0">Artilharia</h3>${li(sc, 'g')}<h3>Assistências</h3>${li(as, 'a')}</div></div>`;
 }
+function elencoHtml(tn) {
+  const t = tn.teams[tn.champion];
+  const rows = t.squad.slice().sort((a, b) => b.o - a.o).map(p => { const e = tn.ps[tn.champion + '|' + p.id]; return `<tr><td>${esc(p.n)}</td><td class="mut sm">${posL(p)}</td><td>${p.o}</td><td>${e ? e.j : 0}</td><td>${e ? e.g : 0}</td><td>${e ? e.a : 0}</td><td>${e && e.rn ? (e.rs / e.rn).toFixed(1) : '—'}</td></tr>`; }).join('');
+  return `<div class="card"><h2>Elenco campeão · <span class="dot" style="background:${tnCol(tn.champion)}"></span> ${esc(tnName(tn.champion))}</h2><table><tr><th>Jogador</th><th>Pos.</th><th>Ovr</th><th>J</th><th>G</th><th>A</th><th>Nota</th></tr>${rows}</table></div>`;
+}
 function tnFinal(tn, rk) {
   const ch = tn.champion, aw = tnAwards(tn), fin = tn.rounds[tn.rounds.length - 1].matches[0];
   let pod = '';
@@ -2602,8 +2886,8 @@ function tnFinal(tn, rk) {
   const pl = (e, v) => e ? `<b>${esc(e.n)}</b> <span class="mut">(${esc(tnName(e.t))})</span> ${v}` : '—';
   const row = r => r.map(e => `<span class="tag">${esc(e.n)} <span class="mut">${esc(tnName(e.t))}</span></span>`).join(' ');
   const camp = (tn.fmt === 'groups' ? Tourn.table(tn.ids, Tourn.allRes(tn, ['G', 'SF', 'F'])) : Tourn.table(tn.ids, Tourn.allRes(tn, ['L', 'PO']))).sort((x, y) => y.pts - x.pts || y.sg - x.sg);
-  return `<div class="card" style="text-align:center"><div class="big">🏆 Campeão: <span class="dot" style="background:${tnCol(ch)}"></span> ${esc(tnName(ch))}</div><p>${pod}</p></div>
-  <div class="grid2"><div class="card"><h2>Prêmios</h2><div class="sm">Artilheiro: ${pl(aw.art, aw.art && aw.art.g + ' gols')}</div><div class="sm">Mais assistências: ${pl(aw.ast, aw.ast && aw.ast.a)}</div><div class="sm">Melhor goleiro: ${pl(aw.gk, aw.gk && aw.gk.sv + ' defesas')}</div><div class="sm">Melhor jogador: ${pl(aw.mvp, aw.mvp && aw.mvp.pts + ' pts')}</div></div>
+  return `<div class="card" style="text-align:center"><div class="big">🏆 Campeão: <span class="dot" style="background:${tnCol(ch)}"></span> ${esc(tnName(ch))}</div><p>${pod}</p></div>${bracketHtml(tn, rk)}${elencoHtml(tn)}
+  <div class="grid2"><div class="card"><h2>Prêmios</h2><div class="sm">Artilheiro: ${pl(aw.art, aw.art && aw.art.g + ' gols')}</div><div class="sm">Mais assistências: ${pl(aw.ast, aw.ast && aw.ast.a)}</div><div class="sm">Melhor goleiro: ${pl(aw.gk, aw.gk && aw.gk.sv + ' defesas')}</div><div class="sm">Melhor jogador: ${pl(aw.mvp, aw.mvp && aw.mvp.rn ? (aw.mvp.rs / aw.mvp.rn).toFixed(2) + ' de média em ' + aw.mvp.rn + ' jogos' : '')}</div></div>
   <div class="card"><h2>Time ideal (4-3-3)</h2><div class="sm">GOL: ${row(aw.ideal[0])}</div><div class="sm">DEF: ${row(aw.ideal[1])}</div><div class="sm">MEI: ${row(aw.ideal[2])}</div><div class="sm">ATA: ${row(aw.ideal[3])}</div></div></div>
   ${tn.fmt === 'groups' ? `<div class="grid2">${rk.map((r, i) => tnTable(r, 'Grupo ' + 'AB'[i], 2)).join('')}</div>` : tnTable(rk[0], 'Classificação final', 1)}
   <div class="card"><h2>Resumo da campanha</h2><table><tr><th>Time</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th></tr>${camp.map(q => `<tr><td><span class="dot" style="background:${tnCol(q.id)}"></span> ${esc(tnName(q.id))}</td><td>${q.j}</td><td>${q.v}</td><td>${q.e}</td><td>${q.d}</td><td>${q.gp}</td><td>${q.gc}</td></tr>`).join('')}</table></div>

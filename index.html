@@ -157,10 +157,20 @@ header{flex-wrap:nowrap;padding:6px 10px;gap:6px}header h1{font-size:15px;white-
 .b.rqb:disabled{background:var(--card2);color:var(--mut);border-color:var(--bd);opacity:.85}.b.rqb.done{background:transparent;color:var(--ac);border-color:var(--ac);opacity:1}
 .rqbar{position:sticky;bottom:8px;z-index:6;background:#07120cf2;border:2px solid var(--ac);border-radius:14px;padding:10px;margin-top:10px;box-shadow:0 6px 24px #000a}.rqbar .b{width:100%;font-size:16px;min-height:48px}.rqbar .sm{margin-top:6px}
 @media (max-width:760px){.msb .ctl{flex-wrap:wrap;overflow:visible}.msb .ctl>#rq{flex:1 1 100%;display:flex;gap:6px}.msb .ctl>#rq .b{flex:1;min-height:42px;font-size:14px}}
+/* ===== v44: escolha de clubes ===== */
+.clchips button{white-space:nowrap}.clgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px;align-items:start}
+.cllist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.clc2{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:center;text-align:left;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:12px;padding:9px 10px;cursor:pointer}
+.clc2:hover{border-color:var(--ac);background:var(--card2)}.clc2.sel{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac) inset;background:#12341f}.clc2.taken{opacity:.5}
+.clc2 .dp-o{font-size:22px;padding:8px 0}.clm{display:flex;flex-direction:column;gap:1px;min-width:0}.clm b{font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cltop{color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cltop b{font-size:inherit;color:var(--tx)}
+.clside{position:sticky;top:10px}.clsel{margin:0}.clhint{display:flex;flex-direction:column;gap:4px;text-align:center;padding:18px 6px}
+.clbody{display:block;max-height:58vh;overflow:auto}.cls{margin-top:8px}.clh{font-size:12px;color:var(--mut);font-weight:700;letter-spacing:.3px;margin-bottom:3px}.clp{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:2px 0;font-size:13.5px}.cpn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.clmore{display:none}
+@media (max-width:900px){.clgrid{grid-template-columns:1fr}.clside{position:sticky;bottom:0;top:auto;order:-1;z-index:7}.cllist{grid-template-columns:1fr}.clsel{margin:0;box-shadow:0 -6px 20px #000b;border-color:var(--ac)}.clmore{display:block}.clbody{display:none;max-height:40vh}.clbody.open{display:block}.clside{order:2}.cllist{order:1}}
 </style>
 </head>
 <body>
-<header><h1>⚽ Draft FC <small class="ver">v43 · original</small></h1>
+<header><h1>⚽ Draft FC <small class="ver">v44 · original</small></h1>
 <button class="tab on" data-t="home">Partida</button><button class="tab" data-t="lab"><span class="lg">Laboratório</span><span class="sh">Lab.</span></button><button class="tab" data-t="help"><span class="lg">Como funciona</span><span class="sh">Ajuda</span></button></header>
 <main id="app"></main>
 <div id="ovl"></div>
@@ -1832,7 +1842,7 @@ function helpHtml() { return `<div class="card"><h2>O que este jogo faz (versão
 const D = Draft;
 const PNAMES = ['Time Azul','Time Vermelho','Time Verde','Time Amarelo','Time Roxo','Time Laranja','Time Preto','Time Branco'];
 const PCOLS = ['#2f7df6','#e5484d','#2eb872','#f0b429','#9b59d6','#f07b29','#555b66','#d9dee4'];
-Object.assign(S, {hide:false, hrk:'', hrn:new Map(), n:2, P:PNAMES.map((nm, i) => ({name:nm, color:PCOLS[i], type:i < 2 ? -1 : 0})), dmode:'filter', budget:300, unl:true, frand:false, dsec:60, dr:null, squads:null, dsum:null, pair:[0, 1], dsel:null, open:false, fast:false, revDone:-1, dleft:0, q:{txt:'', cat:'', min:80, maxp:0}, cbud:true, var:true, tfmt:'groups', tn:null, cur:0, same:false, cunit:'nat', corder:'snake', cfgBox:null, cfgMsg:null});
+Object.assign(S, {hide:false, hrk:'', hrn:new Map(), n:2, P:PNAMES.map((nm, i) => ({name:nm, color:PCOLS[i], type:i < 2 ? -1 : 0})), dmode:'clubs', budget:300, unl:true, frand:false, dsec:60, dr:null, squads:null, dsum:null, pair:[0, 1], dsel:null, open:false, fast:false, revDone:-1, dleft:0, q:{txt:'', cat:'', min:80, maxp:0}, cbud:true, var:true, tfmt:'groups', tn:null, cur:0, same:false, cunit:'nat', corder:'snake', cfgBox:null, cfgMsg:null});
 const ATN = ['Cruzamento','Finalização','Cabeceio','Passe curto','Voleio','Drible','Curva','Falta','Passe longo','Controle','Aceleração','Sprint','Agilidade','Reações','Equilíbrio','Força do chute','Pulo','Resistência','Força','Chute longe','Agressividade','Interceptação','Posicionamento','Visão','Pênalti','Marcação','Desarme','Carrinho','Mergulho','Mãos','Chute GK','Posic. GK','Reflexos'];
 const keyAttrs = it => { const lo = it.cat === 'GK' ? 28 : 0, hi = it.cat === 'GK' ? 33 : 28, a = []; for (let i = lo; i < hi; i++) a.push([i, it.r[6 + i]]); return a.sort((x, y) => y[1] - x[1]).slice(0, 3).map(x => ATN[x[0]] + ' ' + x[1]).join(' · '); };
 const origin = it => { const t = S.dr.tc.info(it.id), nat = t.find(x => x[0] === 'N'), club = t.find(x => x[0] === 'C'), ws = t.find(x => x[0] === 'X'); return [nat && nat[1], club && club[1], !nat && !club && ws && ws[1]].filter(Boolean).join(' · '); };
@@ -1903,21 +1913,64 @@ function autoClubs() {
   for (let i = 0; i < S.n; i++) { const k = S.P[i].type < 0 ? av[Math.random() * av.length | 0] : clubBotPick(av); pick.push(k); av.splice(av.indexOf(k), 1); }
   clubsFinish(pick);
 }
+const CL_POS = {0:['GOL','GK'],3:['LD','LD'],5:['ZAG','ZAG'],7:['LE','LE'],10:['VOL','MF'],12:['MD','MF'],14:['MC','MF'],16:['ME','MF'],18:['MEI','MF'],23:['PD','PD'],25:['ATA','ATA'],27:['PE','PE']};
+function clPos(p) { if (CL_POS[p]) return CL_POS[p]; const c = catOf(p); return c === 'GK' ? CL_POS[0] : c === 'DEF' ? (p === 2 || p === 3 ? CL_POS[3] : p === 7 || p === 8 ? CL_POS[7] : CL_POS[5]) : c === 'MID' ? CL_POS[14] : CL_POS[25]; }
+const clYear = x => { const m = /(\d{4})(?:\D*)$/.exec(x.n); return m ? +m[1] : (x.p.endsWith('2027') ? 2027 : 0); };
+const clGroup = x => x.p.startsWith('Histórico') ? (x.p.endsWith('Brasil') ? 'hb' : 'he') : x.p.endsWith('2027') ? 'b27' : x.p === 'Brasil' ? 'br' : 'ex';
+const clTier = o => o >= 88 ? 'dp-t1' : o >= 84 ? 'dp-t2' : o >= 80 ? 'dp-t3' : 'dp-t4';
+function clList(c) {
+  const q = (c.q || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let l = CLUBES.map((x, i) => i).filter(i => {
+    const x = CLUBES[i], g = clGroup(x);
+    if (c.f !== 'all' && g !== c.f) return false;
+    if (c.dec) { const y = clYear(x); if (!y || Math.floor(y / 10) * 10 !== +c.dec) return false; }
+    if (q) { const hay = (x.n + ' ' + x.p + ' ' + clubSq(x).map(r => r[1]).join(' ')).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); if (!q.split(/\s+/).every(w => hay.includes(w))) return false; }
+    return true;
+  });
+  const key = c.sort || 'avg';
+  l.sort((a, b) => key === 'az' ? CLUBES[a].n.localeCompare(CLUBES[b].n, 'pt') : key === 'ano' ? (clYear(CLUBES[a]) - clYear(CLUBES[b])) || CLUBES[a].n.localeCompare(CLUBES[b].n, 'pt') : (clubAvg(CLUBES[b]) - clubAvg(CLUBES[a])));
+  return l;
+}
+function clDetail(c) {
+  const i = c.sel; if (i === undefined || i < 0) return `<div class="clhint"><b>Toque num clube</b><span class="mut sm">para ver o elenco completo e confirmar a escolha.</span></div>`;
+  const x = CLUBES[i], sq = clubSq(x).slice().sort((a, b) => b[2] - a[2]), by = c.pick.indexOf(i);
+  const sec = [['GK', 'Goleiros'], ['DEF', 'Defensores'], ['MID', 'Meio-campistas'], ['ATT', 'Atacantes']];
+  const body = sec.map(([k, nm]) => { const ps = sq.filter(r => catOf(r[3]) === k); return ps.length ? `<div class="cls"><div class="clh">${nm} <span class="mut">${ps.length}</span></div>${ps.map(r => `<div class="clp"><span class="pos s-${clPos(r[3])[1]}">${clPos(r[3])[0]}</span><span class="cpn">${esc(r[1])}</span><b class="rt" style="background:${r[2] >= 88 ? '#ffd84a' : r[2] >= 84 ? '#3ddc84' : r[2] >= 80 ? '#8fd0ff' : '#c8d3cd'}">${r[2]}</b></div>`).join('')}</div>` : ''; }).join('');
+  const who = S.P[c.turn];
+  return `<div class="cld"><div class="row" style="gap:10px;align-items:center"><div class="dp-o ${clTier(clubAvg(x))}" style="min-width:58px">${clubAvg(x)}</div><div style="min-width:0"><div class="big" style="font-size:19px">${esc(x.n)}</div><div class="mut sm">${esc(x.p)} · ${sq.length} jogadores · média dos 11 melhores</div></div></div>
+  <button class="b" id="clok" style="width:100%;margin:10px 0" ${by >= 0 ? 'disabled' : ''}>${by >= 0 ? 'Já escolhido por ' + esc(S.P[by].name) : 'Escolher ' + esc(x.n) + ' para ' + esc(who.name)}</button>
+  <button class="b s clmore" id="clmore" style="width:100%;margin-bottom:6px">${c.open ? 'Esconder elenco' : 'Ver elenco completo'}</button>
+  <div class="clbody ${c.open ? 'open' : ''}">${body}</div></div>`;
+}
+function clPaint(c) {
+  const list = clList(c), box = $('#cllist'); if (!box) return;
+  const card = i => { const x = CLUBES[i], sq = clubSq(x), top = sq.slice().sort((a, b) => b[2] - a[2]).slice(0, 3).map(r => esc(r[1]) + ' <b>' + r[2] + '</b>').join(' · '), by = c.pick.indexOf(i), av = clubAvg(x);
+    return `<button class="clc2 ${c.sel === i ? 'sel' : ''} ${by >= 0 ? 'taken' : ''}" data-cl="${i}"><span class="dp-o ${clTier(av)}">${av}</span><span class="clm"><b>${esc(x.n)}</b><span class="mut sm">${esc(x.p)}</span><span class="sm cltop">${top}</span>${by >= 0 ? `<span class="sm"><span class="dot" style="background:${S.P[by].color}"></span> ${esc(S.P[by].name)}</span>` : ''}</span></button>`; };
+  box.innerHTML = list.length ? list.map(card).join('') : '<p class="mut" style="padding:12px">Nenhum clube com esse filtro.</p>';
+  $('#clcount').textContent = list.length + ' de ' + CLUBES.length + ' clubes';
+  $('#clsel').innerHTML = clDetail(c);
+  box.querySelectorAll('[data-cl]').forEach(b => b.onclick = () => { c.sel = +b.dataset.cl; c.open = false; clPaint(c); if (window.innerWidth <= 900) $('#clsel').scrollIntoView({block: 'nearest', behavior: 'smooth'}); });
+  if ($('#clok')) $('#clok').onclick = () => clubTake(c.sel);
+  if ($('#clmore')) $('#clmore').onclick = () => { c.open = !c.open; clPaint(c); };
+}
 function renderClubs(a) {
   const c = S.cl; if (!c) { S.stage = 'setup'; return render(); }
-  const who = S.P[c.turn], f = c.f;
-  const list = CLUBES.map((x, i) => i).filter(i => f === 'all' || (f === 'br' && CLUBES[i].p === 'Brasil') || (f === 'b27' && CLUBES[i].p.endsWith('2027')) || (f === 'hb' && CLUBES[i].p === 'Histórico · Brasil') || (f === 'he' && CLUBES[i].p === 'Histórico · Exterior') || (f === 'ex' && CLUBES[i].p !== 'Brasil' && !CLUBES[i].p.endsWith('2027') && !CLUBES[i].p.startsWith('Histórico')));
-  const card = i => { const x = CLUBES[i], sq = clubSq(x), top = sq.slice(0, 3).map(r => esc(r[1]) + ' ' + r[2]).join(' · '), by = c.pick.indexOf(i);
-    return `<button class="clc" data-cl="${i}" ${by >= 0 ? 'disabled' : ''} style="text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--bd,#2a3b33);background:${by >= 0 ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.08)'};color:inherit;cursor:${by >= 0 ? 'default' : 'pointer'};opacity:${by >= 0 ? .5 : 1}"><b>${esc(x.n)}</b> <span class="mut sm">${esc(x.p)}</span><div class="sm">média dos 11 melhores <b>${clubAvg(x)}</b></div><div class="mut sm">${top}</div>${by >= 0 ? `<div class="sm"><span class="dot" style="background:${S.P[by].color}"></span> ${esc(S.P[by].name)}</div>` : ''}</button>`; };
-  a.innerHTML = `<div class="card"><h2>Escolha seu clube</h2><p class="mut sm">Modo Clubes prontos: sem draft. Cada técnico escolhe um clube e joga com o elenco pré-definido de 23 jogadores (os melhores de cada clube em todas as épocas, ou o elenco atual de 2027, ou um time histórico de 1987 a 2025 (13 a 23 jogadores), respeitando 3 goleiros, 6 defensores, 6 meio-campistas e 4 atacantes).</p>
-  <div class="row"><span class="dot" style="background:${who.color}"></span><b>Vez de ${esc(who.name)}</b><span class="mut sm">(${c.turn + 1} de ${S.n})</span>
-  <div class="seg" id="clf"><button data-f="all" class="${f === 'all' ? 'on' : ''}">Todos</button><button data-f="br" class="${f === 'br' ? 'on' : ''}">Brasil (todas as épocas)</button><button data-f="b27" class="${f === 'b27' ? 'on' : ''}">Elencos 2027</button><button data-f="ex" class="${f === 'ex' ? 'on' : ''}">Estrangeiros</button><button data-f="hb" class="${f === 'hb' ? 'on' : ''}">Históricos · Brasil</button><button data-f="he" class="${f === 'he' ? 'on' : ''}">Históricos · Exterior</button></div>
-  <button class="b s" id="clr">Sortear para mim</button><button class="b s" id="clx">Cancelar</button></div></div>
-  <div class="card"><div class="grid2" style="gap:8px">${list.map(card).join('')}</div></div>`;
-  a.querySelectorAll('[data-cl]').forEach(b => b.onclick = () => clubTake(+b.dataset.cl));
-  $('#clf').onclick = e => { const m = e.target.dataset.f; if (m) { c.f = m; render(); } };
-  $('#clr').onclick = () => { const av = CLUBES.map((x, i) => i).filter(i => !c.pick.includes(i)); clubTake(av[Math.random() * av.length | 0]); };
+  const who = S.P[c.turn], f = c.f; if (c.sel !== undefined && c.pick.includes(c.sel)) c.sel = undefined;
+  const decs = [...new Set(CLUBES.map(clYear).filter(y => y).map(y => Math.floor(y / 10) * 10))].sort();
+  const groups = [['all', 'Todos'], ['hb', 'Históricos · Brasil'], ['he', 'Históricos · Exterior'], ['b27', 'Elencos 2027'], ['br', 'Craques de todas as épocas · Brasil'], ['ex', 'Estrangeiros']];
+  a.innerHTML = `<div class="card"><h2>Escolha seu clube</h2>
+  <p class="mut sm">Sem draft: cada técnico escolhe um clube e joga com o elenco dele. Toque num clube para ver o elenco e confirme no painel.</p>
+  <div class="row" style="margin-bottom:8px"><span class="dot" style="background:${who.color}"></span><b>Vez de ${esc(who.name)}</b><span class="mut sm">(${c.turn + 1} de ${S.n})</span><span style="margin-left:auto" class="row"><button class="b s mini" id="clr">🎲 Sortear para mim</button><button class="b s mini" id="clx">Cancelar</button></span></div>
+  <div class="seg clchips" id="clf">${groups.map(([k, n]) => `<button data-f="${k}" class="${f === k ? 'on' : ''}">${n}</button>`).join('')}</div>
+  <div class="row" style="margin-top:8px"><input type="text" id="clq" placeholder="Buscar clube, ano ou jogador (ex.: Flamengo 2019, Zico)" value="${esc(c.q || '')}" style="flex:1;min-width:200px"><select id="cld"><option value="">Todas as décadas</option>${decs.map(d => `<option value="${d}" ${+c.dec === d ? 'selected' : ''}>${d}s</option>`).join('')}</select><select id="cls"><option value="avg" ${(c.sort || 'avg') === 'avg' ? 'selected' : ''}>Melhor média</option><option value="ano" ${c.sort === 'ano' ? 'selected' : ''}>Ano</option><option value="az" ${c.sort === 'az' ? 'selected' : ''}>A–Z</option></select><span class="mut sm" id="clcount"></span></div></div>
+  <div class="clgrid"><div class="cllist" id="cllist"></div><div class="clside"><div class="card clsel" id="clsel"></div></div></div>`;
+  $('#clf').onclick = e => { const m = e.target.dataset.f; if (m) { c.f = m; document.querySelectorAll('#clf button').forEach(b => b.classList.toggle('on', b.dataset.f === m)); clPaint(c); } };
+  $('#clq').oninput = e => { c.q = e.target.value; clPaint(c); };
+  $('#cld').onchange = e => { c.dec = e.target.value; clPaint(c); };
+  $('#cls').onchange = e => { c.sort = e.target.value; clPaint(c); };
+  $('#clr').onclick = () => { const av = clList(c).filter(i => !c.pick.includes(i)); const pool = av.length ? av : CLUBES.map((x, i) => i).filter(i => !c.pick.includes(i)); clubTake(pool[Math.random() * pool.length | 0]); };
   $('#clx').onclick = () => { S.cl = null; S.stage = 'setup'; render(); };
+  clPaint(c);
 }
 function clubTake(i) { const c = S.cl; if (!c || c.pick.includes(i)) return; c.pick[c.turn] = i; c.turn++; clubsAdvance(); }
 function startDraft() { if (S.dmode === 'clubs') return startClubs(); resetDraftState(); newDrafter(); S.stage = 'draft'; S.open = false; S.dsel = null; S.revDone = -1; S.fast = false; draftLoop(); }
@@ -2319,11 +2372,12 @@ function renderSetup(a) {
   const baseNames = S.bases.every(Boolean) ? 'Todas as ' + BASES.length + ' bases' : BASES.filter((b, i) => S.bases[i]).map(b => b.label).join(' + ') || 'nenhuma';
   const sum = [['Técnicos', S.n + ' (' + humans + ' humano' + (humans === 1 ? '' : 's') + ', ' + (S.n - humans) + ' bot' + (S.n - humans === 1 ? '' : 's') + ')'], ['Bases', baseNames + ' · ' + S.cut + '+'], ['Pool', ps.n.toLocaleString('pt-BR') + ' jogadores'], ['Draft', modeN + (S.dmode === 'clubs' ? '' : UNL() ? ' · orçamento livre' : ' · orçamento ' + S.budget)], ['Formato', fm === 'tourn' ? 'Torneio · ' + (tnT() === 'groups' ? 'grupos + mata-mata' : 'pontos corridos') : 'Partida única' + (S.ko ? ' (mata-mata)' : '')]];
   const hero = `<div class="hero"><svg class="hp" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#fff" stroke-width="1.2"><rect x="8" y="8" width="384" height="104" rx="4"/><line x1="200" y1="8" x2="200" y2="112"/><circle cx="200" cy="60" r="20"/><rect x="8" y="34" width="46" height="52"/><rect x="346" y="34" width="46" height="52"/></g></svg>
-    <div class="hin"><div class="hlogo">⚽</div><div><div class="htit">Draft FC</div><div class="hsub">Monte o elenco no draft e simule a partida · ${S.net ? 'versão premium (Wi-Fi)' : 'versão original'} · v43</div></div></div>
+    <div class="hin"><div class="hlogo">⚽</div><div><div class="htit">Draft FC</div><div class="hsub">Monte o elenco no draft e simule a partida · ${S.net ? 'versão premium (Wi-Fi)' : 'versão original'} · v44</div></div></div>
     <div class="hbtns"><button class="hb pri" id="hqk">⚡ Jogo rápido</button>${S.squads ? '' : ''}<button class="hb" id="hld">📂 Continuar torneio salvo</button><button class="hb" id="hhp">Como funciona</button><button class="hb" id="hlb">Laboratório</button></div></div>`;
-  const quick = S.quick ? `<div class="qk"><button data-q="solo"><b>Você contra um bot</b><span>2 técnicos, bot médio, draft com Filtro Aleatório, orçamento livre. Vai direto para Revisar e iniciar.</span></button>
+  const quick = S.quick ? `<div class="qk"><button data-q="clube"><b>Você com um clube × bot</b><span>Escolha seu clube (histórico, 2027 ou craques) e o bot recebe outro sorteado. Vai direto para a escalação.</span></button>
+    <button data-q="sorteio"><b>Sorteio total</b><span>Clube aleatório para você e para o bot. Já cai na tela da partida.</span></button><button data-q="solo"><b>Draft contra um bot</b><span>2 técnicos, bot médio, draft com Filtro Aleatório, orçamento livre. Vai direto para Revisar e iniciar.</span></button>
     <button data-q="amigos"><b>Torneio com amigos</b><span>4 técnicos humanos, Filtro Aleatório, orçamento livre, formato Torneio.</span></button>
-    <button data-q="classicos"><b>Clássicos 80+</b><span>Clubes 99–10, Seleções 2010–18 e Era 90, corte 80+. Abre a configuração da base.</span></button>
+    <button data-q="classicos"><b>Clássicos 80+ (draft)</b><span>Clubes 99–10, Seleções 2010–18 e Era 90, corte 80+. Abre a configuração da base.</span></button>
     <button data-q="bots"><b>Bots decidem tudo</b><span>4 bots médios fazem o draft automático e já mostram os elencos.</span></button></div>` : '';
   const names = ['Participantes', 'Regras do draft', 'Formato', 'Revisar e iniciar'];
   const stepper = `<div class="stepper">${names.map((n, i) => `<button data-go="${i}" class="${i === cur ? 'on' : i < cur ? 'done' : ''}"><i>${i < cur ? '✓' : i + 1}</i><span>${n}</span></button>`).join('')}</div>`;
@@ -2392,6 +2446,7 @@ function renderSetup(a) {
 }
 function applyQuick(k) {
   resetDraftState(); S.hide = false; S.ko = true; S.var = true; S.unl = true; S.dmode = 'filter'; S.frand = false; S.fmtSel = 'single'; S.quick = false;
+  if (k === 'clube' || k === 'sorteio') { S.dmode = 'clubs'; S.n = 2; S.P[0].type = -1; S.P[1].type = 1; S.fmtSel = 'single'; S.step = 3; render(); if (k === 'clube') startClubs(); else autoClubs(); return; }
   if (k === 'solo') { S.n = 2; S.P[0].type = -1; S.P[1].type = 1; S.step = 3; }
   else if (k === 'amigos') { S.n = 4; for (let i = 0; i < 4; i++) S.P[i].type = -1; S.fmtSel = 'tourn'; S.step = 3; }
   else if (k === 'classicos') { S.bases = BASES.map((b, i) => i < 3); S.cut = 80; S.step = 1; S.baseOpen = true; }
